@@ -14,6 +14,50 @@ describe('GET "/" endpoint', function() {
     .then(function(res) {
       res.should.have.status(200);
       res.should.be.html;
-    });
+    })
+  });
+});
+
+describe('GET "/dashboard" endpoint', function() {
+  it('Should return html page', function() {
+    return chai.request(app)
+    .get('/dashboard')
+    .then(function(res) {
+      res.should.have.status(200);
+      res.should.be.html;
+    })
+  });
+});
+
+describe('GET "/munches" endpoint', function() {
+  it('Should return html page', function() {
+    return chai.request(app)
+    .get('/munches')
+    .then(function(res) {
+      res.should.have.status(200);
+      res.should.be.html;
+    })
+  });
+});
+
+describe('GET "/peeps" endpoint', function() {
+  it('Should return html page', function() {
+    return chai.request(app)
+    .get('/peeps')
+    .then(function(res) {
+      res.should.have.status(200);
+      res.should.be.html;
+    })
+  });
+});
+
+describe('GET "/settings" endpoint', function() {
+  it('Should return html page', function() {
+    return chai.request(app)
+    .get('/settings')
+    .then(function(res) {
+      res.should.have.status(200);
+      res.should.be.html;
+    })
   });
 });
