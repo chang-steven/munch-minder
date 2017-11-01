@@ -6,8 +6,8 @@ var MOCK_STATUS_UPDATES = {
             "description": "In 'n Out cheeseburger meal",
             "emoji": ":]",
             "thumbUp": true,
-            "created": Date.now(),
-            "lastEdit": 1470016976609
+            "publishedAt": Date.now(),
+            "lastEditAt": 1470016976609
         },
         {
             "id": "22222",
@@ -15,8 +15,8 @@ var MOCK_STATUS_UPDATES = {
             "description": "Milk & Cookies",
             "emoji": ":)",
             "thumbUp": true,
-            "created": Date.now(),
-            "lastEdit": 1470016976609
+            "publishedAt": Date.now(),
+            "lastEditAt": 1470016976609
         },
         {
             "id": "333333",
@@ -24,8 +24,8 @@ var MOCK_STATUS_UPDATES = {
             "description": "Cheese and stale crackers",
             "emoji": ":/",
             "thumbUp": false,
-            "created": Date.now(),
-            "lastEdit": 1470016976609
+            "publishedAt": Date.now(),
+            "lastEditAt": 1470016976609
         },
         {
             "id": "44444",
@@ -33,8 +33,8 @@ var MOCK_STATUS_UPDATES = {
             "description": "Coffee Large",
             "emoji": ":)",
             "thumbUp": true,
-            "created": Date.now(),
-            "lastEdit": 1470016976609
+            "publishedAt": Date.now(),
+            "lastEditAt": 1470016976609
         }
     ]
 };
@@ -49,7 +49,7 @@ function displayMunches(data) {
     console.log(data);
     for (index in data.munches) {
        $('body').append(
-        `<p> ${data.munches[index].created} - ${data.munches[index].type} - ${data.munches[index].description} - ${data.munches[index].thumbUp} - ${data.munches[index].emoji}</p>`);
+        `<p> ${data.munches[index].publishedAt} - ${data.munches[index].type} - ${data.munches[index].description} - ${data.munches[index].thumbUp} - ${data.munches[index].emoji}</p>`);
     }
 }
 

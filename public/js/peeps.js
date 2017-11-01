@@ -1,31 +1,46 @@
 var MOCK_STATUS_UPDATES = {
     "statusUpdates": [
         {
-            "id": "1111111",
-            "text": "Can't believe how much fun I'm having.",
-            "friendId": "aaaaaa",
-            "friendName": "John Doe",
-            "publishedAt": 1470016976609
+          "id": "1111111",
+          "type": "Meal",
+          "description": "In 'n Out cheeseburger meal",
+          "emoji": ":]",
+          "thumbUp": true,
+          "lastEdit": 1470016976609,
+          "peepUserName": "John Doe",
+          "peepEmail": "john@me.com",
+          "publishedAt": 1470016976609
         },
         {
             "id": "2222222",
-            "text": "Have FOMO? Well you SHOULD!",
+            "type": "Meal",
+            "description": "Milk & Cookies",
+            "emoji": ":)",
+            "thumbUp": true,
             "friendId": "bbbbbbb",
-            "friendName": "Jane Doe",
+            "peepUserName": "Jane Doe",
             "publishedAt": 1470012976609
         },
         {
             "id": "333333",
-            "text": "They're giving out immortality and free $$$ where I am.",
+            "type": "Meal",
+            "description": "Cheese and stale crackers",
+            "emoji": ":/",
+            "thumbUp": false,
             "friendId": "cccc",
-            "friendName": "Jim Doe",
+            "peepUserName": "Jim Doe",
+            "peepEmail": "john@me.com",
             "publishedAt": 1470011976609
         },
         {
             "id": "4444444",
-            "text": "humble brag humble brag humble brag",
+            "type": "Meal",
+            "description": "In 'n Out cheeseburger meal",
+            "emoji": ":]",
+            "thumbUp": true,
             "friendId": "ddddd",
-            "friendName": "Jackie Doe",
+            "peepUserName": "Jackie Doe",
+            "peepEmail": "john@me.com",
             "publishedAt": 1470009976609
         }
     ]
@@ -40,7 +55,7 @@ function getRecentStatusUpdates(callbackFn) {
 function displayStatusUpdates(data) {
     for (index in data.statusUpdates) {
        $('body').append(
-        '<p>' + data.statusUpdates[index].text + '</p>');
+        `<p> ${data.statusUpdates[index].publishedAt} - ${data.statusUpdates[index].peepUserName} logged: ${data.statusUpdates[index].description} ${data.statusUpdates[index].emoji}  </p>`);
     }
 }
 
