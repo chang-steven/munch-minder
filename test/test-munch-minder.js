@@ -7,8 +7,8 @@ const {app} = require('../server')
 
 chai.use(chaiHttp);
 
-describe('GET "/" endpoint', function() {
-  it('Should return index.html from public folder', function() {
+describe('Testing GET request of public static pages', function() {
+  it('Should return index.html page', function() {
     return chai.request(app)
     .get('/')
     .then(function(res) {
@@ -16,10 +16,8 @@ describe('GET "/" endpoint', function() {
       res.should.be.html;
     })
   });
-});
 
-describe('GET "/dashboard.html" endpoint', function() {
-  it('Should return html page', function() {
+  it('Should return dashboard.html page', function() {
     return chai.request(app)
     .get('/dashboard.html')
     .then(function(res) {
@@ -27,10 +25,8 @@ describe('GET "/dashboard.html" endpoint', function() {
       res.should.be.html;
     })
   });
-});
 
-describe('GET "/register.html" endpoint', function() {
-  it('Should return html page', function() {
+  it('Should return register.html page', function() {
     return chai.request(app)
     .get('/register.html')
     .then(function(res) {
@@ -38,10 +34,8 @@ describe('GET "/register.html" endpoint', function() {
       res.should.be.html;
     })
   });
-});
 
-describe('GET "/munches.html" endpoint', function() {
-  it('Should return html page', function() {
+  it('Should return munches.html page', function() {
     return chai.request(app)
     .get('/munches.html')
     .then(function(res) {
@@ -49,10 +43,8 @@ describe('GET "/munches.html" endpoint', function() {
       res.should.be.html;
     })
   });
-});
 
-describe('GET "/peeps.html" endpoint', function() {
-  it('Should return html page', function() {
+  it('Should return peeps.html page', function() {
     return chai.request(app)
     .get('/peeps.html')
     .then(function(res) {
@@ -60,10 +52,8 @@ describe('GET "/peeps.html" endpoint', function() {
       res.should.be.html;
     })
   });
-});
 
-describe('GET "/settings" endpoint', function() {
-  it('Should return html page', function() {
+  it('Should return settings.html page', function() {
     return chai.request(app)
     .get('/settings.html')
     .then(function(res) {
