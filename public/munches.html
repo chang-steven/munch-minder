@@ -20,8 +20,8 @@
         <![endif]-->
 
         <!-- Add your site or application content here -->
-        <p>Hello world! This is Munch Minder Demo.</p>
-
+        <h1>Dashboard</h1>
+        <h3>Future protected endpoint</h3>
         <ul>
             <li><a href="dashboard.html">My Dashboard</a></li>
             <li><a href="munches.html">Munches</a></li>
@@ -30,15 +30,26 @@
         </ul>
 
         <form class="post" action="index.html" method="post">
+          Date <input type="date" name="date" value="4"></br>
           Meal<input type="radio" name="type" value="1">
           Munch<input type="radio" name="type" value="2">
           Mug<input type="radio" name="type" value="3">
           </br>
           Description<input type="text" name="description" value="">
-          <input type="radio" name="" value="">
-          <input type="radio" name="" value="">
-        </form>
+          </br>
+          Thumb UP<input type="radio" name="thumb" value="1"><span class="thumbUp">
+              &#x1F44D;
+            </span>
+          Thumb DOWN<input type="radio" name="thumb" value="2"><span class="thumbDown">
+              &#x1F44E;
+            </span></br>
+          Notes<input type="text" name="notes" value=""></br>
+          <input type="submit" name="submit" value="Add Munch">
 
+        </form>
+        <div id="display-munches">
+
+        </div>
 
         <script src="js/vendor/modernizr-3.5.0.min.js"></script>
         <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>

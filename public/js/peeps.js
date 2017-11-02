@@ -1,4 +1,4 @@
-var MOCK_STATUS_UPDATES = {
+const MOCK_STATUS_UPDATES = {
     "statusUpdates": [
         {
           "id": "1111111",
@@ -9,7 +9,8 @@ var MOCK_STATUS_UPDATES = {
           "lastEdit": 1470016976609,
           "peepUserName": "John Doe",
           "peepEmail": "john@me.com",
-          "publishedAt": 1470016976609
+          "date": 1470016976609,
+          "lastEditAt": 1470016976609
         },
         {
             "id": "2222222",
@@ -19,7 +20,9 @@ var MOCK_STATUS_UPDATES = {
             "thumbUp": true,
             "friendId": "bbbbbbb",
             "peepUserName": "Jane Doe",
-            "publishedAt": 1470012976609
+            "peepEmail": "jane@me.com",
+            "date": 1470012976609,
+            "lastEditAt": 1470016976609
         },
         {
             "id": "333333",
@@ -29,8 +32,9 @@ var MOCK_STATUS_UPDATES = {
             "thumbUp": false,
             "friendId": "cccc",
             "peepUserName": "Jim Doe",
-            "peepEmail": "john@me.com",
-            "publishedAt": 1470011976609
+            "peepEmail": "jim@me.com",
+            "date": 1470011976609,
+            "lastEditAt": 1470016976609
         },
         {
             "id": "4444444",
@@ -40,8 +44,9 @@ var MOCK_STATUS_UPDATES = {
             "thumbUp": true,
             "friendId": "ddddd",
             "peepUserName": "Jackie Doe",
-            "peepEmail": "john@me.com",
-            "publishedAt": 1470009976609
+            "peepEmail": "jackie@me.com",
+            "date": 1470009976609,
+            "lastEditAt": 1470016976609
         }
     ]
 };
@@ -53,9 +58,11 @@ function getRecentStatusUpdates(callbackFn) {
 // this function stays the same when we connect
 // to real API later
 function displayStatusUpdates(data) {
+   $('#display-peeps').empty().append(`<h2><a href="peeps.html">My Peeps</a></h2>`);
     for (index in data.statusUpdates) {
-       $('body').append(
-        `<p> ${data.statusUpdates[index].publishedAt} - ${data.statusUpdates[index].peepUserName} logged: ${data.statusUpdates[index].description} ${data.statusUpdates[index].emoji}  </p>`);
+       $('#display-peeps').append(
+        `
+        <p> ${data.statusUpdates[index].date} - ${data.statusUpdates[index].peepUserName} logged: ${data.statusUpdates[index].description} ${data.statusUpdates[index].emoji}  </p>`);
     }
 }
 
@@ -65,6 +72,32 @@ function getAndDisplayStatusUpdates() {
     getRecentStatusUpdates(displayStatusUpdates);
 }
 
+function listenForSearchClick() {
+  $('#js-search-peeps-button').click(event => {
+    event.preventDefault();
+    let query = $('#search-peeps-input').val();
+    console.log(query);
+    searchAndGetPeeps(query);
+  });
+}
+
+function searchAndGetPeeps(query) {
+  alert(`There was a click, we're searching for: ${query}, but this feature doesn't quite work yet, so I'll return some random data`);
+  displaySearchedPeeps(MOCK_STATUS_UPDATES);
+}
+
+function displaySearchedPeeps(data) {
+  $('#display-peeps').empty().append(`<h2>Peeps Search Results</h2>`);
+  for (index in data.statusUpdates) {
+    $('#display-peeps').append(
+      `<p>${data.statusUpdates[index].peepUserName} - ${data.statusUpdates[index].peepEmail}</p>
+      `
+    )
+  }
+}
+
+
 $(function() {
     getAndDisplayStatusUpdates();
+    listenForSearchClick();
 })

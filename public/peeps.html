@@ -20,16 +20,25 @@
         <![endif]-->
 
         <!-- Add your site or application content here -->
-        <p>Hello world! This is Munch Minder Demo.</p>
-
+        <h1>My Peeps</h1>
+        <h3>Future protected endpoint</h3>
         <ul>
             <li><a href="dashboard.html">My Dashboard</a></li>
             <li><a href="munches.html">Munches</a></li>
             <li><a href="peeps.html">Peeps</a></li>
             <li><a href="settings.html">Settings</a></li>
         </ul>
+        <p>Currently under construction, will be able to create groups and families in the future, and add/delete friends</p>
 
-      
+        <div class="search-peeps">
+          Search peeps by email/username: <input id="search-peeps-input" type="text" name="search-peeps" value="" placeholder="e.g. john@somewhere.com, john316"></br>
+          <button id="js-search-peeps-button" type="button" name="Search">Search</button>
+
+        </div>
+
+        <div id="display-peeps">
+
+        </div>
 
         <script src="js/vendor/modernizr-3.5.0.min.js"></script>
         <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>

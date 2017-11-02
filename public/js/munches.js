@@ -1,4 +1,4 @@
-var MOCK_STATUS_UPDATES = {
+const MOCK_MUNCHES = {
     "munches": [
         {
             "id": "1111111",
@@ -6,7 +6,7 @@ var MOCK_STATUS_UPDATES = {
             "description": "In 'n Out cheeseburger meal",
             "emoji": ":]",
             "thumbUp": true,
-            "publishedAt": Date.now(),
+            "date": Date.now(),
             "lastEditAt": 1470016976609
         },
         {
@@ -15,7 +15,7 @@ var MOCK_STATUS_UPDATES = {
             "description": "Milk & Cookies",
             "emoji": ":)",
             "thumbUp": true,
-            "publishedAt": Date.now(),
+            "date": Date.now(),
             "lastEditAt": 1470016976609
         },
         {
@@ -24,7 +24,7 @@ var MOCK_STATUS_UPDATES = {
             "description": "Cheese and stale crackers",
             "emoji": ":/",
             "thumbUp": false,
-            "publishedAt": Date.now(),
+            "date": Date.now(),
             "lastEditAt": 1470016976609
         },
         {
@@ -33,23 +33,23 @@ var MOCK_STATUS_UPDATES = {
             "description": "Coffee Large",
             "emoji": ":)",
             "thumbUp": true,
-            "publishedAt": Date.now(),
+            "date": Date.now(),
             "lastEditAt": 1470016976609
         }
     ]
 };
 
 function getMunches(callbackFn) {
-    setTimeout(function(){ callbackFn(MOCK_STATUS_UPDATES)}, 100);
+    setTimeout(function(){ callbackFn(MOCK_MUNCHES)}, 100);
 }
 
 // this function stays the same when we connect
 // to real API later
 function displayMunches(data) {
-    console.log(data);
+    $('#display-munches').empty().append(`<h2><a href="munches.html">My Munches</a></h2>`);
     for (index in data.munches) {
-       $('body').append(
-        `<p> ${data.munches[index].publishedAt} - ${data.munches[index].type} - ${data.munches[index].description} - ${data.munches[index].thumbUp} - ${data.munches[index].emoji}</p>`);
+       $('#display-munches').append(
+        `<p> ${data.munches[index].date} - ${data.munches[index].type} - ${data.munches[index].description} - ${data.munches[index].thumbUp} - ${data.munches[index].emoji}</p>`);
     }
 }
 
