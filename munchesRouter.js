@@ -9,6 +9,7 @@ munchesRouter.use(bodyParser.urlencoded({extended: false}));
 
 const {Munch} = require('./models/munch');
 
+//GET request to return all munches from /api/munches
 munchesRouter.get('/', (req, res) => {
   return Munch.find()
   .then(result => {
@@ -21,6 +22,7 @@ munchesRouter.get('/', (req, res) => {
   })
 });
 
+//GET request for a specified munch based on ID
 munchesRouter.get('/:id', (req, res) => {
   Munch.findById(req.params.id)
   .then((result) => {
@@ -33,7 +35,7 @@ munchesRouter.get('/:id', (req, res) => {
   })
 })
 
-
+//POST request to /api/user for creating new munch
 munchesRouter.post('/', jsonParser, (req, res) => {
   const requiredKeys = ["date", "type", "description"];
   requiredKeys.forEach( key => {
@@ -56,6 +58,39 @@ munchesRouter.post('/', jsonParser, (req, res) => {
     console.error(err);
     res.status(500).json({error: 'Something went wrong'});
   })
+});
+
+//PUT request to update a specified munch based on id
+munchesRouter.put('/:id', jsonParser, (req, res) => {
+  let updatedMunch = {};
+  const updateFields = ['date', 'type', 'description'];
+  updateFields.forEach( key => {
+    if (key in req.body) {
+      updatedMunch[key] = req.body[key];
+    };
+  });
+  Munch.findByIdAndUpdate(req.params.id, {$set: updatedMunch})
+  .then(result => {
+    const message = 'Succesfully edited munch data';
+    res.status(200).json(result);
+  })
+  .catch(err => {
+    console.error(err);
+    res.status(500).json({error: 'Something went wrong'});
+  });
+});
+
+//Delete request to delete a specified munch
+munchesRouter.delete('/:id', (req, res) => {
+  Munch.findByIdAndRemove(req.params.id)
+  .then(() => {
+    console.log(`Deleted user with id: ${req.params.id}`);
+    res.status(204).json({message: 'success'});
+  })
+  .catch(err => {
+    console.error(err);
+    res.status(500).json({error: 'Something went wrong'});
+  });
 });
 
 
