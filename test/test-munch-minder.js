@@ -1,8 +1,8 @@
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 const should = require('chai').should();
-// const mongoose = require('mongoose');
 
+const {Munch} = require('../models/munch')
 const {app} = require('../server')
 
 chai.use(chaiHttp);
