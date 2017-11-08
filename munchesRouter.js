@@ -11,7 +11,7 @@ const {Munch} = require('./models/munch');
 
 //GET request to return all munches from /api/munches
 munchesRouter.get('/', (req, res) => {
-  return Munch.find()
+   Munch.find()
   .then(result => {
     console.log('Found a munch');
     res.json(result)

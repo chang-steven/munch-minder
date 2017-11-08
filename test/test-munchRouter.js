@@ -7,7 +7,7 @@ const {app} = require('../server')
 
 chai.use(chaiHttp);
 
-describe('POST request to /api/user', function() {
+describe('POST request to /api/munches', function() {
   it('Should create a new munch in the database', function() {
     const newMunch = {
       date: "10/25/17",
@@ -65,7 +65,7 @@ describe('PUT request to /api/munches/:id', function() {
   };
     return Munch.findOne()
     .then(result => {
-      testMunch.userId = result._id;
+      testMunch.Id = result._id;
       return chai.request(app)
         .put(`/api/munches/${result._id}`)
         .send(testMunch)
@@ -73,7 +73,7 @@ describe('PUT request to /api/munches/:id', function() {
     .then(res => {
       res.should.have.status(200);
       res.should.be.an('object');
-      return Munch.findById(testMunch.userId);
+      return Munch.findById(testMunch.Id);
     })
     .then(munch => {
       console.log(munch);
