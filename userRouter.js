@@ -27,13 +27,12 @@ userRouter.post('/', jsonParser, (req, res) => {
       return res.send(message).status(400);
     }
   });
-  const newUser = new User({
+  User.create({
     userName: req.body.username,
     userEmail: req.body.email,
     password: req.body.password,
     joinDate: Date.now()
-  });
-  newUser.save()
+  })
   .then(() => {
     const message = `Successfully created user ${req.body.username}`;
     return res.send(message).status(200)
@@ -101,10 +100,14 @@ userRouter.post('/authenticate', jsonParser, (req, res) => {
     // console.log('Made it here');
     .then(() => {
       // console.log(user, config.JWT_SECRET, config.JWT_EXPIRY);
-      const token = jwt.sign({userId: foundUser._id}, config.JWT_SECRET, {expiresIn: config.JWT_EXPIRY, algorithm: 'RS256'});
+      const token = jwt.sign({userId: foundUser._id}, config.JWT_SECRET, {expiresIn: config.JWT_EXPIRY});
       // console.log(token);
       res.json({success: true, token: 'Bearer ' + token});
       console.log('Signed token');
+    })
+    .catch(err => {
+      console.log(err);
+      res.send(err);
     })
   })
   .catch(err => {
