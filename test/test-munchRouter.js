@@ -10,7 +10,6 @@ chai.use(chaiHttp);
 describe('POST request to /api/munches', function() {
   it('Should create a new munch in the database', function() {
     const newMunch = {
-      date: "10/25/17",
       type: "Munch",
       description: "In 'n Out cheeseburger meal'"
     };
@@ -59,13 +58,13 @@ describe('GET request to /api/munches', function() {
 describe('PUT request to /api/munches/:id', function() {
   it('Should update a specified munch based on ID', function() {
     let testMunch = {
-      date: "10/25/17",
       type: "Meal",
       description: "McDonald's Happy Meal"
   };
     return Munch.findOne()
     .then(result => {
-      testMunch.Id = result._id;
+      console.log(result);
+      testMunch._id = result._id;
       return chai.request(app)
         .put(`/api/munches/${result._id}`)
         .send(testMunch)
@@ -73,7 +72,7 @@ describe('PUT request to /api/munches/:id', function() {
     .then(res => {
       res.should.have.status(200);
       res.should.be.an('object');
-      return Munch.findById(testMunch.Id);
+      return Munch.findById(testMunch._id);
     })
     .then(munch => {
       console.log(munch);

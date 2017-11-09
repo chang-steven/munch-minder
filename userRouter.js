@@ -1,11 +1,19 @@
 const express = require('express');
 const userRouter = express.Router();
 const mongoose = require('mongoose');
+const passport = require('passport');
+const jwt = require('jsonwebtoken');
+const config = require('./config/main');
+
 
 const bodyParser = require('body-parser');
 const jsonParser = bodyParser.json();
 userRouter.use(bodyParser.urlencoded({extended: false}));
 
+userRouter.use(passport.initialize());
+require('./config/passport')(passport);
+
+mongoose.Promise = global.Promise;
 const {User} = require('./models/user');
 
 
@@ -19,13 +27,13 @@ userRouter.post('/', jsonParser, (req, res) => {
       return res.send(message).status(400);
     }
   });
-  User
-  .create({
+  const newUser = new User({
     userName: req.body.username,
     userEmail: req.body.email,
     password: req.body.password,
     joinDate: Date.now()
-  })
+  });
+  newUser.save()
   .then(() => {
     const message = `Successfully created user ${req.body.username}`;
     return res.send(message).status(200)
@@ -79,6 +87,31 @@ userRouter.delete('/:id', (req, res) => {
     console.error(err);
     res.status(500).json({error: 'Something went wrong'});
   });
-})
+});
+
+userRouter.post('/authenticate', jsonParser, (req, res) => {
+  // let user = {};
+  User.findOne({userName: req.body.username})
+  .then(foundUser => {
+    foundUser.validatePassword(req.body.password)
+    // console.log(foundUser);
+    // console.log('Validated password');
+    // // user = foundUser;
+    // // console.log(user);
+    // console.log('Made it here');
+    .then(() => {
+      // console.log(user, config.JWT_SECRET, config.JWT_EXPIRY);
+      const token = jwt.sign({userId: foundUser._id}, config.JWT_SECRET, {expiresIn: config.JWT_EXPIRY, algorithm: 'RS256'});
+      // console.log(token);
+      res.json({success: true, token: 'Bearer ' + token});
+      console.log('Signed token');
+    })
+  })
+  .catch(err => {
+    res.status(500).send({success:false, message: 'Authentication failed'});
+    console.error('oops');
+  });
+});
+
 
 module.exports = {userRouter};

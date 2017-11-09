@@ -1,7 +1,8 @@
 const mongoose = require('mongoose');
 
 const munchSchema = mongoose.Schema({
-  // userId: {type: String, required: true},
+  // _id: {type: String},
+  userId: {type: mongoose.Schema.Types.ObjectId, ref: "User"},
   date: {type: Date, default: Date.now, required: true},
   type: {type: String, required: true},
   description: {type: String, required: true},
@@ -10,7 +11,8 @@ const munchSchema = mongoose.Schema({
     thumbsUp: {type: Number},
     thumbsDown: {type: Number}
   },
-  notes: {type: String}
+  notes: {type: String},
+  image: {type: String}
 });
 
 const Munch = mongoose.model('Munch', munchSchema);
