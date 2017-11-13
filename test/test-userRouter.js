@@ -46,12 +46,12 @@ describe('User Router to /api/user', function() {
     });
   });
 
-  describe('GET request to /api/user/findbyemail', function() {
+  describe('GET request to /api/findbyemail', function() {
     it('Should return a user by email query parameter', function() {
       return User.findOne()
       .then(result => {
         return chai.request(app)
-        .get(`/api/user/findbyemail?userEmail=${result.userEmail}`);
+        .get(`/api/findbyemail?userEmail=${result.userEmail}`);
       })
       .then(res => {
         res.should.be.json;
