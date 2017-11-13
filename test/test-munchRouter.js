@@ -1,104 +1,130 @@
 const chai = require('chai');
 const chaiHttp = require('chai-http');
+const faker = require('faker');
 const should = require('chai').should();
+const mongoose = require('mongoose');
 
-const {Munch} = require('../models/munch')
-const {app} = require('../server')
+const {User} = require('../models/user');
+const {Munch} = require('../models/munch');
+const {app, runServer, closeServer} = require('../server');
+const {TEST_DATABASE_URL} = require('../config/main');
+const {seedMunchMinderDatabase, generateUserData, generateMunchData, teardownDatabase} = require('./test-functions');
 
 chai.use(chaiHttp);
 
-describe('POST request to /api/munches', function() {
-  it('Should create a new munch in the database', function() {
-    const newMunch = {
-      type: "Munch",
-      description: "In 'n Out cheeseburger meal'"
-    };
-    return chai.request(app)
-    .post('/api/munches')
-    .send(newMunch)
-    .then(function(res) {
-      res.should.have.status(200);
-    });
-  });
-});
 
-describe('GET request to /api/munches', function() {
-  it('Should return all munches from database', function() {
-    return chai.request(app)
-    .get('/api/munches')
-    .then(function(res) {
-      res.should.have.status(200);
-      res.should.be.json;
-      res.body.should.be.an('array');
-    });
-  });
-  it('Should return munch by ID', function() {
-    Munch.findOne()
-    .then(search => {
-      const searchId = search._id;
-      return chai.request(app)
-      .get(`/api/munches/${search._id}`)
-    })
-    .then(res => {
-      res.should.have.status(200);
-      res.should.be.json;
-    });
-  });
-  it('Should throw an error inputting incorrect ID', function() {
-    return chai.request(app)
-    .get('/api/munches/xxx')
-    .catch(error => {
-      error.should.have.status(500);
-      // error.should.be.an('object');
-      // res.body.should.be.an('object');
-    })
-  });
-});
+describe('Munches Router to /api/munches', function() {
 
-describe('PUT request to /api/munches/:id', function() {
-  it('Should update a specified munch based on ID', function() {
-    let testMunch = {
-      type: "Meal",
-      description: "McDonald's Happy Meal"
-  };
-    return Munch.findOne()
-    .then(result => {
-      console.log(result);
-      testMunch._id = result._id;
+  before(function() {
+    return runServer(TEST_DATABASE_URL);
+  });
+
+  beforeEach(function() {
+    return seedMunchMinderDatabase();
+  });
+
+  afterEach(function() {
+    return teardownDatabase();
+  });
+
+  after(function() {
+    return closeServer();
+  });
+
+
+  describe('POST request to /api/munches', function() {
+    it('Should create a new munch in the database', function() {
+      const newMunch = {
+        type: "Munch",
+        description: "In 'n Out cheeseburger meal",
+        date: new Date()
+      };
       return chai.request(app)
+      .post('/api/munches')
+      .send(newMunch)
+      .then(function(res) {
+        res.should.have.status(200);
+      });
+    });
+  });
+
+  describe('GET request to /api/munches', function() {
+    it('Should return all munches from database', function() {
+      return chai.request(app)
+      .get('/api/munches')
+      .then(function(res) {
+        res.should.have.status(200);
+        res.should.be.json;
+        res.body.should.be.an('array');
+      });
+    });
+    it('Should return munch by ID', function() {
+      Munch.findOne()
+      .then(search => {
+        const searchId = search._id;
+        return chai.request(app)
+        .get(`/api/munches/${search._id}`)
+      })
+      .then(res => {
+        res.should.have.status(200);
+        res.should.be.json;
+      });
+    });
+    it('Should throw an error inputting incorrect ID', function() {
+      return chai.request(app)
+      .get('/api/munches/xxx')
+      .catch(error => {
+        error.should.have.status(500);
+        // error.should.be.an('object');
+        // res.body.should.be.an('object');
+      })
+    });
+  });
+
+  describe('PUT request to /api/munches/:id', function() {
+    it('Should update a specified munch based on ID', function() {
+      let testMunch = {
+        type: "Meal",
+        description: "McDonald's Happy Meal"
+      };
+      return Munch.findOne()
+      .then(result => {
+        console.log(result);
+        testMunch._id = result._id;
+        return chai.request(app)
         .put(`/api/munches/${result._id}`)
         .send(testMunch)
       })
-    .then(res => {
-      res.should.have.status(200);
-      res.should.be.an('object');
-      return Munch.findById(testMunch._id);
-    })
-    .then(munch => {
-      console.log(munch);
-      // munch.date.should.equal(testMunch.date);
-      munch.type.should.equal(testMunch.type);
-      munch.description.should.equal(testMunch.description);
+      .then(res => {
+        res.should.have.status(200);
+        res.should.be.an('object');
+        return Munch.findById(testMunch._id);
+      })
+      .then(munch => {
+        // munch.date.should.equal(testMunch.date);
+        munch.type.should.equal(testMunch.type);
+        munch.description.should.equal(testMunch.description);
+      });
     });
   });
-});
 
-describe('DELETE request to /api/munches/:id', function() {
-  it('Should delete a specified munch based on ID', function() {
-    let deletedMunch;
-    Munch.findOne()
-    .then(result => {
-      deletedMunch = result._id
-      return chai.request(app)
-      .delete(`/api/munches/${result._id}`)
-    })
-    .then(res => {
-      res.should.have.status(204);
-      res.should.be.json;
-      Munch.findById(deletedMunch)
-    })
-    .then(munch => {
-      munch.should.not.exist;
+  describe('DELETE request to /api/munches/:id', function() {
+    it('Should delete a specified munch based on ID', function() {
+      let deletedMunch;
+      Munch.findOne()
+      .then(result => {
+        deletedMunch = result._id;
+        return chai.request(app)
+        .delete(`/api/munches/${result._id}`)
+      })
+      .then(res => {
+        res.should.have.status(204);
+        res.should.be.json;
+        Munch.findById(deletedMunch)
+      })
+      .then(munch => {
+        munch.should.not.exist;
+      });
     });
   });
 });

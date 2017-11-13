@@ -1,18 +1,17 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
+const uniqueValidator = require('mongoose-unique-validator');
+
 
 const userSchema = mongoose.Schema({
-  // _id: mongoose.Schema.Types.ObjectId,
-  // _id: {type: String},
   userName: {type: String, required: true, unique: true},
   userEmail: {type: String, lowercase: true, unique: true, require: true},
   password: {type: String, required: true},
   joinDate: {type: Date, default: Date.now, required: true},
   // munches: [{type: mongoose.Schema.Types.ObjectId, ref: 'Munch'}],
 // Friends will be an array of objects listing friends
-  // friends: [{
-  //   friendId: {type: mongoose.Schema.Types.ObjectId, ref: 'User'}
-  //   }]
+  friends: [{type: mongoose.Schema.Types.ObjectId, ref: 'User'}],
+  munches: [{type: mongoose.Schema.Types.ObjectId, ref: 'Munch'}]
 });
 
 //Save the user's hashed password
@@ -41,6 +40,8 @@ userSchema.methods.validatePassword = function(password) {
 userSchema.statics.hashPassword = function(password) {
     return bcrypt.hash(password, 10);
 };
+
+userSchema.plugin(uniqueValidator);
 
 const User = mongoose.model('User', userSchema);
 

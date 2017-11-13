@@ -1,12 +1,21 @@
 const express = require('express');
-const munchesRouter = express.Router();
 const mongoose = require('mongoose');
-
 const bodyParser = require('body-parser');
 const jsonParser = bodyParser.json();
+const passport = require('passport');
+const jwt = require('jsonwebtoken');
+
+const {User} = require('./models/user');
+const {Munch} = require('./models/munch');
+const munchesRouter = express.Router();
+
+munchesRouter.use(passport.initialize());
 munchesRouter.use(bodyParser.urlencoded({extended: false}));
 
-const {Munch} = require('./models/munch');
+munchesRouter.get('/test', passport.authenticate('jwt', { session: false }), (req, res) => {
+  res.send(`It worked!  User ID authenticated.  User id is ${req.user._id}`);
+});
+
 
 //GET request to return all munches from /api/munches
 munchesRouter.get('/', (req, res) => {
@@ -33,13 +42,6 @@ munchesRouter.get('/:id', (req, res) => {
     res.status(500).json({error: 'Something went wrong'});
   })
 })
-
-//GET request for all meals for specified User
-// userRouter.get('/:id', (req, res) => {
-//   User.findById(req.params.id)
-//   .populate('')
-// })
-
 
 //POST request to /api/user for creating new munch
 munchesRouter.post('/', jsonParser, (req, res) => {
@@ -68,8 +70,6 @@ munchesRouter.post('/', jsonParser, (req, res) => {
 
 //PUT request to update a specified munch based on id
 munchesRouter.put('/:id', jsonParser, (req, res) => {
-  console.log('Put request made');
-  console.log(req.body);
   let updatedMunch = {};
   const updateFields = ['date', 'type', 'description'];
   updateFields.forEach( key => {
@@ -77,12 +77,8 @@ munchesRouter.put('/:id', jsonParser, (req, res) => {
       updatedMunch[key] = req.body[key];
     };
   });
-  console.log('Now finding by id and update');
-  console.log(updatedMunch);
-  console.log(req.params.id);
   Munch.findByIdAndUpdate(req.params.id, {$set: updatedMunch})
   .then(result => {
-    console.log(result);
     const message = 'Succesfully edited munch data';
     res.status(200).json(result);
   })

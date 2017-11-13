@@ -1,8 +1,7 @@
 const mongoose = require('mongoose');
 
 const munchSchema = mongoose.Schema({
-  // _id: {type: String},
-  userId: {type: mongoose.Schema.Types.ObjectId, ref: "User"},
+  author: {type: mongoose.Schema.Types.ObjectId, ref: "User"},
   date: {type: Date, default: Date.now, required: true},
   type: {type: String, required: true},
   description: {type: String, required: true},

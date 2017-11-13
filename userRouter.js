@@ -1,9 +1,9 @@
 const express = require('express');
-const userRouter = express.Router();
 const mongoose = require('mongoose');
 const passport = require('passport');
 const jwt = require('jsonwebtoken');
 const config = require('./config/main');
+const userRouter = express.Router();
 
 
 const bodyParser = require('body-parser');
@@ -15,6 +15,8 @@ require('./config/passport')(passport);
 
 mongoose.Promise = global.Promise;
 const {User} = require('./models/user');
+const {Munch} = require('./models/munch');
+
 
 
 //POST request for new registration of a new user to /api/user
@@ -46,13 +48,41 @@ userRouter.post('/', jsonParser, (req, res) => {
 //GET request if client forgot username or password, can find by email query
 userRouter.get('/findbyemail', (req, res) => {
   User.findOne({userEmail: `${req.query.email}`})
-  .then((result) => {
+  .then(result => {
     res.json(result);
   })
   .catch(err => {
     console.error(err);
     res.status(500).json({error: 'Something went wrong'});
   });
+});
+
+userRouter.get('/:id', (req, res) => {
+  User.findById(req.params.id)
+  .then(result => {
+    res.json(result);
+  })
+  .catch(err => {
+    console.error(err);
+    res.status(500).json({error: 'Something went wrong'});
+  });
+})
+
+// GET request for all meals for specified User
+userRouter.get('/:id', (req, res) => {
+  User.findById(req.params.id)
+  .aggregate([{
+    $lookup: {
+        from: 'Munches',
+        localField: '_id',
+        foreignField: 'userId',
+        as: 'munches'
+      }
+    }])
+  .then((result) => {
+    console.log(result);
+    res.json(result);
+  })
 });
 
 //PUT Request to update user data or user settings
@@ -89,24 +119,15 @@ userRouter.delete('/:id', (req, res) => {
 });
 
 userRouter.post('/authenticate', jsonParser, (req, res) => {
-  // let user = {};
   User.findOne({userName: req.body.username})
   .then(foundUser => {
     foundUser.validatePassword(req.body.password)
-    // console.log(foundUser);
-    // console.log('Validated password');
-    // // user = foundUser;
-    // // console.log(user);
-    // console.log('Made it here');
     .then(() => {
-      // console.log(user, config.JWT_SECRET, config.JWT_EXPIRY);
       const token = jwt.sign({userId: foundUser._id}, config.JWT_SECRET, {expiresIn: config.JWT_EXPIRY});
-      // console.log(token);
       res.json({success: true, token: 'Bearer ' + token});
-      console.log('Signed token');
     })
     .catch(err => {
-      console.log(err);
+      console.error(err);
       res.send(err);
     })
   })
@@ -115,6 +136,18 @@ userRouter.post('/authenticate', jsonParser, (req, res) => {
     console.error('oops');
   });
 });
+
+// userRouter.get('/test/', passport.authenticate('jwt', { session: false }), (req, res) => {
+//   res.send(`It worked!  User ID authenticated.  User id is ${req.user._id}`);
+// });
+//
+// userRouter.get('/:id',passport.authenticate('jwt', { session: false }), (req, res) => {
+//     User.findById(req.params.id)
+//     .populate('friends', 'userName')
+//     .then(result => {
+//       res.json(result)
+//     })
+// })
 
 
 module.exports = {userRouter};

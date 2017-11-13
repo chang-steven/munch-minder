@@ -2,63 +2,76 @@ const chai = require('chai');
 const chaiHttp = require('chai-http');
 const should = require('chai').should();
 
-const {Munch} = require('../models/munch')
-const {app} = require('../server')
+const {Munch} = require('../models/munch');
+const {app, runServer, closeServer} = require('../server');
+const {TEST_DATABASE_URL} = require('../config/main');
 
 chai.use(chaiHttp);
 
-describe('Testing GET request of public static pages', function() {
-  it('Should return index.html page', function() {
-    return chai.request(app)
-    .get('/')
-    .then(function(res) {
-      res.should.have.status(200);
-      res.should.be.html;
-    })
+describe('Munch Minder html pages', function() {
+
+  before(function() {
+    return runServer(TEST_DATABASE_URL);
   });
 
-  it('Should return dashboard.html page', function() {
-    return chai.request(app)
-    .get('/dashboard.html')
-    .then(function(res) {
-      res.should.have.status(200);
-      res.should.be.html;
-    })
+  after(function() {
+    return closeServer();
   });
 
-  it('Should return register.html page', function() {
-    return chai.request(app)
-    .get('/register.html')
-    .then(function(res) {
-      res.should.have.status(200);
-      res.should.be.html;
-    })
-  });
+  describe('Testing GET request of public static pages', function() {
 
-  it('Should return munches.html page', function() {
-    return chai.request(app)
-    .get('/munches.html')
-    .then(function(res) {
-      res.should.have.status(200);
-      res.should.be.html;
-    })
-  });
+    it('Should return index.html page', function() {
+      return chai.request(app)
+      .get('/')
+      .then(function(res) {
+        res.should.have.status(200);
+        res.should.be.html;
+      })
+    });
 
-  it('Should return peeps.html page', function() {
-    return chai.request(app)
-    .get('/peeps.html')
-    .then(function(res) {
-      res.should.have.status(200);
-      res.should.be.html;
-    })
-  });
+    it('Should return dashboard.html page', function() {
+      return chai.request(app)
+      .get('/dashboard.html')
+      .then(function(res) {
+        res.should.have.status(200);
+        res.should.be.html;
+      })
+    });
 
-  it('Should return settings.html page', function() {
-    return chai.request(app)
-    .get('/settings.html')
-    .then(function(res) {
-      res.should.have.status(200);
-      res.should.be.html;
-    })
+    it('Should return register.html page', function() {
+      return chai.request(app)
+      .get('/register.html')
+      .then(function(res) {
+        res.should.have.status(200);
+        res.should.be.html;
+      })
+    });
+
+    it('Should return munches.html page', function() {
+      return chai.request(app)
+      .get('/munches.html')
+      .then(function(res) {
+        res.should.have.status(200);
+        res.should.be.html;
+      })
+    });
+
+    it('Should return peeps.html page', function() {
+      return chai.request(app)
+      .get('/peeps.html')
+      .then(function(res) {
+        res.should.have.status(200);
+        res.should.be.html;
+      })
+    });
+
+    it('Should return settings.html page', function() {
+      return chai.request(app)
+      .get('/settings.html')
+      .then(function(res) {
+        res.should.have.status(200);
+        res.should.be.html;
+      })
+    });
   });
 });
