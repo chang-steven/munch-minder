@@ -9,7 +9,7 @@ const MOCK_STATUS_UPDATES = {
           "lastEdit": 1470016976609,
           "peepUserName": "John Doe",
           "peepEmail": "john@me.com",
-          "date": 1470016976609,
+          "date": new Date(),
           "lastEditAt": 1470016976609
         },
         {
@@ -21,7 +21,7 @@ const MOCK_STATUS_UPDATES = {
             "friendId": "bbbbbbb",
             "peepUserName": "Jane Doe",
             "peepEmail": "jane@me.com",
-            "date": 1470012976609,
+            "date": new Date(),
             "lastEditAt": 1470016976609
         },
         {
@@ -33,7 +33,7 @@ const MOCK_STATUS_UPDATES = {
             "friendId": "cccc",
             "peepUserName": "Jim Doe",
             "peepEmail": "jim@me.com",
-            "date": 1470011976609,
+            "date": new Date(),
             "lastEditAt": 1470016976609
         },
         {
@@ -45,7 +45,7 @@ const MOCK_STATUS_UPDATES = {
             "friendId": "ddddd",
             "peepUserName": "Jackie Doe",
             "peepEmail": "jackie@me.com",
-            "date": 1470009976609,
+            "date": new Date(),
             "lastEditAt": 1470016976609
         }
     ]

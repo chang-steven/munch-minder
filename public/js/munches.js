@@ -6,7 +6,7 @@ const MOCK_MUNCHES = {
             "description": "In 'n Out cheeseburger meal",
             "emoji": ":]",
             "thumbUp": true,
-            "date": Date.now(),
+            "date": new Date(),
             "lastEditAt": 1470016976609
         },
         {
@@ -15,7 +15,7 @@ const MOCK_MUNCHES = {
             "description": "Milk & Cookies",
             "emoji": ":)",
             "thumbUp": true,
-            "date": Date.now(),
+            "date": new Date(),
             "lastEditAt": 1470016976609
         },
         {
@@ -24,7 +24,7 @@ const MOCK_MUNCHES = {
             "description": "Cheese and stale crackers",
             "emoji": ":/",
             "thumbUp": false,
-            "date": Date.now(),
+            "date": new Date(),
             "lastEditAt": 1470016976609
         },
         {
@@ -33,7 +33,7 @@ const MOCK_MUNCHES = {
             "description": "Coffee Large",
             "emoji": ":)",
             "thumbUp": true,
-            "date": Date.now(),
+            "date": new Date(),
             "lastEditAt": 1470016976609
         }
     ]

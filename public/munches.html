@@ -13,6 +13,7 @@
 
         <link rel="stylesheet" href="css/normalize.css">
         <link rel="stylesheet" href="css/main.css">
+        <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
     </head>
     <body>
         <!--[if lte IE 9]>
@@ -20,15 +21,21 @@
         <![endif]-->
 
         <!-- Add your site or application content here -->
-        <h1>Dashboard</h1>
-        <h3>Future protected endpoint</h3>
-        <ul>
+        <header>
+
+
+        <h1>Munch Minder</h1>
+
+        <ul class="nav-links">
             <li><a href="dashboard.html">My Dashboard</a></li>
             <li><a href="munches.html">Munches</a></li>
             <li><a href="peeps.html">Peeps</a></li>
             <li><a href="settings.html">Settings</a></li>
         </ul>
-
+        </header>
+        <main>
+          <h2>Munches</h2>
+            <h3>Future protected endpoint</h3>
         <form class="post" action="index.html" method="post">
           Date <input type="date" name="date" value="4"></br>
           Meal<input type="radio" name="type" value="1">
@@ -50,6 +57,7 @@
         <div id="display-munches">
 
         </div>
+        </main>
 
         <script src="js/vendor/modernizr-3.5.0.min.js"></script>
         <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
