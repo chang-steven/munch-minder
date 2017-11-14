@@ -5,6 +5,7 @@ const mongoose = require('mongoose');
 
 const {userRouter} = require('./routers/userRouter');
 const {munchesRouter} = require('./routers/munchesRouter');
+const {peepsRouter} = require('./routers/peepsRouter');
 
 const {DATABASE_URL, PORT} = require('./config/main');
 const app = express();
@@ -16,12 +17,12 @@ app.use(express.static('public'));
 
 app.use('/api', userRouter);
 app.use('/api/munches', munchesRouter);
+app.use('/api/', peepsRouter); // routes for /api/friends & /api/groups
 
 
 let server;
 
 function runServer(databaseUrl=DATABASE_URL, port=PORT) {
-  console.log(DATABASE_URL);
   return new Promise((resolve, reject) => {
     mongoose.connect(databaseUrl, {useMongoClient: true}, err => {
       if (err) {
