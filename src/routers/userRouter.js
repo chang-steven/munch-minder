@@ -24,8 +24,8 @@ userRouter.post('/user', jsonParser, (req, res) => {
   const requiredKeys = ["username", "email", "password"];
   requiredKeys.forEach( key => {
     if(!(key in req.body)) {
-      const message = `Please fill out all required fields.  Missing ${key} in request body, please try again.`;
-      return res.send(message).status(400);
+      const message = {message:`Please fill out all required fields.  Missing ${key} in request body, please try again.`};
+      return res.status(400).json(message);
     }
   });
   User.create({
@@ -35,12 +35,12 @@ userRouter.post('/user', jsonParser, (req, res) => {
     joinDate: Date.now()
   })
   .then(() => {
-    const message = `Successfully created user ${req.body.username}`;
-    return res.send(message).status(200)
+    const message = {message:`Successfully created user ${req.body.username}`};
+    return res.status(200).json(message)
   })
   .catch(err => {
     console.error(err);
-    res.status(500).json({error: 'Something went wrong'});
+    res.status(500).json({message: 'Sorry, something went wrong, please try again...'});
   })
 });
 
@@ -60,7 +60,7 @@ userRouter.put('/user/:id', jsonParser, passport.authenticate('jwt', { session: 
   })
   .catch(err => {
     console.error(err);
-    res.status(500).json({error: 'Something went wrong'});
+    res.status(500).json({message: 'Something went wrong'});
   });
 });
 
@@ -84,15 +84,15 @@ userRouter.post('/login', jsonParser, (req, res) => {
     foundUser.validatePassword(req.body.password)
     .then(() => {
       const token = jwt.sign({userId: foundUser._id}, config.JWT_SECRET, {expiresIn: config.JWT_EXPIRY});
-      res.json({success: true, token: 'Bearer ' + token});
+      res.json({message:'Succesfully logged in', success: true, token: 'Bearer ' + token});
     })
     .catch(err => {
       console.error(err);
-      res.send(err);
+      res.json(err);
     })
   })
   .catch(err => {
-    res.status(500).send({success:false, message: 'Authentication failed'});
+    res.status(500).json({success:false, message: 'Authentication failed'});
     console.error('oops');
   });
 });
@@ -128,7 +128,7 @@ userRouter.post('/login', jsonParser, (req, res) => {
 
 //Test Protected endpoint
 userRouter.get('/test', passport.authenticate('jwt', { session: false }), (req, res) => {
-  res.send(`It worked!  User ID authenticated.  User id is ${req.user._id}`);
+  res.json({message:`It worked!  User ID authenticated.  User id is ${req.user._id}`});
 });
 
 

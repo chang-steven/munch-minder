@@ -16,11 +16,6 @@
         <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
     </head>
     <body>
-        <!--[if lte IE 9]>
-            <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience and security.</p>
-        <![endif]-->
-
-        <!-- Add your site or application content here -->
         <header>
           <h1>Munch Minder</h1>
           <ul class="nav-links">
@@ -37,8 +32,8 @@
 
         <form id="login" action="login.html" method="post">
           <h2>Log-in</h2>
-          Username <input type="text" name="username" value="">
-          Password <input type="text" name="password" value="">
+          Username <input id="login-username" type="text" name="username" value="">
+          Password <input id="login-password" type="text" name="password" value="">
           <input type="submit" name="submit" value="Login">
           <p>New User? <a href="register.html">Register Here</a></p>
         </form>

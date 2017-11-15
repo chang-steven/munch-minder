@@ -103,11 +103,11 @@ textarea {
 body {
   font-family: 'Roboto', sans-serif;
   background-color: #FFE6AA;
+  max-width: 1000px;
+  margin: 0 auto;
 }
 
-#search-peeps-input {
-  width: 500px;
-}
+
 
 header {
   background-color: #D0F9D9;
@@ -130,8 +130,13 @@ main {
 padding: 16px 16px;
 }
 
+#search-peeps-input {
+  width: 500px;
+}
 
-
+input {
+  margin: 6px 10px;
+}
 
 
 

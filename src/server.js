@@ -15,6 +15,15 @@ mongoose.Promise = global.Promise;
 app.use(morgan('dev'));
 app.use(express.static('public'));
 
+// CORS
+app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+    res.header('Access-Control-Allow-Headers', 'Content-Type,Authorization');
+    next();
+});
+
+//Routers
 app.use('/api', userRouter);
 app.use('/api/munches', munchesRouter);
 app.use('/api/', peepsRouter); // routes for /api/friends & /api/groups
