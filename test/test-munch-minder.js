@@ -2,9 +2,9 @@ const chai = require('chai');
 const chaiHttp = require('chai-http');
 const should = require('chai').should();
 
-const {Munch} = require('../models/munch');
-const {app, runServer, closeServer} = require('../server');
-const {TEST_DATABASE_URL} = require('../config/main');
+const {Munch} = require('../src/models/munch');
+const {app, runServer, closeServer} = require('../src/server');
+const {TEST_DATABASE_URL} = require('../src/config/main');
 
 chai.use(chaiHttp);
 

@@ -45,7 +45,7 @@ userRouter.post('/user', jsonParser, (req, res) => {
 });
 
 //PUT Request to update user data or user settings
-userRouter.put('/user/:id', jsonParser, (req, res) => {
+userRouter.put('/user/:id', jsonParser, passport.authenticate('jwt', { session: false }),(req, res) => {
   let updatedUser = {};
   const updateFields = ['userName', 'userEmail', 'password'];
   updateFields.forEach( key => {
@@ -65,7 +65,7 @@ userRouter.put('/user/:id', jsonParser, (req, res) => {
 });
 
 //Delete Request to delete a specified user
-userRouter.delete('/user/:id', (req, res) => {
+userRouter.delete('/user/:id', passport.authenticate('jwt', { session: false }),(req, res) => {
   User.findByIdAndRemove(req.params.id)
   .then(() => {
     console.log(`Deleted user with id: ${req.params.id}`);
@@ -77,6 +77,7 @@ userRouter.delete('/user/:id', (req, res) => {
   });
 });
 
+//User login to create token
 userRouter.post('/login', jsonParser, (req, res) => {
   User.findOne({userName: req.body.username})
   .then(foundUser => {
@@ -125,9 +126,11 @@ userRouter.post('/login', jsonParser, (req, res) => {
 //   })
 // });
 
+//Test Protected endpoint
 userRouter.get('/test', passport.authenticate('jwt', { session: false }), (req, res) => {
   res.send(`It worked!  User ID authenticated.  User id is ${req.user._id}`);
 });
+
 
 //GET request if client forgot username or password, can find by email query
 userRouter.get('/findbyemail', (req, res) => {
@@ -142,9 +145,10 @@ userRouter.get('/findbyemail', (req, res) => {
 });
 
 //Get request for update from friends
-userRouter.get('/user/:id',passport.authenticate('jwt', { session: false }), (req, res) => {
+userRouter.get('/user/:id/', passport.authenticate('jwt', { session: false }), (req, res) => {
     User.findById(req.params.id)
-    .populate('friends', 'userName userEmail munches')
+    .populate('munches')
+    .populate({path : 'friends', select : 'userName', populate : {path : 'munches', select: 'description'}})
     .then(result => {
       res.json(result)
     })

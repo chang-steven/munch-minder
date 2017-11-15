@@ -8,6 +8,7 @@ const userSchema = mongoose.Schema({
   userEmail: {type: String, lowercase: true, unique: true, require: true},
   password: {type: String, required: true},
   joinDate: {type: Date, default: Date.now, required: true},
+  image: {type: String},
 // Friends will be an array of objects listing friends
   friends: [{type: mongoose.Schema.Types.ObjectId, ref: 'User'}],
   munches: [{type: mongoose.Schema.Types.ObjectId, ref: 'Munch'}],

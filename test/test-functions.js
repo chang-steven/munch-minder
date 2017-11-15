@@ -2,9 +2,9 @@ const faker = require('faker');
 const should = require('chai').should();
 const mongoose = require('mongoose');
 
-const {User} = require('../models/user');
-const {Munch} = require('../models/munch');
-// const {Group} = require('../models/group');
+const {User} = require('../src/models/user');
+const {Munch} = require('../src/models/munch');
+const {Group} = require('../src/models/group');
 
 function seedMunchMinderDatabase() {
   console.info('Seeding Users, Munches & Groups collections...');
@@ -27,17 +27,21 @@ function generateUserData() {
     userName: faker.internet.userName(),
     userEmail: faker.internet.email(),
     password: faker.internet.password(),
-    joinDate: faker.date.past()
+    joinDate: faker.date.past(),
+    image: faker.image.imageUrl(),
+    // friends: [faker.random.uuid(), faker.random.uuid()],
+    // munches: [faker.random.uuid(), faker.random.uuid()],
+    // groups: [faker.random.uuid(), faker.random.uuid()]
   };
 }
 
 function generateMunchData() {
   return {
     date: faker.date.past(),
-    type: faker.lorem.word(),
+    where: faker.lorem.words(),
     description: faker.lorem.sentence(),
     emoji: faker.image.avatar(),
-    image: faker.image.image(),
+    image: faker.image.imageUrl(),
     likes: {
       thumbsUp: faker.random.number(),
       thumbsDown: faker.random.number()
@@ -45,9 +49,13 @@ function generateMunchData() {
   }
 }
 
+function createTestUser() {
+  return User.create(generateUserData());
+}
+
 function teardownDatabase() {
   console.warn('Deleting database...');
   return mongoose.connection.dropDatabase();
 }
 
-module.exports = {seedMunchMinderDatabase, generateUserData, generateMunchData, teardownDatabase}
+module.exports = {seedMunchMinderDatabase, generateUserData, generateMunchData, createTestUser, teardownDatabase}

@@ -17,18 +17,18 @@ munchesRouter.get('/test', passport.authenticate('jwt', { session: false }), (re
 });
 
 
-//GET request to return all munches from /api/munches
-munchesRouter.get('/', (req, res) => {
-   Munch.find()
-  .then(result => {
-    console.log('Found a munch');
-    res.json(result)
-  })
-  .catch(err => {
-    console.error(err);
-    res.status(500).json({error: 'Something went wrong'});
-  })
-});
+// //GET request to return all munches from /api/munches
+// munchesRouter.get('/', (req, res) => {
+//    Munch.find()
+//   .then(result => {
+//     console.log('Found a munch');
+//     res.json(result)
+//   })
+//   .catch(err => {
+//     console.error(err);
+//     res.status(500).json({error: 'Something went wrong'});
+//   })
+// });
 
 //GET request for a specified munch based on ID
 // munchesRouter.get('/:id', (req, res) => {
@@ -44,7 +44,7 @@ munchesRouter.get('/', (req, res) => {
 // })
 
 //POST request to /api/user for creating new munch
-munchesRouter.post('/', jsonParser, (req, res) => {
+munchesRouter.post('/', jsonParser, passport.authenticate('jwt', { session: false }),(req, res) => {
   const requiredKeys = ["date", "type", "description"];
   requiredKeys.forEach( key => {
     if(!(key in req.body)) {
@@ -66,6 +66,18 @@ munchesRouter.post('/', jsonParser, (req, res) => {
     console.error(err);
     res.status(500).json({error: 'Something went wrong'});
   })
+});
+
+munchesRouter.get('/:id',passport.authenticate('jwt', { session: false }), (req, res) => {
+    User.findById(req.params.id)
+    .populate('munches')
+    .then(result => {
+      res.json(result)
+    })
+    .catch(err => {
+      console.error(err);
+      res.status(500).json({error: 'Something went wrong'});
+    });
 });
 
 //PUT request to update a specified munch based on id
@@ -100,17 +112,5 @@ munchesRouter.delete('/:id', (req, res) => {
     res.status(500).json({error: 'Something went wrong'});
   });
 });
-
-munchesRouter.get('/:id',passport.authenticate('jwt', { session: false }), (req, res) => {
-    User.findById(req.params.id)
-    .populate('munches')
-    .then(result => {
-      res.json(result)
-    })
-    .catch(err => {
-      console.error(err);
-      res.status(500).json({error: 'Something went wrong'});
-    });
-})
 
 module.exports = {munchesRouter};

@@ -4,22 +4,29 @@ const faker = require('faker');
 const should = require('chai').should();
 const mongoose = require('mongoose');
 
-const {User} = require('../models/user');
-const {Munch} = require('../models/munch');
-const {app, runServer, closeServer} = require('../server');
-const {TEST_DATABASE_URL} = require('../config/main');
-const {seedMunchMinderDatabase, generateUserData, generateMunchData, teardownDatabase} = require('./test-functions');
+const {User} = require('../src/models/user');
+const {Munch} = require('../src/models/munch');
+const {app, runServer, closeServer} = require('../src/server');
+const {TEST_DATABASE_URL, JWT_SECRET} = require('../src/config/main');
+const {seedMunchMinderDatabase, generateUserData, generateMunchData, createTestUser, teardownDatabase} = require('./test-functions');
+
 
 chai.use(chaiHttp);
 
 describe('User Router to /api/user', function() {
+  let testUser;
 
   before(function() {
     return runServer(TEST_DATABASE_URL);
   });
 
-  beforeEach(function() {
-    return seedMunchMinderDatabase();
+  beforeEach(function(done) {
+    createTestUser()
+    .then((user) => {
+      testUser = user;
+      seedMunchMinderDatabase();
+      done();
+    })
   });
 
   afterEach(function() {
@@ -32,14 +39,9 @@ describe('User Router to /api/user', function() {
 
   describe('POST request to /api/user', function() {
     it('Should create a new user in the database', function() {
-      const newUser = {
-        userName: "John316",
-        userEmail: "john@doe.com",
-        password: "test123"
-      };
       return chai.request(app)
       .post('/api/user')
-      .send(newUser)
+      .send(generateUserData())
       .then(function(res) {
         res.should.have.status(200);
       });
@@ -61,12 +63,9 @@ describe('User Router to /api/user', function() {
 
   describe('PUT request to /api/user/:id', function() {
     it('Should update a specified user based on ID', function() {
-      let testUser = {
-        userEmail: "johndoe123@456.com"
-      };
       return User.findOne()
       .then(result => {
-        testUser.userId = result._id;
+        testUser._id= result._id;
         return chai.request(app)
         .put(`/api/user/${result._id}`)
         .send(testUser)
@@ -74,7 +73,7 @@ describe('User Router to /api/user', function() {
       .then(res => {
         res.should.have.status(200);
         res.should.be.an('object');
-        return User.findById(testUser.userId);
+        return User.findById(testUser._id);
       })
       .then(user => {
         user.userEmail.should.equal(testUser.userEmail);
