@@ -3,13 +3,14 @@ const chaiHttp = require('chai-http');
 const faker = require('faker');
 const should = require('chai').should();
 const mongoose = require('mongoose');
+const jwt = require('jsonwebtoken');
+
 
 const {User} = require('../src/models/user');
 const {Munch} = require('../src/models/munch');
 const {app, runServer, closeServer} = require('../src/server');
 const {TEST_DATABASE_URL, JWT_SECRET} = require('../src/config/main');
 const {seedMunchMinderDatabase, generateUserData, generateMunchData, createTestUser, teardownDatabase} = require('./test-functions');
-
 
 chai.use(chaiHttp);
 
@@ -39,11 +40,17 @@ describe('User Router to /api/user', function() {
 
   describe('POST request to /api/user', function() {
     it('Should create a new user in the database', function() {
+      let newUser = {
+        username: faker.internet.userName(),
+        email: faker.internet.email(),
+        password: faker.internet.password()
+      };
       return chai.request(app)
       .post('/api/user')
-      .send(generateUserData())
+      .send(newUser)
       .then(function(res) {
         res.should.have.status(200);
+        res.should.be.json;
       });
     });
   });
@@ -63,9 +70,11 @@ describe('User Router to /api/user', function() {
 
   describe('PUT request to /api/user/:id', function() {
     it('Should update a specified user based on ID', function() {
+      const token = jwt.sign({id: testUser._id}, JWT_SECRET, { expiresIn: 10000 });
       return User.findOne()
       .then(result => {
-        testUser._id= result._id;
+        console.log(testUser);
+        testUser._id = result._id;
         return chai.request(app)
         .put(`/api/user/${result._id}`)
         .send(testUser)

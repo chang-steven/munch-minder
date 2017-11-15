@@ -17,17 +17,23 @@ const {User} = require('../models/user');
 const {Munch} = require('../models/munch');
 
 
-
 //POST request for new registration of a user to /api/user
 userRouter.post('/user', jsonParser, (req, res) => {
   console.log('New registration request made');
   const requiredKeys = ["username", "email", "password"];
-  requiredKeys.forEach( key => {
+  for (let i = 0; i < requiredKeys.length; i++){
+    let key = requiredKeys[i];
     if(!(key in req.body)) {
       const message = {message:`Please fill out all required fields.  Missing ${key} in request body, please try again.`};
       return res.status(400).json(message);
     }
-  });
+  };
+  // requiredKeys.forEach( key => {
+  //   if(!(key in req.body)) {
+  //     const message = {message:`Please fill out all required fields.  Missing ${key} in request body, please try again.`};
+  //     return res.status(400).json(message);
+  //   }
+  // });
   User.create({
     userName: req.body.username,
     userEmail: req.body.email,
@@ -45,7 +51,7 @@ userRouter.post('/user', jsonParser, (req, res) => {
 });
 
 //PUT Request to update user data or user settings
-userRouter.put('/user/:id', jsonParser, passport.authenticate('jwt', { session: false }),(req, res) => {
+userRouter.put('/user/:id', jsonParser,(req, res) => {
   let updatedUser = {};
   const updateFields = ['userName', 'userEmail', 'password'];
   updateFields.forEach( key => {
@@ -84,7 +90,7 @@ userRouter.post('/login', jsonParser, (req, res) => {
     foundUser.validatePassword(req.body.password)
     .then(() => {
       const token = jwt.sign({userId: foundUser._id}, config.JWT_SECRET, {expiresIn: config.JWT_EXPIRY});
-      res.json({message:'Succesfully logged in', success: true, token: 'Bearer ' + token});
+      res.json({message:'Succesfully logged in', success: true, token: 'Bearer ' + token}).redirect('/dashboard.html');
     })
     .catch(err => {
       console.error(err);

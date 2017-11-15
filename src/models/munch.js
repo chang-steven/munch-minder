@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const munchSchema = mongoose.Schema({
   postedBy: {type: mongoose.Schema.Types.ObjectId, ref: "User"},
   date: {type: Date, default: Date.now, required: true},
+  title: {type: String, required: true},
   description: {type: String, required: true},
   where: {type: String},
   emoji: {type: String},

@@ -1,5 +1,6 @@
-const USER_REGISTER_URL = 'http://localhost:8080/api/user/';
+const USER_REGISTER_URL = 'http://localhost:8080/api/user';
 const USER_LOGIN_URL = 'http://localhost:8080/api/login';
+const MUNCH_POST_URL = 'http://localhost:8080/api/munches';
 
 function listenForNewUserRegistration() {
   console.log('Now listening for new registration');
@@ -44,8 +45,28 @@ function listenForLogin() {
     };
     $.ajax({
       type: 'POST',
-      url: USER_LOGIN_URL,
+      url: MUNCH,
       data: user,
+      success: displayResult,
+      error: errorHandler
+    })
+  })
+}
+
+function listenForMunch() {
+  console.log('Now listening for Munch');
+  $('#munch-form').submit(event => {
+    console.log('Attempted Munch Log');
+    event.preventDefault();
+    let munch = {
+      date: $('#munch-date').val(),
+      title: $('#munch-title').val(),
+      description: $('#munch-description').val()
+    };
+    $.ajax({
+      type: 'POST',
+      url: MUNCH_POST_URL,
+      data: munch,
       success: displayResult,
       error: errorHandler
     })
@@ -66,6 +87,7 @@ function displayResult(result) {
 function app() {
   listenForNewUserRegistration();
   listenForLogin();
+  listenForMunch();
 }
 
 $(app);

@@ -38,6 +38,7 @@ function generateUserData() {
 function generateMunchData() {
   return {
     date: faker.date.past(),
+    title: faker.lorem.words(),
     where: faker.lorem.words(),
     description: faker.lorem.sentence(),
     emoji: faker.image.avatar(),

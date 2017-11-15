@@ -13,7 +13,7 @@ munchesRouter.use(passport.initialize());
 munchesRouter.use(bodyParser.urlencoded({extended: false}));
 
 munchesRouter.get('/test', passport.authenticate('jwt', { session: false }), (req, res) => {
-  res.send(`It worked!  User ID authenticated.  User id is ${req.user._id}`);
+  res.json({message:`It worked!  User ID authenticated.  User id is ${req.user._id}`});
 });
 
 
@@ -43,32 +43,36 @@ munchesRouter.get('/test', passport.authenticate('jwt', { session: false }), (re
 //   })
 // })
 
+// passport.authenticate('jwt', { session: false }),
+
 //POST request to /api/user for creating new munch
-munchesRouter.post('/', jsonParser, passport.authenticate('jwt', { session: false }),(req, res) => {
-  const requiredKeys = ["date", "type", "description"];
+munchesRouter.post('/', jsonParser, (req, res) => {
+  const requiredKeys = ["date", "title", "description"];
   requiredKeys.forEach( key => {
     if(!(key in req.body)) {
-      const message = `Please fill out all required fields.  Missing ${key} in request body, please try again.`;
-      return res.send(message).status(400);
+      const message = {message:`Please fill out all required fields.  Missing ${key} in request body, please try again.`};
+      return res.status(400).json(message);
     }
   });
   Munch
   .create({
+    //Will need to eventually implement req.user._id
+    // postedBy: req.user._id,
+    title: req.body.title,
     date: req.body.date,
-    type: req.body.type,
     description: req.body.description
   })
   .then(() => {
-    const message = `Successfully added ${req.body.type}`;
-    return res.send(message).status(200)
+    const message = {message:`Successfully added ${req.body.type}`};
+    return res.status(200).json(message);
   })
   .catch(err => {
     console.error(err);
-    res.status(500).json({error: 'Something went wrong'});
+    res.status(500).json({message: 'Something went wrong'});
   })
 });
 
-munchesRouter.get('/:id',passport.authenticate('jwt', { session: false }), (req, res) => {
+munchesRouter.get('/:id', (req, res) => {
     User.findById(req.params.id)
     .populate('munches')
     .then(result => {
@@ -83,7 +87,7 @@ munchesRouter.get('/:id',passport.authenticate('jwt', { session: false }), (req,
 //PUT request to update a specified munch based on id
 munchesRouter.put('/:id', jsonParser, (req, res) => {
   let updatedMunch = {};
-  const updateFields = ['date', 'type', 'description'];
+  const updateFields = ['date', 'title', 'description'];
   updateFields.forEach( key => {
     if (key in req.body) {
       updatedMunch[key] = req.body[key];
