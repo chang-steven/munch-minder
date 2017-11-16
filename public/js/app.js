@@ -2,8 +2,9 @@ const USER_REGISTER_URL = 'http://localhost:8080/api/user';
 const USER_LOGIN_URL = 'http://localhost:8080/api/login';
 const MUNCH_POST_URL = 'http://localhost:8080/api/munches';
 
+
 function listenForNewUserRegistration() {
-  console.log('Now listening for new registration');
+  console.log('Now listening for New Registration');
   $('#register').submit(event => {
     console.log('Attempted User Registration');
     event.preventDefault();
@@ -21,21 +22,23 @@ function registerNewUser(user) {
     type: 'POST',
     url: USER_REGISTER_URL,
     data: user,
-    success: displayNewUser,
-    error: errorHandler
+    success: result => {
+      alert(result.message);
+      location.href='/login.html'
+    },
+    error: error => {
+      alert('Sorry, there was an error, try again...');
+      location.href='/register.html'
+    },
   };
   console.log(newUser);
     $.ajax(newUser);
-  // return new Promise(
-  //   (resolve, reject) => {
-  //     $.ajax(newUser);
-  //     resolve();
-  //     reject(new Error(msg))
-  //   })
 }
 
+
+
 function listenForLogin() {
-  console.log('Now listening for login');
+  console.log('Now listening for Login');
   $('#login').submit(event => {
     console.log('Attempted Login');
     event.preventDefault();
@@ -45,13 +48,21 @@ function listenForLogin() {
     };
     $.ajax({
       type: 'POST',
-      url: MUNCH,
+      url: USER_LOGIN_URL,
       data: user,
-      success: displayResult,
-      error: errorHandler
+      success: result => {
+        alert(result.message);
+        location.href='/dashboard.html'
+      },
+      error: error => {
+        alert('Sorry, there was an error, try again...');
+        location.href='/login.html'
+      },
     })
   })
 }
+
+
 
 function listenForMunch() {
   console.log('Now listening for Munch');
@@ -66,6 +77,9 @@ function listenForMunch() {
     $.ajax({
       type: 'POST',
       url: MUNCH_POST_URL,
+      // headers: {
+      //   Authorization: sessionStorage.getItem('token')
+      // }
       data: munch,
       success: displayResult,
       error: errorHandler
@@ -81,7 +95,12 @@ function errorHandler(err) {
 
 function displayResult(result) {
   alert(result.message);
+  sessionStorage.setItem('token', result.token)
   console.log(result);
+}
+
+function reDirect(page) {
+  location.href=`/${page}.html`
 }
 
 function app() {

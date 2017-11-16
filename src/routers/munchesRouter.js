@@ -43,10 +43,10 @@ munchesRouter.get('/test', passport.authenticate('jwt', { session: false }), (re
 //   })
 // })
 
-// passport.authenticate('jwt', { session: false }),
 
 //POST request to /api/user for creating new munch
-munchesRouter.post('/', jsonParser, (req, res) => {
+munchesRouter.post('/', jsonParser, passport.authenticate('jwt', { session: false }),
+(req, res) => {
   const requiredKeys = ["date", "title", "description"];
   requiredKeys.forEach( key => {
     if(!(key in req.body)) {
@@ -63,7 +63,7 @@ munchesRouter.post('/', jsonParser, (req, res) => {
     description: req.body.description
   })
   .then(() => {
-    const message = {message:`Successfully added ${req.body.type}`};
+    const message = {message:`Successfully added ${req.body.title}`};
     return res.status(200).json(message);
   })
   .catch(err => {
@@ -79,7 +79,6 @@ munchesRouter.get('/:id', (req, res) => {
       res.json(result)
     })
     .catch(err => {
-      console.error(err);
       res.status(500).json({error: 'Something went wrong'});
     });
 });
@@ -93,13 +92,12 @@ munchesRouter.put('/:id', jsonParser, (req, res) => {
       updatedMunch[key] = req.body[key];
     };
   });
-  Munch.findByIdAndUpdate(req.params.id, {$set: updatedMunch})
+  Munch.findByIdAndUpdate(req.params.id, {$set: updatedMunch}, {new: true})
   .then(result => {
     const message = 'Succesfully edited munch data';
     res.status(200).json(result);
   })
   .catch(err => {
-    console.error(err);
     res.status(500).json({error: 'Something went wrong'});
   });
 });
@@ -108,6 +106,7 @@ munchesRouter.put('/:id', jsonParser, (req, res) => {
 munchesRouter.delete('/:id', (req, res) => {
   Munch.findByIdAndRemove(req.params.id)
   .then(() => {
+    // req.user._id
     console.log(`Deleted user with id: ${req.params.id}`);
     res.status(204).json({message: 'success'});
   })

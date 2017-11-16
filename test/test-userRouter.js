@@ -70,13 +70,13 @@ describe('User Router to /api/user', function() {
 
   describe('PUT request to /api/user/:id', function() {
     it('Should update a specified user based on ID', function() {
-      const token = jwt.sign({id: testUser._id}, JWT_SECRET, { expiresIn: 10000 });
+      const token = jwt.sign({userId: testUser._id}, JWT_SECRET, { expiresIn: 10000 });
       return User.findOne()
       .then(result => {
-        console.log(testUser);
         testUser._id = result._id;
         return chai.request(app)
         .put(`/api/user/${result._id}`)
+        .set('Authorization', `Bearer ${token}`)
         .send(testUser)
       })
       .then(res => {
@@ -101,7 +101,6 @@ describe('User Router to /api/user', function() {
       })
       .then(res => {
         res.should.have.status(204);
-        res.should.be.json;
         User.findById(deletedUser)
       })
       .then(user => {
@@ -109,4 +108,7 @@ describe('User Router to /api/user', function() {
       });
     });
   });
+
+
+
 });

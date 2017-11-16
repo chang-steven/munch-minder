@@ -27,7 +27,9 @@ describe('Munches Router to /api/munches', function() {
     createTestUser()
     .then((user) => {
       testUser = user;
-      seedMunchMinderDatabase();
+      return seedMunchMinderDatabase();
+    })
+    .then(() => {
       done();
     })
   });
@@ -43,14 +45,11 @@ describe('Munches Router to /api/munches', function() {
 
   describe('POST request to /api/munches', function() {
     it('Should create a new munch in the database', function() {
-      const token = jwt.sign({id: testUser._id}, JWT_SECRET, { expiresIn: 10000 });
-
-      console.log(testUser);
+      const token = jwt.sign({userId: testUser._id}, JWT_SECRET, { expiresIn: 10000 });
       const newMunch = generateMunchData();
-      console.log(newMunch);
       return chai.request(app)
       .post('/api/munches')
-      // .set('Authorization', `Bearer ${token}`)
+      .set('Authorization', `Bearer ${token}`)
       .send(newMunch)
       .then(function(res) {
         res.should.have.status(200);
@@ -72,7 +71,6 @@ describe('Munches Router to /api/munches', function() {
     it('Should return munch by ID', function() {
       Munch.findOne()
       .then(search => {
-        console.log(search);
         const searchId = search._id;
         return chai.request(app)
         .get(`/api/munches/${search._id}`)
@@ -100,12 +98,9 @@ describe('Munches Router to /api/munches', function() {
         description: faker.lorem.words(),
         date: faker.date.past()
       };
-      console.log(testMunch);
       return Munch.findOne()
       .then(result => {
-        console.log(result);
         testMunch._id = result._id;
-        console.log(testMunch);
         return chai.request(app)
         .put(`/api/munches/${result._id}`)
         .send(testMunch)
@@ -134,7 +129,6 @@ describe('Munches Router to /api/munches', function() {
       })
       .then(res => {
         res.should.have.status(204);
-        res.should.be.json;
         Munch.findById(deletedMunch)
       })
       .then(munch => {
