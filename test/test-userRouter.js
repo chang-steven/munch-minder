@@ -93,10 +93,12 @@ describe('User Router to /api/user', function() {
   describe('DELETE request to /api/user/:id', function() {
     it('Should delete a specified user based on ID', function() {
       let deletedUser;
+      const token = jwt.sign({userId: testUser._id}, JWT_SECRET, { expiresIn: 10000 });
       User.findOne()
       .then(result => {
         deletedUser = result._id
         return chai.request(app)
+        .set('Authorization', `Bearer ${token}`)
         .delete(`/api/user/${result._id}`)
       })
       .then(res => {

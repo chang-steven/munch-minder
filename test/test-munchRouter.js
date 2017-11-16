@@ -58,17 +58,20 @@ describe('Munches Router to /api/munches', function() {
   });
 
   describe('GET request to /api/munches/', function() {
-    // it('Should return all munches from database', function() {
-    //
-    //   return chai.request(app)
-    //   .get('/api/munches')
-    //   .then(function(res) {
-    //     res.should.have.status(200);
-    //     res.should.be.json;
-    //     res.body.should.be.an('array');
-    //   });
-    // });
-    it('Should return munch by ID', function() {
+    it('Should return all munches from database for the logged in user', function() {
+      const token = jwt.sign({userId: testUser._id}, JWT_SECRET, { expiresIn: 10000 });
+      return chai.request(app)
+      .get('/api/munches')
+      .set('Authorization', `Bearer ${token}`)
+      .then(function(res) {
+        res.should.have.status(200);
+        res.should.be.json;
+        res.body.should.be.an('object');
+        res.body.munches.should.be.an('array');
+      });
+    });
+
+    it('Should return a specific munch by ID', function() {
       Munch.findOne()
       .then(search => {
         const searchId = search._id;
@@ -80,6 +83,7 @@ describe('Munches Router to /api/munches', function() {
         res.should.be.json;
       });
     });
+
     it('Should throw an error inputting incorrect ID', function() {
       return chai.request(app)
       .get('/api/munches/xxx')

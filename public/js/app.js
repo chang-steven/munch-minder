@@ -13,6 +13,9 @@ function listenForNewUserRegistration() {
       username: $('#register-username').val(),
       password: $('#register-password').val()
     };
+    $('#register-email').val("");
+    $('#register-username').val("");
+    $('#register-password').val("");
     registerNewUser(newRegistration);
   })
 }
@@ -46,11 +49,14 @@ function listenForLogin() {
       username: $('#login-username').val(),
       password: $('#login-password').val()
     };
+    $('#login-username').val("");
+    $('#login-password').val("");
     $.ajax({
       type: 'POST',
       url: USER_LOGIN_URL,
       data: user,
       success: result => {
+        sessionStorage.setItem('token', result.token);
         alert(result.message);
         location.href='/dashboard.html'
       },
@@ -77,9 +83,9 @@ function listenForMunch() {
     $.ajax({
       type: 'POST',
       url: MUNCH_POST_URL,
-      // headers: {
-      //   Authorization: sessionStorage.getItem('token')
-      // }
+      headers: {
+        Authorization: sessionStorage.getItem('token')
+      },
       data: munch,
       success: displayResult,
       error: errorHandler
@@ -95,7 +101,6 @@ function errorHandler(err) {
 
 function displayResult(result) {
   alert(result.message);
-  sessionStorage.setItem('token', result.token)
   console.log(result);
 }
 

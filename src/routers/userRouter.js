@@ -43,6 +43,7 @@ userRouter.post('/user', jsonParser, (req, res) => {
   })
 });
 
+
 //PUT Request to update user data or user settings
 userRouter.put('/user/:id', jsonParser, passport.authenticate('jwt', { session: false }), (req, res) => {
   let updatedUser = {};
@@ -66,8 +67,12 @@ userRouter.put('/user/:id', jsonParser, passport.authenticate('jwt', { session: 
   });
 });
 
+
 //Delete Request to delete a specified user
 userRouter.delete('/user/:id', passport.authenticate('jwt', { session: false }), (req, res) => {
+  if (!(req.user._id == req.params.id)) {
+    return res.status(400).json({message: "Sorry, you do not have valid permission"})
+  };
   User.findByIdAndRemove(req.params.id)
   .then(() => {
     console.log(`Deleted user with id: ${req.params.id}`);
@@ -79,6 +84,7 @@ userRouter.delete('/user/:id', passport.authenticate('jwt', { session: false }),
   });
 });
 
+
 //User login to create token
 userRouter.post('/login', jsonParser, (req, res) => {
   User.findOne({userName: req.body.username})
@@ -86,7 +92,7 @@ userRouter.post('/login', jsonParser, (req, res) => {
     foundUser.validatePassword(req.body.password)
     .then(() => {
       const token = jwt.sign({userId: foundUser._id}, config.JWT_SECRET, {expiresIn: config.JWT_EXPIRY});
-      res.json({message:'Succesfully logged in', success: true, token: 'Bearer ' + token});
+      res.json({message:`Succesfully logged in as ${req.body.username}`, success: true, token: 'Bearer ' + token});
     })
     .catch(err => {
       console.error(err);
@@ -99,34 +105,6 @@ userRouter.post('/login', jsonParser, (req, res) => {
   });
 });
 
-
-// userRouter.get('/user/:id', (req, res) => {
-//   User.findById(req.params.id)
-//   .then(result => {
-//     res.json(result);
-//   })
-//   .catch(err => {
-//     console.error(err);
-//     res.status(500).json({error: 'Something went wrong'});
-//   });
-// })
-
-// GET request for all meals for specified User
-// userRouter.get('/user/:id', (req, res) => {
-//   User.findById(req.params.id)
-//   .aggregate([{
-//     $lookup: {
-//         from: 'Munches',
-//         localField: '_id',
-//         foreignField: 'userId',
-//         as: 'munches'
-//       }
-//     }])
-//   .then((result) => {
-//     console.log(result);
-//     res.json(result);
-//   })
-// });
 
 //Test Protected endpoint
 userRouter.get('/test', passport.authenticate('jwt', { session: false }), (req, res) => {
@@ -148,16 +126,16 @@ userRouter.get('/findbyemail', (req, res) => {
 
 //Get request for update from friends
 userRouter.get('/user/:id/', passport.authenticate('jwt', { session: false }), (req, res) => {
-    User.findById(req.params.id)
-    .populate('munches')
-    .populate({path : 'friends', select : 'userName', populate : {path : 'munches', select: 'description'}})
-    .then(result => {
-      res.json(result)
-    })
-    .catch(err => {
-      console.error(err);
-      res.status(500).json({error: 'Something went wrong'});
-    });
+  User.findById(req.params.id)
+  .populate('munches')
+  .populate({path : 'friends', select : 'userName', populate : {path : 'munches', select: 'description'}})
+  .then(result => {
+    res.json(result)
+  })
+  .catch(err => {
+    console.error(err);
+    res.status(500).json({error: 'Something went wrong'});
+  });
 })
 
 module.exports = {userRouter};

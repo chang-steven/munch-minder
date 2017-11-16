@@ -17,33 +17,6 @@ munchesRouter.get('/test', passport.authenticate('jwt', { session: false }), (re
 });
 
 
-// //GET request to return all munches from /api/munches
-// munchesRouter.get('/', (req, res) => {
-//    Munch.find()
-//   .then(result => {
-//     console.log('Found a munch');
-//     res.json(result)
-//   })
-//   .catch(err => {
-//     console.error(err);
-//     res.status(500).json({error: 'Something went wrong'});
-//   })
-// });
-
-//GET request for a specified munch based on ID
-// munchesRouter.get('/:id', (req, res) => {
-//   Munch.findById(req.params.id)
-//   .then((result) => {
-//     console.log('Found munch by ID');
-//     res.json(result);
-//   })
-//   .catch(err => {
-//     console.error(err);
-//     res.status(500).json({error: 'Something went wrong'});
-//   })
-// })
-
-
 //POST request to /api/user for creating new munch
 munchesRouter.post('/', jsonParser, passport.authenticate('jwt', { session: false }),
 (req, res) => {
@@ -56,10 +29,9 @@ munchesRouter.post('/', jsonParser, passport.authenticate('jwt', { session: fals
   });
   Munch
   .create({
-    //Will need to eventually implement req.user._id
-    // postedBy: req.user._id,
-    title: req.body.title,
+    postedBy: req.user._id,
     date: req.body.date,
+    title: req.body.title,
     description: req.body.description
   })
   .then(() => {
@@ -72,9 +44,23 @@ munchesRouter.post('/', jsonParser, passport.authenticate('jwt', { session: fals
   })
 });
 
+//Get request for all munches for logged in user
+munchesRouter.get('/', passport.authenticate('jwt', { session: false }), (req, res) => {
+  User.findById(req.user._id)
+  .populate('munches')
+  .then(result => {
+    res.json(result)
+  })
+  .catch(err => {
+    console.error(err);
+    res.status(500).json({error: 'Something went wrong'});
+  });
+})
+
+//GET request for specific munch by munch ID
 munchesRouter.get('/:id', (req, res) => {
-    User.findById(req.params.id)
-    .populate('munches')
+    Munch.findById(req.params.id)
+    // .populate('munches')
     .then(result => {
       res.json(result)
     })
@@ -115,5 +101,33 @@ munchesRouter.delete('/:id', (req, res) => {
     res.status(500).json({error: 'Something went wrong'});
   });
 });
+
+
+// //GET request to return all munches from /api/munches
+// munchesRouter.get('/', (req, res) => {
+//    Munch.find()
+//   .then(result => {
+//     console.log('Found a munch');
+//     res.json(result)
+//   })
+//   .catch(err => {
+//     console.error(err);
+//     res.status(500).json({error: 'Something went wrong'});
+//   })
+// });
+
+//GET request for a specified munch based on ID
+// munchesRouter.get('/:id', (req, res) => {
+//   Munch.findById(req.params.id)
+//   .then((result) => {
+//     console.log('Found munch by ID');
+//     res.json(result);
+//   })
+//   .catch(err => {
+//     console.error(err);
+//     res.status(500).json({error: 'Something went wrong'});
+//   })
+// })
+
 
 module.exports = {munchesRouter};
