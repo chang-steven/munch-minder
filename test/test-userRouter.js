@@ -2,6 +2,7 @@ const chai = require('chai');
 const chaiHttp = require('chai-http');
 const faker = require('faker');
 const should = require('chai').should();
+const expect = require('chai').expect();
 const mongoose = require('mongoose');
 const jwt = require('jsonwebtoken');
 
@@ -94,23 +95,20 @@ describe('User Router to /api/user', function() {
     it('Should delete a specified user based on ID', function() {
       let deletedUser;
       const token = jwt.sign({userId: testUser._id}, JWT_SECRET, { expiresIn: 10000 });
-      User.findOne()
+      return User.findOne()
       .then(result => {
         deletedUser = result._id
         return chai.request(app)
-        .set('Authorization', `Bearer ${token}`)
         .delete(`/api/user/${result._id}`)
+        .set('Authorization', `Bearer ${token}`)
       })
       .then(res => {
         res.should.have.status(204);
-        User.findById(deletedUser)
+        return User.findById(deletedUser)
       })
       .then(user => {
-        user.should.not.exist;
+        should.not.exist(user);
       });
     });
   });
-
-
-
 });

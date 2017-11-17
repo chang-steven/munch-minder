@@ -125,18 +125,20 @@ describe('Munches Router to /api/munches', function() {
   describe('DELETE request to /api/munches/:id', function() {
     it('Should delete a specified munch based on ID', function() {
       let deletedMunch;
-      Munch.findOne()
+      const token = jwt.sign({userId: testUser._id}, JWT_SECRET, { expiresIn: 10000 });
+      return Munch.findOne()
       .then(result => {
         deletedMunch = result._id;
         return chai.request(app)
         .delete(`/api/munches/${result._id}`)
+        .set('Authorization', `Bearer ${token}`)
       })
       .then(res => {
         res.should.have.status(204);
-        Munch.findById(deletedMunch)
+        return Munch.findById(deletedMunch)
       })
       .then(munch => {
-        munch.should.not.exist;
+        should.not.exist(munch);
       });
     });
   });

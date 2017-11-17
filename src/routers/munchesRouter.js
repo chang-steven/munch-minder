@@ -10,6 +10,8 @@ const {Munch} = require('../models/munch');
 const munchesRouter = express.Router();
 
 munchesRouter.use(passport.initialize());
+require('../config/passport')(passport);
+
 munchesRouter.use(bodyParser.urlencoded({extended: false}));
 
 munchesRouter.get('/test', passport.authenticate('jwt', { session: false }), (req, res) => {
@@ -40,7 +42,7 @@ munchesRouter.post('/', jsonParser, passport.authenticate('jwt', { session: fals
   })
   .catch(err => {
     console.error(err);
-    res.status(500).json({message: 'Something went wrong'});
+    res.status(500).json({message: 'Something went wrong, unable to create munch'});
   })
 });
 
@@ -53,7 +55,7 @@ munchesRouter.get('/', passport.authenticate('jwt', { session: false }), (req, r
   })
   .catch(err => {
     console.error(err);
-    res.status(500).json({error: 'Something went wrong'});
+    res.status(500).json({error: 'Unable to get all munches for user'});
   });
 })
 
@@ -65,7 +67,7 @@ munchesRouter.get('/:id', (req, res) => {
       res.json(result)
     })
     .catch(err => {
-      res.status(500).json({error: 'Something went wrong'});
+      res.status(500).json({error: 'Unable to get specified munch'});
     });
 });
 
@@ -84,21 +86,21 @@ munchesRouter.put('/:id', jsonParser, (req, res) => {
     res.status(200).json(result);
   })
   .catch(err => {
-    res.status(500).json({error: 'Something went wrong'});
+    res.status(500).json({error: 'Unable to updated specified user'});
   });
 });
 
 //Delete request to delete a specified munch
-munchesRouter.delete('/:id', (req, res) => {
+munchesRouter.delete('/:id', passport.authenticate('jwt', { session: false }), (req, res) => {
   Munch.findByIdAndRemove(req.params.id)
   .then(() => {
     // req.user._id
-    console.log(`Deleted user with id: ${req.params.id}`);
+    console.log(`Deleted munch with id: ${req.params.id}`);
     res.status(204).json({message: 'success'});
   })
   .catch(err => {
     console.error(err);
-    res.status(500).json({error: 'Something went wrong'});
+    res.status(500).json({error: 'Unable to delete specified munch'});
   });
 });
 

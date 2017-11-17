@@ -63,7 +63,7 @@ userRouter.put('/user/:id', jsonParser, passport.authenticate('jwt', { session: 
   })
   .catch(err => {
     console.error(err);
-    res.status(500).json({message: 'Something went wrong'});
+    res.status(500).json({message: 'Unable to update specified user'});
   });
 });
 
@@ -80,7 +80,7 @@ userRouter.delete('/user/:id', passport.authenticate('jwt', { session: false }),
   })
   .catch(err => {
     console.error(err);
-    res.status(500).json({error: 'Something went wrong'});
+    res.status(500).json({error: 'Unable to delete specified user'});
   });
 });
 
@@ -120,7 +120,7 @@ userRouter.get('/findbyemail', (req, res) => {
   })
   .catch(err => {
     console.error(err);
-    res.status(500).json({error: 'Something went wrong'});
+    res.status(500).json({error: 'Unable to find user by email'});
   });
 });
 
@@ -134,7 +134,7 @@ userRouter.get('/user/:id/', passport.authenticate('jwt', { session: false }), (
   })
   .catch(err => {
     console.error(err);
-    res.status(500).json({error: 'Something went wrong'});
+    res.status(500).json({error: 'Unable to get update from friends'});
   });
 })
 
