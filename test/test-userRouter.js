@@ -2,24 +2,33 @@ const chai = require('chai');
 const chaiHttp = require('chai-http');
 const faker = require('faker');
 const should = require('chai').should();
+const expect = require('chai').expect();
 const mongoose = require('mongoose');
+const jwt = require('jsonwebtoken');
 
-const {User} = require('../models/user');
-const {Munch} = require('../models/munch');
-const {app, runServer, closeServer} = require('../server');
-const {TEST_DATABASE_URL} = require('../config/main');
-const {seedMunchMinderDatabase, generateUserData, generateMunchData, teardownDatabase} = require('./test-functions');
+
+const {User} = require('../src/models/user');
+const {Munch} = require('../src/models/munch');
+const {app, runServer, closeServer} = require('../src/server');
+const {TEST_DATABASE_URL, JWT_SECRET} = require('../src/config/main');
+const {seedMunchMinderDatabase, generateUserData, generateMunchData, createTestUser, teardownDatabase} = require('./test-functions');
 
 chai.use(chaiHttp);
 
 describe('User Router to /api/user', function() {
+  let testUser;
 
   before(function() {
     return runServer(TEST_DATABASE_URL);
   });
 
-  beforeEach(function() {
-    return seedMunchMinderDatabase();
+  beforeEach(function(done) {
+    createTestUser()
+    .then((user) => {
+      testUser = user;
+      seedMunchMinderDatabase();
+      done();
+    })
   });
 
   afterEach(function() {
@@ -32,26 +41,27 @@ describe('User Router to /api/user', function() {
 
   describe('POST request to /api/user', function() {
     it('Should create a new user in the database', function() {
-      const newUser = {
-        userName: "John316",
-        userEmail: "john@doe.com",
-        password: "test123"
+      let newUser = {
+        username: faker.internet.userName(),
+        email: faker.internet.email(),
+        password: faker.internet.password()
       };
       return chai.request(app)
       .post('/api/user')
       .send(newUser)
       .then(function(res) {
         res.should.have.status(200);
+        res.should.be.json;
       });
     });
   });
 
-  describe('GET request to /api/user/findbyemail', function() {
+  describe('GET request to /api/findbyemail', function() {
     it('Should return a user by email query parameter', function() {
       return User.findOne()
       .then(result => {
         return chai.request(app)
-        .get(`/api/user/findbyemail?userEmail=${result.userEmail}`);
+        .get(`/api/findbyemail?userEmail=${result.userEmail}`);
       })
       .then(res => {
         res.should.be.json;
@@ -61,20 +71,19 @@ describe('User Router to /api/user', function() {
 
   describe('PUT request to /api/user/:id', function() {
     it('Should update a specified user based on ID', function() {
-      let testUser = {
-        userEmail: "johndoe123@456.com"
-      };
+      const token = jwt.sign({userId: testUser._id}, JWT_SECRET, { expiresIn: 10000 });
       return User.findOne()
       .then(result => {
-        testUser.userId = result._id;
+        testUser._id = result._id;
         return chai.request(app)
         .put(`/api/user/${result._id}`)
+        .set('Authorization', `Bearer ${token}`)
         .send(testUser)
       })
       .then(res => {
         res.should.have.status(200);
         res.should.be.an('object');
-        return User.findById(testUser.userId);
+        return User.findById(testUser._id);
       })
       .then(user => {
         user.userEmail.should.equal(testUser.userEmail);
@@ -85,19 +94,20 @@ describe('User Router to /api/user', function() {
   describe('DELETE request to /api/user/:id', function() {
     it('Should delete a specified user based on ID', function() {
       let deletedUser;
-      User.findOne()
+      const token = jwt.sign({userId: testUser._id}, JWT_SECRET, { expiresIn: 10000 });
+      return User.findOne()
       .then(result => {
         deletedUser = result._id
         return chai.request(app)
         .delete(`/api/user/${result._id}`)
+        .set('Authorization', `Bearer ${token}`)
       })
       .then(res => {
         res.should.have.status(204);
-        res.should.be.json;
-        User.findById(deletedUser)
+        return User.findById(deletedUser)
       })
       .then(user => {
-        user.should.not.exist;
+        should.not.exist(user);
       });
     });
   });

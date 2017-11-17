@@ -16,11 +16,6 @@
         <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
     </head>
     <body>
-        <!--[if lte IE 9]>
-            <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience and security.</p>
-        <![endif]-->
-
-        <!-- Add your site or application content here -->
         <header>
           <h1>Munch Minder</h1>
           <ul class="nav-links">
@@ -35,10 +30,10 @@
 
         <form id="register" action="register.html" method="post">
           <h2>Register</h2>
-          Name <input type="text" name="name" value="" required></br>
-          Email <input type="text" name="email" value="" required></br>
-          Username <input type="text" name="username" value=""required></br>
-          Password <input type="text" name="password" value=""required></br>
+          <!-- Name <input type="text" name="name" value="" required></br> -->
+          Email <input id="register-email" type="text" name="email" value="" required></br>
+          Username <input id="register-username" type="text" name="username" value=""required></br>
+          Password <input id="register-password" type="password" name="password" value=""required></br>
           <input type="submit" name="submit" value="Register">
         </form>
         </main>

@@ -3,8 +3,9 @@ const express = require('express');
 const morgan = require('morgan');
 const mongoose = require('mongoose');
 
-const {userRouter} = require('./userRouter');
-const {munchesRouter} = require('./munchesRouter');
+const {userRouter} = require('./routers/userRouter');
+const {munchesRouter} = require('./routers/munchesRouter');
+const {peepsRouter} = require('./routers/peepsRouter');
 
 const {DATABASE_URL, PORT} = require('./config/main');
 const app = express();
@@ -14,8 +15,18 @@ mongoose.Promise = global.Promise;
 app.use(morgan('dev'));
 app.use(express.static('public'));
 
-app.use('/api/user', userRouter);
+// CORS
+app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+    res.header('Access-Control-Allow-Headers', 'Content-Type,Authorization');
+    next();
+});
+
+//Routers
+app.use('/api', userRouter);
 app.use('/api/munches', munchesRouter);
+app.use('/api/', peepsRouter); // routes for /api/friends & /api/groups
 
 
 let server;

@@ -8,18 +8,17 @@ const userSchema = mongoose.Schema({
   userEmail: {type: String, lowercase: true, unique: true, require: true},
   password: {type: String, required: true},
   joinDate: {type: Date, default: Date.now, required: true},
-  // munches: [{type: mongoose.Schema.Types.ObjectId, ref: 'Munch'}],
+  image: {type: String},
 // Friends will be an array of objects listing friends
   friends: [{type: mongoose.Schema.Types.ObjectId, ref: 'User'}],
-  munches: [{type: mongoose.Schema.Types.ObjectId, ref: 'Munch'}]
+  munches: [{type: mongoose.Schema.Types.ObjectId, ref: 'Munch'}],
+  groups: [{type: mongoose.Schema.Types.ObjectId, ref: 'Group'}]
 });
 
 //Save the user's hashed password
 userSchema.pre('save', function(next) {
   let user = this;
   if(this.isModified('password') || this.isNew) {
-    // return bcrypt.genSalt(10)
-    // .then( (res) => {
       return bcrypt.hash(user.password, 10)
     .then( (hash) => {
       user.password = hash;
