@@ -138,7 +138,27 @@ input {
   margin: 6px 10px;
 }
 
+#display-munches, #display-peeps {
+  max-height: 600px;
+  overflow-x: scroll;
+  overflow-y: hidden;
+  white-space: nowrap;
 
+}
+
+.returned-munches {
+  margin: 20px 10px;
+  display: inline-block;
+}
+.munch-image, .munch-blurb {
+  /*display: inline-block;*/
+  vertical-align: top;
+  margin-right: 10px;
+}
+
+#munch-title, #munch-description {
+  width: 500px;
+}
 
 
 

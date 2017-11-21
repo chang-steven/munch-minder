@@ -124,18 +124,6 @@ userRouter.get('/findbyemail', (req, res) => {
   });
 });
 
-//Get request for update from friends
-userRouter.get('/user/:id/', passport.authenticate('jwt', { session: false }), (req, res) => {
-  User.findById(req.params.id)
-  .populate('munches')
-  .populate({path : 'friends', select : 'userName', populate : {path : 'munches', select: 'description'}})
-  .then(result => {
-    res.json(result)
-  })
-  .catch(err => {
-    console.error(err);
-    res.status(500).json({error: 'Unable to get update from friends'});
-  });
-})
+
 
 module.exports = {userRouter};

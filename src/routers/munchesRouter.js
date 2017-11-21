@@ -23,6 +23,7 @@ munchesRouter.get('/test', passport.authenticate('jwt', { session: false }), (re
 munchesRouter.post('/', jsonParser, passport.authenticate('jwt', { session: false }),
 (req, res) => {
   const requiredKeys = ["date", "title", "description"];
+  // console.log(req.user);
   requiredKeys.forEach( key => {
     if(!(key in req.body)) {
       const message = {message:`Please fill out all required fields.  Missing ${key} in request body, please try again.`};
@@ -32,11 +33,15 @@ munchesRouter.post('/', jsonParser, passport.authenticate('jwt', { session: fals
   Munch
   .create({
     postedBy: req.user._id,
+    userName: req.user.userName,
     date: req.body.date,
     title: req.body.title,
     description: req.body.description
   })
-  .then(() => {
+  .then(result => {
+    return User.findByIdAndUpdate(req.user._id, { $push: { munches: result._id } }, { new: true });
+  })
+  .then((result) => {
     const message = {message:`Successfully added ${req.body.title}`};
     return res.status(200).json(message);
   })
@@ -49,7 +54,10 @@ munchesRouter.post('/', jsonParser, passport.authenticate('jwt', { session: fals
 //Get request for all munches for logged in user
 munchesRouter.get('/', passport.authenticate('jwt', { session: false }), (req, res) => {
   User.findById(req.user._id)
-  .populate('munches')
+  .populate({
+    path: 'munches',
+    options: {sort: { 'date': -1}}
+  })
   .then(result => {
     res.json(result)
   })

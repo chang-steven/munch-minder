@@ -2,7 +2,6 @@ const chai = require('chai');
 const chaiHttp = require('chai-http');
 const faker = require('faker');
 const should = require('chai').should();
-const expect = require('chai').expect();
 const mongoose = require('mongoose');
 const jwt = require('jsonwebtoken');
 
@@ -74,6 +73,8 @@ describe('User Router to /api/user', function() {
       const token = jwt.sign({userId: testUser._id}, JWT_SECRET, { expiresIn: 10000 });
       return User.findOne()
       .then(result => {
+        console.log('----------------');
+        console.log(result);
         testUser._id = result._id;
         return chai.request(app)
         .put(`/api/user/${result._id}`)

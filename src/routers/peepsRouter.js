@@ -41,4 +41,54 @@ peepsRouter.get('/groups', jsonParser, passport.authenticate('jwt', { session: f
   })
 });
 
+//GET request for 15 most recent updates from friends
+peepsRouter.get('/peeps', passport.authenticate('jwt', { session: false }), (req, res) => {
+  User.findById(req.user._id)
+  // .populate('friends')
+  // .populate('munches')
+
+  .populate({
+    path : 'friends',
+    select : 'userName',
+    populate : {path : 'munches'}
+  })
+  // .populate('munches')
+  .then(result => {
+    // console.log(result);
+    const allMunches = result.friends.map(a => a.munches)
+                             .reduce((a, b) => (a.concat(b)), [])
+                             .sort((a, b) => a.date > b.date);
+    console.log(allMunches);
+
+
+    res.json(allMunches);
+  })
+  .catch(err => {
+    console.error(err);
+    res.status(500).json({error: 'Unable to get update from friends'});
+  });
+})
+
+
+peepsRouter.get('/peeps', passport.authenticate('jwt', { session: false }), (req, res) => {
+  User.findById(req.user._id)
+  // .populate('friends')
+  // .populate('munches')
+
+  .populate({
+    path : 'friends',
+    select : 'userName',
+    populate : {path : 'munches', options: {sort: { 'date': -1}}}
+  })
+  // .populate('munches')
+  .then(result => {
+    res.json(result)
+  })
+  .catch(err => {
+    console.error(err);
+    res.status(500).json({error: 'Unable to get update from friends'});
+  });
+})
+
+
 module.exports = {peepsRouter};

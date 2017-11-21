@@ -1,47 +1,5 @@
 const MUNCH_GET_URL = 'http://localhost:8080/api/munches';
 
-
-// const MOCK_MUNCHES = {
-//     "munches": [
-//         {
-//             "id": "1111111",
-//             "type": "Meal",
-//             "description": "In 'n Out cheeseburger meal",
-//             "emoji": ":]",
-//             "thumbUp": true,
-//             "date": new Date(),
-//             "lastEditAt": 1470016976609
-//         },
-//         {
-//             "id": "22222",
-//             "type": "Munch",
-//             "description": "Milk & Cookies",
-//             "emoji": ":)",
-//             "thumbUp": true,
-//             "date": new Date(),
-//             "lastEditAt": 1470016976609
-//         },
-//         {
-//             "id": "333333",
-//             "type": "Munch",
-//             "description": "Cheese and stale crackers",
-//             "emoji": ":/",
-//             "thumbUp": false,
-//             "date": new Date(),
-//             "lastEditAt": 1470016976609
-//         },
-//         {
-//             "id": "44444",
-//             "type": "Mug",
-//             "description": "Coffee Large",
-//             "emoji": ":)",
-//             "thumbUp": true,
-//             "date": new Date(),
-//             "lastEditAt": 1470016976609
-//         }
-//     ]
-// };
-
 function getMunches() {
   const token = sessionStorage.getItem('token');
 
@@ -66,12 +24,30 @@ function getMunches() {
 }
 
 function displayMunches(data) {
-  console.log(data);
+  if (data.munches.length <= 0) {
+      $('#display-munches').empty().append(`
+        <h2><a href="munches.html">My Munches</a></h2>
+        <p>Looks like you haven't added any munches yet.</p>`);
+  }
+  else {
     $('#display-munches').empty().append(`<h2><a href="munches.html">My Munches</a></h2>`);
-    for (index in data.munches) {
+    for (i in data.munches) {
+      let munch = data.munches[i];
+        const imageURL = munch.image || "http://fakeimg.pl/200x200/?text=Munch&font=lobster";
        $('#display-munches').append(
-        `<p> ${data.munches[index].date} - ${data.munches[index].type} - ${data.munches[index].description} - ${data.munches[index].thumbUp} - ${data.munches[index].emoji}</p>`);
+        `<div class="returned-munches">
+          <div class="munch-image">
+            <img src="${imageURL}">
+          </div>
+        <div class="munch-blurb">
+          <p>${munch.date}</p>
+          <p>${munch.title}</p>
+          <p>${munch.description}</p>
+          <p>${munch.emoji || ""}</p>
+        </div>
+      </div>`);
     }
+  }
 }
 
 $(function() {

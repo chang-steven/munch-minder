@@ -8,18 +8,19 @@ const {Group} = require('../src/models/group');
 
 function seedMunchMinderDatabase() {
   console.info('Seeding Users, Munches & Groups collections...');
-  const seedUserData = [];
-  const seedMunchData = [];
-  const seedGroupData = [];
+  // const seedUserData = [];
+  // const seedMunchData = [];
+  // const seedGroupData = [];
   let i = 0;
   while (i < 10) {
-    seedUserData.push(generateUserData());
-    seedMunchData.push(generateMunchData());
+    createTestUserAndPostMunches();
+    // seedUserData.push(generateUserData());
+    // seedMunchData.push(generateMunchData());
     i++;
   };
-  const insertUserData = User.insertMany(seedUserData);
-  const insertMunchData = Munch.insertMany(seedMunchData);
-  return Promise.all([insertUserData, insertMunchData])
+  // const insertUserData = User.insertMany(seedUserData);
+  // const insertMunchData = Munch.insertMany(seedMunchData);
+  // return Promise.all([insertUserData, insertMunchData])
 }
 
 function generateUserData() {
@@ -27,11 +28,6 @@ function generateUserData() {
     userName: faker.internet.userName(),
     userEmail: faker.internet.email(),
     password: faker.internet.password(),
-    joinDate: faker.date.past(),
-    image: faker.image.imageUrl(),
-    // friends: [faker.random.uuid(), faker.random.uuid()],
-    // munches: [faker.random.uuid(), faker.random.uuid()],
-    // groups: [faker.random.uuid(), faker.random.uuid()]
   };
 }
 
@@ -39,19 +35,31 @@ function generateMunchData() {
   return {
     date: faker.date.past(),
     title: faker.lorem.words(),
-    where: faker.lorem.words(),
     description: faker.lorem.sentence(),
     emoji: faker.image.avatar(),
     image: faker.image.imageUrl(),
-    likes: {
-      thumbsUp: faker.random.number(),
-      thumbsDown: faker.random.number()
-    }
+    thumbsUp: faker.random.boolean(),
   }
 }
 
 function createTestUser() {
   return User.create(generateUserData());
+}
+
+function createTestUserAndPostMunches() {
+  User.create(generateUserData())
+  .then(user => {
+    let userId = user._id;
+    let username = user.userName
+    let j = 0;
+    while (j < 10) {
+      let newMunch = generateMunchData();
+      newMunch.postedBy = userId;
+      newMunch.userName = username;
+      Munch.create(newMunch);
+      j++;
+    }
+  })
 }
 
 function teardownDatabase() {

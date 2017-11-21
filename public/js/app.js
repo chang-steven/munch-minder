@@ -101,11 +101,7 @@ function errorHandler(err) {
 
 function displayResult(result) {
   alert(result.message);
-  console.log(result);
-}
-
-function reDirect(page) {
-  location.href=`/${page}.html`
+  location.href='/munches.html'
 }
 
 function app() {

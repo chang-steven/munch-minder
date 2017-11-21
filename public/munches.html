@@ -35,18 +35,19 @@
         </header>
         <main>
           <h2>Munches</h2>
-            <h3>Future protected endpoint</h3>
         <form id="munch-form" class="post" action="index.html" method="post">
           Date <input id="munch-date" type="date" name="date" placeholder="dd-mm-yyyy"></br>
           Title<input id="munch-title" type="text" name="title" placeholder="Chinese Takeout from Mama Liu's"></br>
-          Description<input id="munch-description" type="text" name="description" value="It was awesome!  Excellent Ghetto Broccoli Beef"></br>
-          Thumb UP<input type="radio" name="thumb" value="1"><span class="thumbUp">
+          Description<input id="munch-description" type="text" name="description" placeholder="It was awesome!  Excellent Ghetto Broccoli Beef"></br>
+          Thumb UP <span class="thumbUp">
               &#x1F44D;
-            </span>
-          Thumb DOWN<input type="radio" name="thumb" value="2"><span class="thumbDown">
+            </span><input type="radio" name="thumb" value="1">
+          Thumb DOWN <span class="thumbDown">
               &#x1F44E;
-            </span></br>
-          Notes<input type="text" name="notes" value=""></br>
+            </span><input type="radio" name="thumb" value="2"></br>
+          <!-- Notes<input type="text" name="notes" value=""></br> -->
+          Image upload<input type="file" name="image-upload"></br>
+          Image<input type="text" name="notes" value="http://fakeimg.pl/200x200/?text=Placeholder&font=lobster"></br>
           <input type="submit" name="submit" value="Add Munch">
 
         </form>
