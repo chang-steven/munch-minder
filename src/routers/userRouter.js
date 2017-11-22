@@ -27,11 +27,22 @@ userRouter.post('/user', jsonParser, (req, res) => {
       return res.status(400).json(message);
     }
   });
-  User.create({
-    userName: req.body.username,
-    userEmail: req.body.email,
-    password: req.body.password,
-    joinDate: Date.now()
+  User.find({username})
+      .count()
+      .then(count => {
+        if (count > 0) {
+          return Promise.reject({
+            code: 422,
+            reason: 'Validation Error',
+            message: 'Username already taken'
+          });
+        }
+      return User.create({
+        userName: req.body.username,
+        userEmail: req.body.email,
+        password: req.body.password,
+        joinDate: Date.now()
+    })
   })
   .then(() => {
     const message = {message:`Successfully created user ${req.body.username}`};
@@ -43,6 +54,17 @@ userRouter.post('/user', jsonParser, (req, res) => {
   })
 });
 
+//GET request for specific user and will return all munches
+userRouter.get('/user/:id', passport.authenticate('jwt', { session: false }), (req, res) => {
+    User.findById(req.params.id)
+    .populate('munches')
+    .then(result => {
+      res.json(result)
+    })
+    .catch(err => {
+      res.status(500).json({error: 'Unable to get specified user'});
+    });
+});
 
 //PUT Request to update user data or user settings
 userRouter.put('/user/:id', jsonParser, passport.authenticate('jwt', { session: false }), (req, res) => {
@@ -104,13 +126,6 @@ userRouter.post('/login', jsonParser, (req, res) => {
     console.error('oops');
   });
 });
-
-
-//Test Protected endpoint
-userRouter.get('/test', passport.authenticate('jwt', { session: false }), (req, res) => {
-  res.json({message:`It worked!  User ID authenticated.  User id is ${req.user._id}`});
-});
-
 
 //GET request if client forgot username or password, can find by email query
 userRouter.get('/findbyemail', (req, res) => {

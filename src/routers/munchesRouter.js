@@ -36,6 +36,7 @@ munchesRouter.post('/', jsonParser, passport.authenticate('jwt', { session: fals
     userName: req.user.userName,
     date: req.body.date,
     title: req.body.title,
+    userThumbsUp: req.body.userThumbsUp,
     description: req.body.description
   })
   .then(result => {
@@ -70,7 +71,6 @@ munchesRouter.get('/', passport.authenticate('jwt', { session: false }), (req, r
 //GET request for specific munch by munch ID
 munchesRouter.get('/:id', (req, res) => {
     Munch.findById(req.params.id)
-    // .populate('munches')
     .then(result => {
       res.json(result)
     })

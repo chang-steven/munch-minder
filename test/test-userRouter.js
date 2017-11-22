@@ -60,7 +60,7 @@ describe('User Router to /api/user', function() {
       return User.findOne()
       .then(result => {
         return chai.request(app)
-        .get(`/api/findbyemail?userEmail=${result.userEmail}`);
+        .get(`/api/findbyemail?email=${result.userEmail}`);
       })
       .then(res => {
         res.should.be.json;
