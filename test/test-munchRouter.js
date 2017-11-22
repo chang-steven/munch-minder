@@ -27,8 +27,8 @@ describe('Munches Router to /api/munches', function() {
     createTestUser()
     .then((user) => {
       testUser = user;
-      seedMunchMinderDatabase();
-      done();
+      seedMunchMinderDatabase()
+      .then(() => done());
     })
   });
 

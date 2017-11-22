@@ -7,20 +7,15 @@ const {Munch} = require('../src/models/munch');
 const {Group} = require('../src/models/group');
 
 function seedMunchMinderDatabase() {
-  console.info('Seeding Users, Munches & Groups collections...');
-  // const seedUserData = [];
-  // const seedMunchData = [];
-  // const seedGroupData = [];
   let i = 0;
-  while (i < 10) {
-    createTestUserAndPostMunches();
-    // seedUserData.push(generateUserData());
-    // seedMunchData.push(generateMunchData());
+  const promises = [];
+  while (i < 3) {
+    promises.push(createTestUserAndPostMunches(i));
     i++;
   };
-  // const insertUserData = User.insertMany(seedUserData);
-  // const insertMunchData = Munch.insertMany(seedMunchData);
-  // return Promise.all([insertUserData, insertMunchData])
+  console.log('Generated iteration of user data');
+  console.log('.....................');
+  return Promise.all(promises);
 }
 
 function generateUserData() {
@@ -46,19 +41,25 @@ function createTestUser() {
   return User.create(generateUserData());
 }
 
-function createTestUserAndPostMunches() {
-  User.create(generateUserData())
+function createTestUserAndPostMunches(i) {
+  console.log(`Creating User ${i+1}`);
+  return User.create(generateUserData())
   .then(user => {
     let userId = user._id;
     let username = user.userName
     let j = 0;
-    while (j < 10) {
+    const munchPromises = [];
+    while (j < 3) {
+      console.log(`Generating munch ${j+1} for user: ${username}`)
       let newMunch = generateMunchData();
       newMunch.postedBy = userId;
       newMunch.userName = username;
-      Munch.create(newMunch);
+      munchPromises.push(Munch.create(newMunch));
       j++;
     }
+    console.log('Generated Munches');
+    console.log('==================');
+    return Promise.all(munchPromises);
   })
 }
 

@@ -25,8 +25,8 @@ describe('User Router to /api/user', function() {
     createTestUser()
     .then((user) => {
       testUser = user;
-      seedMunchMinderDatabase();
-      done();
+      seedMunchMinderDatabase()
+      .then(() => done());
     })
   });
 

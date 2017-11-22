@@ -85,17 +85,12 @@ peepsRouter.get('/peeps/munches', passport.authenticate('jwt', { session: false 
 })
 
 
-peepsRouter.get('/peeps', passport.authenticate('jwt', { session: false }), (req, res) => {
-  User.findById(req.user._id)
-  // .populate('friends')
-  // .populate('munches')
-
+peepsRouter.get('/peep/:id', passport.authenticate('jwt', { session: false }), (req, res) => {
+  User.findById(req.params.id)
   .populate({
-    path : 'friends',
-    select : 'userName',
-    populate : {path : 'munches', options: {sort: { 'date': -1}}}
+    path : 'munches',
+    options: {sort: { 'date': -1}}
   })
-  // .populate('munches')
   .then(result => {
     res.json(result)
   })

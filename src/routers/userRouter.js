@@ -27,22 +27,11 @@ userRouter.post('/user', jsonParser, (req, res) => {
       return res.status(400).json(message);
     }
   });
-  User.find({username})
-      .count()
-      .then(count => {
-        if (count > 0) {
-          return Promise.reject({
-            code: 422,
-            reason: 'Validation Error',
-            message: 'Username already taken'
-          });
-        }
-      return User.create({
-        userName: req.body.username,
-        userEmail: req.body.email,
-        password: req.body.password,
-        joinDate: Date.now()
-    })
+  User.create({
+    userName: req.body.username,
+    userEmail: req.body.email,
+    password: req.body.password,
+    joinDate: Date.now()
   })
   .then(() => {
     const message = {message:`Successfully created user ${req.body.username}`};
