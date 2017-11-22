@@ -34,19 +34,23 @@
         </ul>
         </header>
         <main>
-          <h2>Munches</h2>
-            <h3>Future protected endpoint</h3>
+          <h2>Add Munch</h2>
         <form id="munch-form" class="post" action="index.html" method="post">
           Date <input id="munch-date" type="date" name="date" placeholder="dd-mm-yyyy"></br>
           Title<input id="munch-title" type="text" name="title" placeholder="Chinese Takeout from Mama Liu's"></br>
-          Description<input id="munch-description" type="text" name="description" value="It was awesome!  Excellent Ghetto Broccoli Beef"></br>
-          Thumb UP<input type="radio" name="thumb" value="1"><span class="thumbUp">
-              &#x1F44D;
-            </span>
-          Thumb DOWN<input type="radio" name="thumb" value="2"><span class="thumbDown">
+          Description<input id="munch-description" type="text" name="description" placeholder="It was awesome!  Excellent Ghetto Broccoli Beef"></br>
+
+          <div class="munch-thumb">
+            <input id="munch-userThumbsUp" type="radio" name="thumb" value="1"><label for="munch-userThumbsUp">Thumbs Up <span class="thumbUp">
+                &#x1F44D;
+              </span></label>
+          <input id="munch-userThumbsDown" type="radio" name="thumb" value="2"><label for="munch-userThumbsDown">Thumbs DOWN <span class="thumbDown">
               &#x1F44E;
-            </span></br>
-          Notes<input type="text" name="notes" value=""></br>
+            </span></label>
+          </div>
+          </br>
+          Image upload<input type="file" name="image-upload"></br>
+          Image<input type="text" name="notes" value="http://fakeimg.pl/200x200/?text=Placeholder&font=lobster"></br>
           <input type="submit" name="submit" value="Add Munch">
 
         </form>
@@ -60,7 +64,6 @@
         <script>window.jQuery || document.write('<script src="js/vendor/jquery-3.2.1.min.js"><\/script>')</script>
         <script src="js/plugins.js"></script>
         <script src="js/munches.js"></script>
-        <script src="js/app.js"></script>
 
 
         <!-- Google Analytics: change UA-XXXXX-Y to be your site's ID. -->

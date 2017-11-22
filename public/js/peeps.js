@@ -1,103 +1,198 @@
-const MOCK_STATUS_UPDATES = {
-    "statusUpdates": [
-        {
-          "id": "1111111",
-          "type": "Meal",
-          "description": "In 'n Out cheeseburger meal",
-          "emoji": ":]",
-          "thumbUp": true,
-          "lastEdit": 1470016976609,
-          "peepUserName": "John Doe",
-          "peepEmail": "john@me.com",
-          "date": new Date(),
-          "lastEditAt": 1470016976609
-        },
-        {
-            "id": "2222222",
-            "type": "Meal",
-            "description": "Milk & Cookies",
-            "emoji": ":)",
-            "thumbUp": true,
-            "friendId": "bbbbbbb",
-            "peepUserName": "Jane Doe",
-            "peepEmail": "jane@me.com",
-            "date": new Date(),
-            "lastEditAt": 1470016976609
-        },
-        {
-            "id": "333333",
-            "type": "Meal",
-            "description": "Cheese and stale crackers",
-            "emoji": ":/",
-            "thumbUp": false,
-            "friendId": "cccc",
-            "peepUserName": "Jim Doe",
-            "peepEmail": "jim@me.com",
-            "date": new Date(),
-            "lastEditAt": 1470016976609
-        },
-        {
-            "id": "4444444",
-            "type": "Meal",
-            "description": "In 'n Out cheeseburger meal",
-            "emoji": ":]",
-            "thumbUp": true,
-            "friendId": "ddddd",
-            "peepUserName": "Jackie Doe",
-            "peepEmail": "jackie@me.com",
-            "date": new Date(),
-            "lastEditAt": 1470016976609
-        }
-    ]
-};
+const FRIENDMUNCHES_GET_URL = 'http://localhost:8080/api/peeps/munches';
+const FRIEND_GET_URL = 'http://localhost:8080/api/peeps/';
+const ADDFRIENDS_BYEMAIL_URL = 'http://localhost:8080/api/peeps/findbyemail';
+const ADDFRIENDS_URL = 'http://localhost:8080/api/peeps/add-friend';
 
-function getRecentStatusUpdates(callbackFn) {
-    setTimeout(function(){ callbackFn(MOCK_STATUS_UPDATES)}, 100);
-}
-
-// this function stays the same when we connect
-// to real API later
-function displayStatusUpdates(data) {
-   $('#display-peeps').empty().append(`<h2><a href="peeps.html">My Peeps</a></h2>`);
-    for (index in data.statusUpdates) {
-       $('#display-peeps').append(
-        `
-        <p> ${data.statusUpdates[index].date} - ${data.statusUpdates[index].peepUserName} logged: ${data.statusUpdates[index].description} ${data.statusUpdates[index].emoji}  </p>`);
+function getRecentFriendMunches() {
+  $.ajax({
+    type: 'GET',
+    url: FRIENDMUNCHES_GET_URL,
+    headers: {
+      Authorization: token
+    },
+    success: displayFriendMunches,
+    error: error => {
+      console.log(error);
+      console.log('Something went wrong');
     }
+  });
 }
 
-// this function can stay the same even when we
-// are connecting to real API
-function getAndDisplayStatusUpdates() {
-    getRecentStatusUpdates(displayStatusUpdates);
-}
+function displayFriendMunches(friendData) {
+  if (friendData <= 0) {
+    $('#display-peeps').empty().append(`
+      <h2><a href="peeps.html">Peeps' Munches</a></h2>
+      <p>Add your friends and see their munches!</p></div>`);
+    }
+  else {
+    $('#display-peeps').empty().append(`<h2><a href="peeps.html">Peeps' Munches</a></h2>`);
+    for (let i = 0; i < friendData.length; i++) {
+      let munch = friendData[i];
+      let thumb;
+      if (munch.userThumbsUp == 1) {
+          thumb = `<span class="thumbUp">&#x1F44D;</span>`
+        }
+      else if (munch.userThumbsUp == 2) {
+          thumb = `<span class="thumbDown">&#x1F44E;</span>`
+        }
+      else {
+        thumb = '';
+      }
+      let formattedDate = new Date(munch.date).toDateString();
+      let userURL = `/peep.html?id=${munch.postedBy || ""} `;
+      let imageURL = munch.image || "http://fakeimg.pl/200x200/?text=Munch&font=lobster";
+      $('#display-peeps').append(
+        `<div class="returned-munches">
+        <div class="munch-image">
+        <a href="munch.html?id=${munch._id}"><img src="${imageURL}"></a>
+        </div>
+        <div class="munch-blurb">
+        <p><a href="${userURL}">${munch.username || "Blank for now"}</a></p>
+        <p>${thumb}${formattedDate}</p>
+        <a href="munch.html?id=${munch._id}"><p>${munch.title}</p></a>
+        <p>${munch.description}</p>
+        </div>
+        </div>`);
+      }
+    }
+  };
+
+  function getMyFriends() {
+    $.ajax({
+      type: 'GET',
+      url: FRIEND_GET_URL,
+      headers: {
+        Authorization: token
+      },
+      success: displayMyFriends,
+      error: error => {
+        console.log('Unable to get friends');
+      }
+    });
+  }
+
+  function displayMyFriends(result) {
+    let myFriends = result.friends;
+    console.log(myFriends);
+    if (myFriends.length <= 0) {
+      $('#display-friends').empty().append(`<h2>My Peeps</h2>
+        <p>Looks like you need some friends!</p>`)
+    }
+    else {
+    $('#display-friends').empty().append(`<h2>My Peeps</h2>`);
+    for (i in myFriends) {
+      let peep = myFriends[i];
+        let formattedDate = new Date(peep.joinDate).toDateString();
+      const imageURL = peep.image || "http://fakeimg.pl/200x200/?text=peep&font=lobster";
+      $('#display-friends').append(
+        `<a href="/peep.html?id=${peep._id}"><div class="returned-peeps">
+        <div class="peeps-image">
+        <img src="${imageURL}">
+        </div>
+        <div class="peeps-blurb">
+        <p>${peep.userName}</p>
+        <p>${peep.userEmail}</p>
+        <p>Joined: ${formattedDate}</p>
+        </div>
+        </div></a>`
+      )
+    }
+      }
+  }
+
 
 function listenForSearchClick() {
   $('#js-search-peeps-button').click(event => {
     event.preventDefault();
     let query = $('#search-peeps-input').val();
     console.log(query);
+    $('#search-peeps-input').val("");
     searchAndGetPeeps(query);
-  });
+  })
 }
+
 
 function searchAndGetPeeps(query) {
-  alert(`There was a click, we're searching for: ${query}, but this feature doesn't quite work yet, so I'll return some random data`);
-  displaySearchedPeeps(MOCK_STATUS_UPDATES);
+  $.ajax({
+    type: 'GET',
+    url: ADDFRIENDS_BYEMAIL_URL + `?email=${query}`,
+    headers: {
+      Authorization: token
+    },
+    success: displaySearchedPeeps,
+    error: error => {
+      console.log(error);
+      console.log('Sorry, unable to return a search results');
+    }
+  })
 }
 
-function displaySearchedPeeps(data) {
-  $('#display-peeps').empty().append(`<h2>Peeps Search Results</h2>`);
-  for (index in data.statusUpdates) {
-    $('#display-peeps').append(
-      `<p>${data.statusUpdates[index].peepUserName} - ${data.statusUpdates[index].peepEmail}</p>
-      `
+
+function displaySearchedPeeps(searchResults) {
+  if (searchResults.length <= 0) {
+    alert('Sorry, unable to return any search results, try again.')
+  }
+  else {
+  $('#display-friends').empty().append(`<h2>Peeps Search Results</h2>`);
+  for (i in searchResults) {
+    let peep = searchResults[i];
+    const imageURL = peep.image || "http://fakeimg.pl/200x200/?text=peep&font=lobster";
+    let formattedDate = new Date(peep.joinDate).toDateString();
+    $('#display-friends').append(
+      `<div class="returned-peeps">
+      <div class="peeps-image">
+      <img src="${imageURL}">
+      </div>
+      <div class="peeps-blurb">
+      <p>${peep.userName}</p>
+      <p>${peep.userEmail}</p>
+      <p>Joined: ${formattedDate}</p>
+      </div>
+      <button class="add-friend" data-id="${peep._id}" type="button">Add Friend</button>
+      </div>`
     )
   }
+  listenForAddFriend();
+  }
+}
+
+function listenForAddFriend() {
+  $('.add-friend').click( function(event) {
+    event.preventDefault();
+    // let friendId = this.id;
+    let friendId = $(this).data('id');
+    let friend = {friendId: friendId
+    };
+    console.log(friend);
+    $.ajax({
+      type: 'POST',
+      url: ADDFRIENDS_URL,
+      data: friend,
+      headers: {
+        Authorization: token
+      },
+      success: () => {
+        alert('Successfully added friend!');
+        location.href='/peeps.html';
+      },
+      error: error => {
+        console.log(error);
+        console.log('Sorry, unable to add friend');
+      }
+    })
+  })
 }
 
 
 $(function() {
-    getAndDisplayStatusUpdates();
+  token = sessionStorage.getItem('token');
+  if (token) {
+    getMyFriends();
+    getRecentFriendMunches();
     listenForSearchClick();
+  }
+  else {
+    alert("Sorry, you're not logged in");
+    location.href='/login.html'
+  }
 })

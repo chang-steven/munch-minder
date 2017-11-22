@@ -27,10 +27,8 @@ describe('Munches Router to /api/munches', function() {
     createTestUser()
     .then((user) => {
       testUser = user;
-      return seedMunchMinderDatabase();
-    })
-    .then(() => {
-      done();
+      seedMunchMinderDatabase()
+      .then(() => done());
     })
   });
 
@@ -47,6 +45,7 @@ describe('Munches Router to /api/munches', function() {
     it('Should create a new munch in the database', function() {
       const token = jwt.sign({userId: testUser._id}, JWT_SECRET, { expiresIn: 10000 });
       const newMunch = generateMunchData();
+      console.log(newMunch);
       return chai.request(app)
       .post('/api/munches')
       .set('Authorization', `Bearer ${token}`)
@@ -64,6 +63,8 @@ describe('Munches Router to /api/munches', function() {
       .get('/api/munches')
       .set('Authorization', `Bearer ${token}`)
       .then(function(res) {
+        console.log(res);
+        console.log('----------------');
         res.should.have.status(200);
         res.should.be.json;
         res.body.should.be.an('object');
@@ -74,6 +75,8 @@ describe('Munches Router to /api/munches', function() {
     it('Should return a specific munch by ID', function() {
       Munch.findOne()
       .then(search => {
+        console.log('----------------');
+        console.log(search);
         const searchId = search._id;
         return chai.request(app)
         .get(`/api/munches/${search._id}`)
@@ -104,6 +107,8 @@ describe('Munches Router to /api/munches', function() {
       };
       return Munch.findOne()
       .then(result => {
+        console.log('----------------');
+        console.log(result);
         testMunch._id = result._id;
         return chai.request(app)
         .put(`/api/munches/${result._id}`)
@@ -128,6 +133,8 @@ describe('Munches Router to /api/munches', function() {
       const token = jwt.sign({userId: testUser._id}, JWT_SECRET, { expiresIn: 10000 });
       return Munch.findOne()
       .then(result => {
+        console.log('----------------');
+        console.log(result);
         deletedMunch = result._id;
         return chai.request(app)
         .delete(`/api/munches/${result._id}`)

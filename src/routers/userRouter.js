@@ -43,6 +43,17 @@ userRouter.post('/user', jsonParser, (req, res) => {
   })
 });
 
+//GET request for specific user and will return all munches
+userRouter.get('/user/:id', passport.authenticate('jwt', { session: false }), (req, res) => {
+    User.findById(req.params.id)
+    .populate('munches')
+    .then(result => {
+      res.json(result)
+    })
+    .catch(err => {
+      res.status(500).json({error: 'Unable to get specified user'});
+    });
+});
 
 //PUT Request to update user data or user settings
 userRouter.put('/user/:id', jsonParser, passport.authenticate('jwt', { session: false }), (req, res) => {
@@ -105,13 +116,6 @@ userRouter.post('/login', jsonParser, (req, res) => {
   });
 });
 
-
-//Test Protected endpoint
-userRouter.get('/test', passport.authenticate('jwt', { session: false }), (req, res) => {
-  res.json({message:`It worked!  User ID authenticated.  User id is ${req.user._id}`});
-});
-
-
 //GET request if client forgot username or password, can find by email query
 userRouter.get('/findbyemail', (req, res) => {
   User.findOne({userEmail: `${req.query.email}`})
@@ -124,18 +128,6 @@ userRouter.get('/findbyemail', (req, res) => {
   });
 });
 
-//Get request for update from friends
-userRouter.get('/user/:id/', passport.authenticate('jwt', { session: false }), (req, res) => {
-  User.findById(req.params.id)
-  .populate('munches')
-  .populate({path : 'friends', select : 'userName', populate : {path : 'munches', select: 'description'}})
-  .then(result => {
-    res.json(result)
-  })
-  .catch(err => {
-    console.error(err);
-    res.status(500).json({error: 'Unable to get update from friends'});
-  });
-})
+
 
 module.exports = {userRouter};

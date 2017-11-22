@@ -138,7 +138,35 @@ input {
   margin: 6px 10px;
 }
 
+#display-munches, #display-peeps {
+  max-height: 600px;
+  overflow-x: scroll;
+  overflow-y: hidden;
+  white-space: nowrap;
 
+}
+
+.returned-munches, .returned-peeps {
+  margin: 20px 10px;
+  display: inline-block;
+}
+.munch-image, .munch-blurb, .peeps-image, .peeps-blurb {
+  /*display: inline-block;*/
+  vertical-align: top;
+  margin-right: 10px;
+}
+
+.munch-blurb, .peeps-blurb {
+  padding-left: 10px;
+}
+
+#munch-title, #munch-description {
+  width: 500px;
+}
+
+.thumbUp, .thumbDown {
+  padding-right: 10px;
+}
 
 
 

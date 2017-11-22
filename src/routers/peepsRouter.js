@@ -41,4 +41,78 @@ peepsRouter.get('/groups', jsonParser, passport.authenticate('jwt', { session: f
   })
 });
 
+peepsRouter.get('/peeps/', passport.authenticate('jwt', { session: false }), (req, res) => {
+  User.findById(req.user._id)
+  // .populate('friends')
+  // .populate('munches')
+
+  .populate({
+    path : 'friends',
+  })
+  .then(result => {
+    res.json(result);
+  })
+  .catch(err => {
+    console.error(err);
+    res.status(500).json({error: 'Unable to get friends'});
+  });
+})
+
+
+//GET request for 15 most recent updates from friends
+peepsRouter.get('/peeps/munches', passport.authenticate('jwt', { session: false }), (req, res) => {
+  User.findById(req.user._id)
+  // .populate('friends')
+  // .populate('munches')
+
+  .populate({
+    path : 'friends',
+    select : 'userName',
+    populate : {path : 'munches'}
+  })
+  // .populate('munches')
+  .then(result => {
+    // console.log(result);
+    const allMunches = result.friends.map(a => a.munches)
+                             .reduce((a, b) => (a.concat(b)), [])
+                             .sort((a, b) => a.date < b.date);
+    res.json(allMunches);
+  })
+  .catch(err => {
+    console.error(err);
+    res.status(500).json({error: 'Unable to get update from friends'});
+  });
+})
+
+
+peepsRouter.get('/peep/:id', passport.authenticate('jwt', { session: false }), (req, res) => {
+  User.findById(req.params.id)
+  .populate({
+    path : 'munches',
+    options: {sort: { 'date': -1}}
+  })
+  .then(result => {
+    res.json(result)
+  })
+  .catch(err => {
+    console.error(err);
+    res.status(500).json({error: 'Unable to get update from friends'});
+  });
+})
+
+peepsRouter.get('/peeps/findbyemail', passport.authenticate('jwt', { session: false }), (req, res) => {
+  User.find({userEmail: `${req.query.email}`})
+  .then(result => {
+    res.json(result);
+  })
+  .catch( err => {
+    res.status(500).json({error: 'Unable to find any users by email'});
+  });
+});
+
+peepsRouter.post('/peeps/add-friend', jsonParser, passport.authenticate('jwt', { session: false }), (req, res) => {
+        User.findByIdAndUpdate(req.user._id, { $push: { friends: req.body.friendId } }, { new: true })
+        .then(updated => res.json(updated));
+    });
+
 module.exports = {peepsRouter};
