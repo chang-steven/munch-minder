@@ -171,8 +171,9 @@ function listenForAddFriend() {
       headers: {
         Authorization: token
       },
-      success: () => {
-        alert('Successfully added friend!');
+      success: (response) => {
+        console.log(response);
+        alert(response.message);
         location.href='/peeps.html';
       },
       error: error => {

@@ -168,7 +168,27 @@ input {
   padding-right: 10px;
 }
 
+#avatar-form h1 {
+  display: inline-block;
+}
 
+#avatar-button {
+  display: inline-block;
+  font-size: 1.1em;
+}
+
+.avatar-window {
+  display: inline-block;
+  margin: 10px 10px;
+}
+
+.avatar-window img {
+  width: 100px;
+}
+
+.avatar-radio {
+  text-align: center;
+}
 
 
 
