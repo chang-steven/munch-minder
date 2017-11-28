@@ -1,12 +1,7 @@
-const FRIENDMUNCHES_GET_URL = 'http://localhost:8080/api/peeps/munches';
-const FRIEND_GET_URL = 'http://localhost:8080/api/peeps/';
-const ADDFRIENDS_BYEMAIL_URL = 'http://localhost:8080/api/peeps/findbyemail';
-const ADDFRIENDS_URL = 'http://localhost:8080/api/peeps/add-friend';
-
 function getRecentFriendMunches() {
   $.ajax({
     type: 'GET',
-    url: FRIENDMUNCHES_GET_URL,
+    url: '/api/peeps/munches',
     headers: {
       Authorization: token
     },
@@ -60,7 +55,7 @@ function displayFriendMunches(friendData) {
   function getMyFriends() {
     $.ajax({
       type: 'GET',
-      url: FRIEND_GET_URL,
+      url: '/api/peeps',
       headers: {
         Authorization: token
       },
@@ -82,9 +77,9 @@ function displayFriendMunches(friendData) {
     $('#display-friends').empty().append(`<h2>My Peeps</h2>`);
     for (i in myFriends) {
       let peep = myFriends[i];
+      let imageURL = (peep.avatar ? peep.avatar.url : "http://fakeimg.pl/200x200/?text=peep&font=lobster");
         let formattedDate = new Date(peep.joinDate).toDateString();
-      const imageURL = peep.image || "http://fakeimg.pl/200x200/?text=peep&font=lobster";
-      $('#display-friends').append(
+            $('#display-friends').append(
         `<a href="/peep.html?id=${peep._id}"><div class="returned-peeps">
         <div class="peeps-image">
         <img src="${imageURL}">
@@ -97,8 +92,8 @@ function displayFriendMunches(friendData) {
         </div></a>`
       )
     }
-      }
   }
+}
 
 
 function listenForSearchClick() {
@@ -111,11 +106,10 @@ function listenForSearchClick() {
   })
 }
 
-
 function searchAndGetPeeps(query) {
   $.ajax({
     type: 'GET',
-    url: ADDFRIENDS_BYEMAIL_URL + `?email=${query}`,
+    url: '/api/peeps/findbyemail' + `?email=${query}`,
     headers: {
       Authorization: token
     },
@@ -127,7 +121,6 @@ function searchAndGetPeeps(query) {
   })
 }
 
-
 function displaySearchedPeeps(searchResults) {
   if (searchResults.length <= 0) {
     alert('Sorry, unable to return any search results, try again.')
@@ -136,7 +129,7 @@ function displaySearchedPeeps(searchResults) {
   $('#display-friends').empty().append(`<h2>Peeps Search Results</h2>`);
   for (i in searchResults) {
     let peep = searchResults[i];
-    const imageURL = peep.image || "http://fakeimg.pl/200x200/?text=peep&font=lobster";
+    let imageURL = (peep.avatar ? peep.avatar.url : "http://fakeimg.pl/200x200/?text=peep&font=lobster");
     let formattedDate = new Date(peep.joinDate).toDateString();
     $('#display-friends').append(
       `<div class="returned-peeps">
@@ -159,14 +152,13 @@ function displaySearchedPeeps(searchResults) {
 function listenForAddFriend() {
   $('.add-friend').click( function(event) {
     event.preventDefault();
-    // let friendId = this.id;
     let friendId = $(this).data('id');
     let friend = {friendId: friendId
     };
     console.log(friend);
     $.ajax({
       type: 'POST',
-      url: ADDFRIENDS_URL,
+      url: '/api/peeps/add-friend',
       data: friend,
       headers: {
         Authorization: token
@@ -186,14 +178,7 @@ function listenForAddFriend() {
 
 
 $(function() {
-  token = sessionStorage.getItem('token');
-  if (token) {
-    getMyFriends();
-    getRecentFriendMunches();
-    listenForSearchClick();
-  }
-  else {
-    alert("Sorry, you're not logged in");
-    location.href='/login.html'
-  }
+  getMyFriends();
+  getRecentFriendMunches();
+  listenForSearchClick();
 })

@@ -1,7 +1,3 @@
-
-const FRIEND_GET_URL = 'http://localhost:8080/api/peeps/';
-const FRIENDBYID_GET_URL = 'http://localhost:8080/api/peep/';
-
 let friendId;
 
 function getQueryVariable(variable) {
@@ -19,7 +15,7 @@ function getQueryVariable(variable) {
 function getSpecificFriend() {
   $.ajax({
     type: 'GET',
-    url: FRIENDBYID_GET_URL + friendId,
+    url: '/api/peep/' + friendId,
     headers: {
       Authorization: token
     },
@@ -62,20 +58,11 @@ function displayFriendMunches(result) {
         <p>${munch.description}</p>
         </div>
         </div>`);
-
     }
   };
 
 
 $(function() {
-  token = sessionStorage.getItem('token');
-  if (token) {
-    friendId = getQueryVariable('id');
-    console.log(friendId);
-    getSpecificFriend();
-  }
-  else {
-    alert("Sorry, you're not logged in");
-    location.href='/login.html'
-  }
+  friendId = getQueryVariable('id');
+  getSpecificFriend();
 })

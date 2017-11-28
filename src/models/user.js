@@ -1,7 +1,5 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
-// const uniqueValidator = require('mongoose-unique-validator');
-// const uniqueArrayPlugin = require('mongoose-unique-array');
 
 const userSchema = mongoose.Schema({
   userName: {type: String, required: true, unique: true},
@@ -40,10 +38,6 @@ userSchema.methods.validatePassword = function(password) {
 userSchema.statics.hashPassword = function(password) {
     return bcrypt.hash(password, 10);
 };
-
-// userSchema.plugin(uniqueValidator);
-// userSchema.plugin(uniqueArrayPlugin);
-
 
 const User = mongoose.model('User', userSchema);
 

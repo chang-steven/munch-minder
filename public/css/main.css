@@ -112,13 +112,20 @@ body {
 header {
   background-color: #D0F9D9;
   padding: 16px 16px;
+  padding-left: 30px;
 }
 
 
 header h1 {
   margin-top: 0;
   padding-left: 40px;
+  display: inline-block;
 
+}
+
+.nav-links {
+  margin-top: 4px;
+  margin-bottom: 0px;
 }
 
 .nav-links li {
@@ -190,6 +197,24 @@ input {
   text-align: center;
 }
 
+.peeps-image > img {
+  width: 165px;
+}
+
+#user-avatar-window {
+  float: right;
+  margin-right: 125px;
+}
+
+#user-avatar-window img {
+  width: 65px;
+}
+
+#user-avatar-window a {
+  padding-top: 10px;
+  display: block;
+  text-align: center;
+}
 
 
 

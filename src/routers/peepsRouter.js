@@ -48,6 +48,7 @@ peepsRouter.get('/peeps/', passport.authenticate('jwt', { session: false }), (re
 
   .populate({
     path : 'friends',
+    populate: {path: 'avatar'}
   })
   .then(result => {
     res.json(result);
@@ -102,6 +103,7 @@ peepsRouter.get('/peep/:id', passport.authenticate('jwt', { session: false }), (
 
 peepsRouter.get('/peeps/findbyemail', passport.authenticate('jwt', { session: false }), (req, res) => {
   User.find({userEmail: `${req.query.email}`})
+  .populate({path: 'avatar'})
   .then(result => {
     res.json(result);
   })

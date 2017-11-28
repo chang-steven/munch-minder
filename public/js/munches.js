@@ -1,5 +1,8 @@
-const MUNCH_GET_URL = 'http://localhost:8080/api/munches/';
-const MUNCH_POST_URL = 'http://localhost:8080/api/munches/';
+function parseJwt (token) {
+    const base64Url = token.split('.')[1];
+    const base64 = base64Url.replace('-', '+').replace('_', '/');
+    return JSON.parse(window.atob(base64));
+};
 
 function listenForMunch() {
   console.log('Now listening for Munch');
@@ -14,12 +17,11 @@ function listenForMunch() {
       description: $('#munch-description').val(),
       userThumbsUp: thumb
     };
-    console.log(munch);
     $.ajax({
       type: 'POST',
-      url: MUNCH_POST_URL,
+      url: '/api/munches',
       headers: {
-        Authorization: sessionStorage.getItem('token')
+        Authorization: token
       },
       data: munch,
       success: result => {
@@ -35,18 +37,18 @@ function listenForMunch() {
 }
 
 function getMunches() {
-    $.ajax({
-      type: 'GET',
-      url: MUNCH_GET_URL,
-      headers: {
-        Authorization: token
-      },
-      success: displayMunches,
-      error: error => {
-        console.log(error);
-        console.log('Something went wrong');
-      }
-    })
+  $.ajax({
+    type: 'GET',
+    url: '/api/munches',
+    headers: {
+      Authorization: token
+    },
+    success: displayMunches,
+    error: error => {
+      console.log(error);
+      console.log('Something went wrong');
+    }
+  });
 }
 
 function displayMunches(data) {
@@ -87,13 +89,6 @@ function displayMunches(data) {
 }
 
 $(function() {
-  token = sessionStorage.getItem('token');
-  if (token) {
-    getMunches();
-    listenForMunch();
-  }
-  else {
-    alert("Sorry, you're not logged in");
-    location.href='/login.html'
-  }
-})
+  getMunches();
+  listenForMunch();
+});

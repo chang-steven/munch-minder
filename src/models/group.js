@@ -1,6 +1,4 @@
 const mongoose = require('mongoose');
-const uniqueValidator = require('mongoose-unique-validator');
-
 
 const groupSchema = mongoose.Schema({
   groupName: {type: String, required: true, unique: true},
@@ -12,8 +10,6 @@ const groupSchema = mongoose.Schema({
     role: {type: String, enum: ['Member', 'Organizer'], default: 'Member'}
   }]
 });
-
-groupSchema.plugin(uniqueValidator);
 
 const Group = mongoose.model('Group', groupSchema);
 

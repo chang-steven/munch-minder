@@ -7,8 +7,8 @@ const userRouter = express.Router();
 
 const bodyParser = require('body-parser');
 const jsonParser = bodyParser.json();
-userRouter.use(bodyParser.urlencoded({extended: false}));
 
+userRouter.use(bodyParser.urlencoded({extended: false}));
 userRouter.use(passport.initialize());
 require('../config/passport')(passport);
 
@@ -100,10 +100,14 @@ userRouter.delete('/user/:id', passport.authenticate('jwt', { session: false }),
 //User login to create token
 userRouter.post('/login', jsonParser, (req, res) => {
   User.findOne({userName: req.body.username})
+  .populate({
+    path: 'avatar'
+  })
   .then(foundUser => {
     foundUser.validatePassword(req.body.password)
     .then(() => {
-      const token = jwt.sign({userId: foundUser._id}, config.JWT_SECRET, {expiresIn: config.JWT_EXPIRY});
+      console.log(foundUser);
+      const token = jwt.sign({userId: foundUser._id, avatarUrl: (foundUser.avatar ? foundUser.avatar.url : '/img/avatars/000-default.png')}, config.JWT_SECRET, {expiresIn: config.JWT_EXPIRY});
       res.json({message:`Succesfully logged in as ${req.body.username}`, success: true, token: 'Bearer ' + token});
     })
     .catch(err => {
@@ -121,7 +125,8 @@ userRouter.post('/login', jsonParser, (req, res) => {
 userRouter.get('/findbyemail', (req, res) => {
   User.findOne({userEmail: `${req.query.email}`})
   .then(result => {
-    res.json(result);
+    let response = {username: result.userName};
+    res.json(response);
   })
   .catch(err => {
     console.error(err);
@@ -131,14 +136,16 @@ userRouter.get('/findbyemail', (req, res) => {
 
 userRouter.get('/users/avatar', passport.authenticate('jwt', { session: false }), (req, res) => {
   Avatar.find()
-  .then(result => res.json(result))
+  .then(result => {
+    res.json(result);
+  })
   .catch(err => {
     console.error('Unable to get avatars');
   })
 })
 
 //Updated a users avatar image
-userRouter.patch('/user/:id'), jsonParser, passport.authenticate('jwt', { session: false }), (req, res) => {
+userRouter.patch('/user/:id', jsonParser, passport.authenticate('jwt', { session: false }), (req, res) => {
   console.log(req.user._id);
   console.log(req.params.id);
   if (!(req.user._id == req.params.id)) {
@@ -154,8 +161,7 @@ userRouter.patch('/user/:id'), jsonParser, passport.authenticate('jwt', { sessio
     console.log('Error updating avatar')
     console.log(err);
   });
-
-}
+})
 
 
 module.exports = {userRouter};
