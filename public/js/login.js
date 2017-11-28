@@ -1,5 +1,3 @@
-const USER_LOGIN_URL = 'http://localhost:8080/api/login';
-
 function listenForLogin() {
   console.log('Now listening for Login');
   $('#login').submit(event => {
@@ -13,7 +11,7 @@ function listenForLogin() {
     $('#login-password').val("");
     $.ajax({
       type: 'POST',
-      url: USER_LOGIN_URL,
+      url: '/api/login',
       data: user,
       success: result => {
         sessionStorage.setItem('token', result.token);

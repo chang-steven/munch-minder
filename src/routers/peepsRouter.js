@@ -48,6 +48,7 @@ peepsRouter.get('/peeps/', passport.authenticate('jwt', { session: false }), (re
 
   .populate({
     path : 'friends',
+    populate: {path: 'avatar'}
   })
   .then(result => {
     res.json(result);
@@ -102,6 +103,7 @@ peepsRouter.get('/peep/:id', passport.authenticate('jwt', { session: false }), (
 
 peepsRouter.get('/peeps/findbyemail', passport.authenticate('jwt', { session: false }), (req, res) => {
   User.find({userEmail: `${req.query.email}`})
+  .populate({path: 'avatar'})
   .then(result => {
     res.json(result);
   })
@@ -111,8 +113,25 @@ peepsRouter.get('/peeps/findbyemail', passport.authenticate('jwt', { session: fa
 });
 
 peepsRouter.post('/peeps/add-friend', jsonParser, passport.authenticate('jwt', { session: false }), (req, res) => {
-        User.findByIdAndUpdate(req.user._id, { $push: { friends: req.body.friendId } }, { new: true })
-        .then(updated => res.json(updated));
+  let numFriends;
+      User.findById(req.user._id)
+      .then(userData => {
+        numFriends = userData.friends.length;
+        console.log(numFriends);
+        return User.findByIdAndUpdate(req.user._id, { $addToSet: { friends: req.body.friendId } }, { new: true })
+      })
+        .then((updated) => {
+          if (numFriends == updated.friends.length) {
+             res.json({message: "Looks like you're already friends"});
+           }
+           else {
+             res.json({message: 'Successfully added friend!'});
+        }
+        })
+        .catch(err => {
+          console.log('Caught an error adding friend')
+          console.log(err);
+        });
     });
 
 module.exports = {peepsRouter};

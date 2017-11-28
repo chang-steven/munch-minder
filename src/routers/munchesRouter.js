@@ -9,6 +9,17 @@ const {User} = require('../models/user');
 const {Munch} = require('../models/munch');
 const munchesRouter = express.Router();
 
+const AWS = require('aws-sdk');
+const multer = require('multer');
+const multerS3 = require('multer-s3');
+const {AWS_BUCKET} = require('../config/main')
+
+
+const s3 = new AWS.S3({
+    apiVersion: '2016-04-01',
+});
+
+
 munchesRouter.use(passport.initialize());
 require('../config/passport')(passport);
 
@@ -18,12 +29,36 @@ munchesRouter.get('/test', passport.authenticate('jwt', { session: false }), (re
   res.json({message:`It worked!  User ID authenticated.  User id is ${req.user._id}`});
 });
 
+const upload = multer({
+    storage: multerS3({
+        s3: s3,
+        bucket: AWS_BUCKET,
+        metadata: function(req, file, cb) {
+            cb(null, {
+                fieldName: file.fieldname
+            });
+        },
+        key: function(req, file, cb) {
+            cb(null, file.originalname + '-' + Date.now().toString());
+        }
+    })
+});
 
 //POST request to /api/user for creating new munch
-munchesRouter.post('/', jsonParser, passport.authenticate('jwt', { session: false }),
-(req, res) => {
+munchesRouter.post('/',
+  jsonParser,
+  passport.authenticate('jwt', { session: false }),
+  upload.fields([{
+            name: 'itemFile',
+            maxCount: 1
+        },
+        {
+            name: 'imgFile',
+            maxCount: 1
+        }
+    ]),
+  (req, res) => {
   const requiredKeys = ["date", "title", "description"];
-  // console.log(req.user);
   requiredKeys.forEach( key => {
     if(!(key in req.body)) {
       const message = {message:`Please fill out all required fields.  Missing ${key} in request body, please try again.`};
@@ -56,7 +91,7 @@ munchesRouter.post('/', jsonParser, passport.authenticate('jwt', { session: fals
 munchesRouter.get('/', passport.authenticate('jwt', { session: false }), (req, res) => {
   User.findById(req.user._id)
   .populate({
-    path: 'munches',
+    path: 'munches avatar',
     options: {sort: { 'date': -1}}
   })
   .then(result => {

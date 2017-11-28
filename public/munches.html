@@ -25,6 +25,8 @@
 
 
         <h1>Munch Minder</h1>
+        <div id="user-avatar-window">
+        </div>
 
         <ul class="nav-links">
             <li><a href="dashboard.html">My Dashboard</a></li>
@@ -35,7 +37,7 @@
         </header>
         <main>
           <h2>Add Munch</h2>
-        <form id="munch-form" class="post" action="index.html" method="post">
+        <form id="munch-form" class="post" method="post">
           Date <input id="munch-date" type="date" name="date" placeholder="dd-mm-yyyy"></br>
           Title<input id="munch-title" type="text" name="title" placeholder="Chinese Takeout from Mama Liu's"></br>
           Description<input id="munch-description" type="text" name="description" placeholder="It was awesome!  Excellent Ghetto Broccoli Beef"></br>
@@ -49,7 +51,7 @@
             </span></label>
           </div>
           </br>
-          Image upload<input type="file" name="image-upload"></br>
+          Image upload<input id="munch-image" type="file" name="image-upload" accept="image/*"></br>
           Image<input type="text" name="notes" value="http://fakeimg.pl/200x200/?text=Placeholder&font=lobster"></br>
           <input type="submit" name="submit" value="Add Munch">
 
@@ -62,7 +64,7 @@
         <script src="js/vendor/modernizr-3.5.0.min.js"></script>
         <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
         <script>window.jQuery || document.write('<script src="js/vendor/jquery-3.2.1.min.js"><\/script>')</script>
-        <script src="js/plugins.js"></script>
+        <script src="js/app.js"></script>
         <script src="js/munches.js"></script>
 
 

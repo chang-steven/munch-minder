@@ -51,6 +51,7 @@ describe('User Router to /api/user', function() {
       .then(function(res) {
         res.should.have.status(200);
         res.should.be.json;
+        res.body.should.include.keys('message');
       });
     });
   });
@@ -63,7 +64,9 @@ describe('User Router to /api/user', function() {
         .get(`/api/findbyemail?email=${result.userEmail}`);
       })
       .then(res => {
+        res.should.have.status(200);
         res.should.be.json;
+        res.body.should.include.keys('username');
       });
     });
   });
@@ -73,8 +76,6 @@ describe('User Router to /api/user', function() {
       const token = jwt.sign({userId: testUser._id}, JWT_SECRET, { expiresIn: 10000 });
       return User.findOne()
       .then(result => {
-        console.log('----------------');
-        console.log(result);
         testUser._id = result._id;
         return chai.request(app)
         .put(`/api/user/${result._id}`)

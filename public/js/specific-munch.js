@@ -1,4 +1,3 @@
-const MUNCH_GET_URL = 'http://localhost:8080/api/munches/';
 let munchId;
 
 function getQueryVariable(variable) {
@@ -16,7 +15,7 @@ function getQueryVariable(variable) {
 function getSpecificMunch() {
   $.ajax({
     type: 'GET',
-    url: MUNCH_GET_URL + munchId,
+    url: '/api/munches/' + munchId,
     headers: {
       Authorization: token
     },
@@ -29,7 +28,6 @@ function getSpecificMunch() {
 }
 
 function displayMunch(munch) {
-  console.log(munch);
   let thumb;
   if (munch.userThumbsUp == 1) {
       thumb = `<span class="thumbUp">&#x1F44D;</span>`
@@ -58,14 +56,6 @@ function displayMunch(munch) {
 }
 
 $(function() {
-  token = sessionStorage.getItem('token');
-  if (token) {
-    munchId = getQueryVariable('id');
-    console.log(munchId);
-    getSpecificMunch();
-  }
-  else {
-    alert("Sorry, you're not logged in");
-    location.href='/login.html'
-  }
+  munchId = getQueryVariable('id');
+  getSpecificMunch();
 })
