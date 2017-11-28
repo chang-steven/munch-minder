@@ -8,7 +8,7 @@ function getRecentFriendMunches() {
     success: displayFriendMunches,
     error: error => {
       console.log(error);
-      console.log('Something went wrong');
+      console.log('Unable to get friends munches');
     }
   });
 }
@@ -68,7 +68,6 @@ function displayFriendMunches(friendData) {
 
   function displayMyFriends(result) {
     let myFriends = result.friends;
-    console.log(myFriends);
     if (myFriends.length <= 0) {
       $('#display-friends').empty().append(`<h2>My Peeps</h2>
         <p>Looks like you need some friends!</p>`)
@@ -100,7 +99,6 @@ function listenForSearchClick() {
   $('#js-search-peeps-button').click(event => {
     event.preventDefault();
     let query = $('#search-peeps-input').val();
-    console.log(query);
     $('#search-peeps-input').val("");
     searchAndGetPeeps(query);
   })
@@ -155,7 +153,6 @@ function listenForAddFriend() {
     let friendId = $(this).data('id');
     let friend = {friendId: friendId
     };
-    console.log(friend);
     $.ajax({
       type: 'POST',
       url: '/api/peeps/add-friend',
@@ -164,7 +161,6 @@ function listenForAddFriend() {
         Authorization: token
       },
       success: (response) => {
-        console.log(response);
         alert(response.message);
         location.href='/peeps.html';
       },
@@ -175,7 +171,6 @@ function listenForAddFriend() {
     })
   })
 }
-
 
 $(function() {
   getMyFriends();

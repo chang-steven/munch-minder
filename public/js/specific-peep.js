@@ -29,7 +29,6 @@ function getSpecificFriend() {
 
 function displayFriendMunches(result) {
     let friendData = result.munches;
-    console.log(friendData);
     $('#display-friend').empty().append(`<h2>${result.userName}'s Munches</h2>`);
     for (let i = 0; i < friendData.length; i++) {
       let munch = friendData[i];

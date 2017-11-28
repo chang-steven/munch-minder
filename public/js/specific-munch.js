@@ -28,7 +28,6 @@ function getSpecificMunch() {
 }
 
 function displayMunch(munch) {
-  console.log(munch);
   let thumb;
   if (munch.userThumbsUp == 1) {
       thumb = `<span class="thumbUp">&#x1F44D;</span>`

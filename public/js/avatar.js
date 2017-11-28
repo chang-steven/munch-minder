@@ -8,9 +8,9 @@ function getAvatars() {
     success: displayAvatarCollection,
     error: error => {
       console.log(error);
-      console.log('Something went wrong');
+      console.log('Unable to get avatar collection');
     }
-  })
+  });
 }
 
 function displayAvatarCollection(result) {
@@ -50,4 +50,4 @@ function listenForAvatarSelection() {
 $(function() {
   getAvatars();
   listenForAvatarSelection();
-})
+});
