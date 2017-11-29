@@ -7,20 +7,26 @@ function parseJwt (token) {
 function listenForMunch() {
   $('#munch-form').submit(event => {
     event.preventDefault();
+    let image = $('#munch-image').val();
+    console.log(image);
     let thumb = $('input[name=thumb]:checked', '#munch-form').val();
     let munch = {
       date: $('#munch-date').val(),
       title: $('#munch-title').val(),
       description: $('#munch-description').val(),
-      userThumbsUp: thumb
+      userThumbsUp: thumb,
+      imgFile: $('#munch-image').val()
     };
     $.ajax({
-      type: 'POST',
+      method: 'POST',
+      enctype: 'multipart/form-data',
       url: '/api/munches',
       headers: {
         Authorization: token
       },
       data: munch,
+      processData: false,
+      contentType: false,
       success: result => {
         alert(result.message);
         location.href='/munches.html'

@@ -8,7 +8,7 @@ const {TEST_DATABASE_URL} = require('../src/config/main');
 
 chai.use(chaiHttp);
 
-describe('Munch Minder html pages', function() {
+describe('Munchy html pages', function() {
 
   before(function() {
     return runServer(TEST_DATABASE_URL);

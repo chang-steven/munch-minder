@@ -10,7 +10,7 @@ function displayAvatar() {
   console.log('Now displaying avatar');
   $('#user-avatar-window').empty().append(`
     <img src="${payloadData.avatarUrl}">
-    <a href="javascript: logOut()">Log Out</a>`)
+    <a href="javascript: logOut()">Log Out</a>`);
 }
 
 function logOut() {

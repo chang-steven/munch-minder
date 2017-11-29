@@ -2,9 +2,6 @@ function getAvatars() {
   $.ajax({
     method: 'GET',
     url: '/api/users/avatar',
-    headers: {
-      Authorization: token
-    },
     success: displayAvatarCollection,
     error: error => {
       console.log(error);
@@ -38,8 +35,13 @@ function listenForAvatarSelection() {
       headers: {
         Authorization: token
       },
-      success: () => location.href='/dashboard.html',
-      error: error => {
+      success: () =>
+        {
+          alert('User data changed, please log in.');
+          sessionStorage.removeItem('token');
+          location.href='/login.html';
+        },
+        error: error => {
         console.log(error);
         console.log('Error selecting avatar');
       }

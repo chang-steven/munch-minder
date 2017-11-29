@@ -32,7 +32,8 @@ userRouter.post('/user', jsonParser, (req, res) => {
     userName: req.body.username,
     userEmail: req.body.email,
     password: req.body.password,
-    joinDate: Date.now()
+    joinDate: Date.now(),
+    avatar: req.body.avatar
   })
   .then(() => {
     const message = {message:`Successfully created user ${req.body.username}`};
@@ -125,16 +126,17 @@ userRouter.post('/login', jsonParser, (req, res) => {
 userRouter.get('/findbyemail', (req, res) => {
   User.findOne({userEmail: `${req.query.email}`})
   .then(result => {
-    let response = {username: result.userName};
+    let response = {message: `Username is ${result.userName}`,
+    username: result.userName};
     res.json(response);
   })
   .catch(err => {
     console.error(err);
-    res.status(500).json({error: 'Unable to find user by email'});
+    res.status(500).json({message: 'Unable to find user by email'});
   });
 });
 
-userRouter.get('/users/avatar', passport.authenticate('jwt', { session: false }), (req, res) => {
+userRouter.get('/users/avatar', (req, res) => {
   Avatar.find()
   .then(result => {
     res.json(result);

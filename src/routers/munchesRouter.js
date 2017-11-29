@@ -15,10 +15,8 @@ const multerS3 = require('multer-s3');
 const {AWS_BUCKET} = require('../config/main')
 
 
-const s3 = new AWS.S3({
-    apiVersion: '2016-04-01',
-});
-
+const s3 = new AWS.S3();
+// {apiVersion: '2016-04-01'}
 
 munchesRouter.use(passport.initialize());
 require('../config/passport')(passport);
@@ -48,15 +46,12 @@ const upload = multer({
 munchesRouter.post('/',
   jsonParser,
   passport.authenticate('jwt', { session: false }),
-  upload.fields([{
-            name: 'itemFile',
-            maxCount: 1
-        },
+  upload.fields(
         {
             name: 'imgFile',
             maxCount: 1
         }
-    ]),
+    ),
   (req, res) => {
   const requiredKeys = ["date", "title", "description"];
   requiredKeys.forEach( key => {

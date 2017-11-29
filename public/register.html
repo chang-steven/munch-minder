@@ -17,7 +17,7 @@
     </head>
     <body>
         <header>
-          <h1>Munch Minder</h1>
+          <h1><a href="/">Munchy</a></h1>
           <ul class="nav-links">
               <li><a href="demo.html">Demo</a></li>
               <li><a href="login.html">Login</a></li>
@@ -26,23 +26,37 @@
           </ul>
         </header>
         <main>
+          <!-- The Modal -->
+          <div id="myModal" class="modal">
+
+            <!-- Modal content -->
+            <div class="modal-content">
+              <span class="close">&times;</span>
+              <form id="avatar-form">
+                  <div id="avatar-collection"></div>
+                </form>
+            </div>
+          </div>
+
         <form id="register" action="register.html" method="post">
           <h2>Register</h2>
-          <!-- Name <input type="text" name="name" value="" required></br> -->
-          Email <input id="register-email" type="text" name="email" value="" required></br>
+          Email <input id="register-email" type="email" name="email" value="" required></br>
           Username <input id="register-username" type="text" name="username" value="" required></br>
           Password <input id="register-password" type="password" name="password" value="" required></br>
           Re-enter Password <input id="register-password2" type="password" name="password" value="" required></br>
           <input type="submit" name="submit" value="Register">
         </form>
         <p>Already registered? <a href="login.html">Log in!</a></p>
+
+
         </main>
 
         <script src="js/vendor/modernizr-3.5.0.min.js"></script>
         <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
         <script>window.jQuery || document.write('<script src="js/vendor/jquery-3.2.1.min.js"><\/script>')</script>
-        <script src="js/plugins.js"></script>
+        <script src="js/modal.js"></script>
         <script src="js/register.js"></script>
+        <!-- <script src="js/avatar.js"></script> -->
 
         <!-- Google Analytics: change UA-XXXXX-Y to be your site's ID. -->
         <script>

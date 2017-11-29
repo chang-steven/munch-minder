@@ -66,7 +66,7 @@ describe('User Router to /api/user', function() {
       .then(res => {
         res.should.have.status(200);
         res.should.be.json;
-        res.body.should.include.keys('username');
+        res.body.should.include.keys('message');
       });
     });
   });

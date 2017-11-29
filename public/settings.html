@@ -18,7 +18,7 @@
     <body>
       <header>
 
-        <h1>Munch Minder</h1>
+        <h1><a href="/dashboard.html">Munchy</a></h1>
         <div id="user-avatar-window">
         </div>
 
@@ -31,17 +31,58 @@
       </header>
 <main>
   <h2>Settings</h2>
+    <div id="change-avatar-window">
+      <button id="myBtn">Change Avatar</button>
+    </div>
 
-        <p>Currently under construction, in the future will be able to edit email, password and update frequency</p>
 
-        <p><a href="/avatar.html">Change your avatar!</a></p>
+        <!-- The Modal -->
+        <div id="myModal" class="modal">
+
+          <!-- Modal content -->
+          <div class="modal-content">
+            <span class="close">&times;</span>
+            <form id="avatar-form">
+                <div id="avatar-collection"></div>
+              </form>
+          </div>
+        </div>
+
+
+        <form id="settings" class="form" method="post">
+        <fieldset>
+            <legend>Change User Info</legend>
+
+        <label for="change-username">Username</label>
+        <input type="text" id="change-username" name="change-username" value="">
+        <br>
+        <label for="change-email">Email</label>
+        <input type="text" id="change-email" name="change-email" value="">
+        <br>
+        <label for="change-password">New Password</label>
+        <input type="password" id="change-password" name="change-password" value="">
+        <br>
+        <label for="change-password2">Re-Enter New Password</label>
+        <input type="password" id="change-password2" name="change-password2" value="">
+        <br>
+        <label for="old-password">Enter Old Password</label>
+        <input type="password" id="old-password" name="old-password" value="" required>
+        <br>
+        <input type="submit" name="submit" value="Submit">
+        </fieldset>
+      </form>
+
       </main>
 
         <script src="js/vendor/modernizr-3.5.0.min.js"></script>
         <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
         <script>window.jQuery || document.write('<script src="js/vendor/jquery-3.2.1.min.js"><\/script>')</script>
         <script src="js/app.js"></script>
-        <!-- <script src="js/settings.js"></script> -->
+        <script src="js/avatar.js"></script>
+        <script src="js/modal.js"></script>
+
+
+        <script src="js/settings.js"></script>
 
         <!-- Google Analytics: change UA-XXXXX-Y to be your site's ID. -->
         <script>
