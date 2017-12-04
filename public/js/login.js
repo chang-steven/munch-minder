@@ -1,7 +1,5 @@
 function listenForLogin() {
-  console.log('Now listening for Login');
   $('#login').submit(event => {
-    console.log('Attempted Login');
     event.preventDefault();
     let user = {
       username: $('#login-username').val(),

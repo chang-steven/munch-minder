@@ -32,7 +32,8 @@ userRouter.post('/user', jsonParser, (req, res) => {
     userName: req.body.username,
     userEmail: req.body.email,
     password: req.body.password,
-    joinDate: Date.now()
+    joinDate: Date.now(),
+    avatar: req.body.avatar
   })
   .then(() => {
     const message = {message:`Successfully created user ${req.body.username}`};
@@ -58,27 +59,38 @@ userRouter.get('/user/:id', passport.authenticate('jwt', { session: false }), (r
 
 //PUT Request to update user data or user settings
 userRouter.put('/user/:id', jsonParser, passport.authenticate('jwt', { session: false }), (req, res) => {
-  let updatedUser = {};
-  const updateFields = ['userName', 'userEmail', 'password'];
-  updateFields.forEach( key => {
-    if (key in req.body) {
-      updatedUser[key] = req.body[key];
-    };
+  let data = req.body;
+  let userData = {};
+  let keysArray = Object.keys(data)
+  keysArray.forEach(key => {
+    if (data[key] !== "") {
+      userData[key] = data[key];
+    }
   });
   if (!(req.user._id == req.params.id)) {
     return res.status(400).json({message: "Sorry, you do not have valid permission"})
   };
-  User.findByIdAndUpdate(req.params.id, {$set: updatedUser})
+  User.findById(req.params.id)
   .then(result => {
-    const message = {message: `Succesfully edited user data`};
-    res.status(200).json(message);
+    return result.validatePassword(req.body.currentPassword)
+    .then(isPasswordCorrect => {
+      if (!isPasswordCorrect) {
+        throw new Error('Sorry, incorrect credentials.  Please try again.')
+      }
+      else {
+        return User.findByIdAndUpdate(req.params.id, {$set: userData})
+      }
+    })
+    .then(result => {
+      const message = {message: `Succesfully edited user data, please log in.`};
+      return res.status(200).json(message);
+    })
   })
   .catch(err => {
     console.error(err);
-    res.status(500).json({message: 'Unable to update specified user'});
+    return res.status(500).json({message: 'Unable to update specified user'});
   });
 });
-
 
 //Delete Request to delete a specified user
 userRouter.delete('/user/:id', passport.authenticate('jwt', { session: false }), (req, res) => {
@@ -96,7 +108,6 @@ userRouter.delete('/user/:id', passport.authenticate('jwt', { session: false }),
   });
 });
 
-
 //User login to create token
 userRouter.post('/login', jsonParser, (req, res) => {
   User.findOne({userName: req.body.username})
@@ -104,15 +115,15 @@ userRouter.post('/login', jsonParser, (req, res) => {
     path: 'avatar'
   })
   .then(foundUser => {
-    foundUser.validatePassword(req.body.password)
-    .then(() => {
-      console.log(foundUser);
-      const token = jwt.sign({userId: foundUser._id, avatarUrl: (foundUser.avatar ? foundUser.avatar.url : '/img/avatars/000-default.png')}, config.JWT_SECRET, {expiresIn: config.JWT_EXPIRY});
-      res.json({message:`Succesfully logged in as ${req.body.username}`, success: true, token: 'Bearer ' + token});
-    })
-    .catch(err => {
-      console.error(err);
-      res.json(err);
+    return foundUser.validatePassword(req.body.password)
+    .then((isPasswordCorrect) => {
+      if(!isPasswordCorrect) {
+        throw new Error('Sorry, incorrect credentials.  Please try again.');
+      }
+      else {
+        const token = jwt.sign({userId: foundUser._id, avatarUrl: (foundUser.avatar ? foundUser.avatar.url : '/img/avatars/000-default.png')}, config.JWT_SECRET, {expiresIn: config.JWT_EXPIRY});
+        res.json({message:`Succesfully logged in as ${req.body.username}`, success: true, token: 'Bearer ' + token});
+      }
     })
   })
   .catch(err => {
@@ -125,16 +136,17 @@ userRouter.post('/login', jsonParser, (req, res) => {
 userRouter.get('/findbyemail', (req, res) => {
   User.findOne({userEmail: `${req.query.email}`})
   .then(result => {
-    let response = {username: result.userName};
+    let response = {message: `Username is ${result.userName}`,
+    username: result.userName};
     res.json(response);
   })
   .catch(err => {
     console.error(err);
-    res.status(500).json({error: 'Unable to find user by email'});
+    res.status(500).json({message: 'Unable to find user by email'});
   });
 });
 
-userRouter.get('/users/avatar', passport.authenticate('jwt', { session: false }), (req, res) => {
+userRouter.get('/users/avatar', (req, res) => {
   Avatar.find()
   .then(result => {
     res.json(result);

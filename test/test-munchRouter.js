@@ -12,6 +12,9 @@ const {app, runServer, closeServer} = require('../src/server');
 const {TEST_DATABASE_URL, JWT_SECRET} = require('../src/config/main');
 const {seedMunchMinderDatabase, generateUserData, generateMunchData, createTestUser, teardownDatabase} = require('./test-functions');
 
+const testMunchesJSON = require('./testMunches');
+const testUsersJSON = require('./testUsers');
+
 chai.use(chaiHttp);
 
 describe('Munches Router to /api/munches', function() {
@@ -23,11 +26,14 @@ describe('Munches Router to /api/munches', function() {
 
   beforeEach(function(done) {
     createTestUser()
-    .then((user) => {
+    .then(user => {
       testUser = user;
+      // Munch.insertMany(testMunchesJSON);
+      // User.insertMany(testUsersJSON)
       seedMunchMinderDatabase()
       .then(() => done());
     })
+    .catch(err => console.log(err))
   });
 
   afterEach(function() {
@@ -42,7 +48,7 @@ describe('Munches Router to /api/munches', function() {
   describe('POST request to /api/munches', function() {
     it('Should create a new munch in the database', function() {
       const token = jwt.sign({userId: testUser._id}, JWT_SECRET, { expiresIn: 10000 });
-      const newMunch = generateMunchData();
+      let newMunch = generateMunchData();
       return chai.request(app)
       .post('/api/munches')
       .set('Authorization', `Bearer ${token}`)
@@ -60,10 +66,12 @@ describe('Munches Router to /api/munches', function() {
       .get('/api/munches')
       .set('Authorization', `Bearer ${token}`)
       .then(function(res) {
+        console.log(res.body);
         res.should.have.status(200);
         res.should.be.json;
         res.body.should.be.an('object');
         res.body.munches.should.be.an('array');
+        // res.body.munches.should.have.length.of.at.least(2);
       });
     });
 
@@ -85,8 +93,6 @@ describe('Munches Router to /api/munches', function() {
       .get('/api/munches/xxx')
       .catch(error => {
         error.should.have.status(500);
-        // error.should.be.an('object');
-        // res.body.should.be.an('object');
       })
     });
   });
@@ -111,7 +117,6 @@ describe('Munches Router to /api/munches', function() {
         return Munch.findById(testMunch._id);
       })
       .then(munch => {
-        // munch.date.should.equal(testMunch.date);
         munch.title.should.equal(testMunch.title);
         munch.description.should.equal(testMunch.description);
       });

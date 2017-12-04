@@ -4,12 +4,11 @@ const mongoose = require('mongoose');
 
 const {User} = require('../src/models/user');
 const {Munch} = require('../src/models/munch');
-const {Group} = require('../src/models/group');
 
 function seedMunchMinderDatabase() {
   let i = 0;
   const promises = [];
-  while (i < 3) {
+  while (i < 2) {
     promises.push(createTestUserAndPostMunches(i));
     i++;
   };
@@ -31,9 +30,8 @@ function generateMunchData() {
     date: faker.date.past(),
     title: faker.lorem.words(),
     description: faker.lorem.sentence(),
-    emoji: faker.image.avatar(),
-    image: faker.image.imageUrl(),
-    thumbsUp: faker.random.boolean(),
+    imgFile: faker.image.image(),
+    userThumbsUp: Math.round(Math.random()+1)
   }
 }
 
@@ -49,7 +47,7 @@ function createTestUserAndPostMunches(i) {
     let username = user.userName
     let j = 0;
     const munchPromises = [];
-    while (j < 3) {
+    while (j < 2) {
       console.log(`Generating munch ${j+1} for user: ${username}`)
       let newMunch = generateMunchData();
       newMunch.postedBy = userId;
@@ -59,6 +57,7 @@ function createTestUserAndPostMunches(i) {
     }
     console.log('Generated Munches');
     console.log('==================');
+    console.log(munchPromises);
     return Promise.all(munchPromises);
   })
 }

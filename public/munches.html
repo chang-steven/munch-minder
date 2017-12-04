@@ -16,18 +16,10 @@
         <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
     </head>
     <body>
-        <!--[if lte IE 9]>
-            <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience and security.</p>
-        <![endif]-->
-
-        <!-- Add your site or application content here -->
         <header>
-
-
-        <h1>Munch Minder</h1>
+          <h1><a href="/dashboard.html">Munchy</a></h1>
         <div id="user-avatar-window">
         </div>
-
         <ul class="nav-links">
             <li><a href="dashboard.html">My Dashboard</a></li>
             <li><a href="munches.html">Munches</a></li>
@@ -36,12 +28,19 @@
         </ul>
         </header>
         <main>
-          <h2>Add Munch</h2>
-        <form id="munch-form" class="post" method="post">
-          Date <input id="munch-date" type="date" name="date" placeholder="dd-mm-yyyy"></br>
-          Title<input id="munch-title" type="text" name="title" placeholder="Chinese Takeout from Mama Liu's"></br>
-          Description<input id="munch-description" type="text" name="description" placeholder="It was awesome!  Excellent Ghetto Broccoli Beef"></br>
+        <form id="munch-form" class="post" method="post" enctype="multipart/form-data">
+          <fieldset>
+            <legend>Add Munch</legend>
 
+          <label for="date">Date</label>
+          <input id="munch-date" type="date" name="date" placeholder="dd-mm-yyyy" required>
+          </br>
+          <label for="title">Title</label>
+          <input id="munch-title" type="text" name="title" placeholder="Chinese Takeout from Mama Liu's"required>
+          </br>
+          <label for="description">Description</label>
+          <textarea id="munch-description" rows="3" name="description" placeholder="It was awesome!  Excellent Ghetto Broccoli Beef!" required></textarea>
+          </br>
           <div class="munch-thumb">
             <input id="munch-userThumbsUp" type="radio" name="thumb" value="1"><label for="munch-userThumbsUp">Thumbs Up <span class="thumbUp">
                 &#x1F44D;
@@ -51,9 +50,13 @@
             </span></label>
           </div>
           </br>
-          Image upload<input id="munch-image" type="file" name="image-upload" accept="image/*"></br>
-          Image<input type="text" name="notes" value="http://fakeimg.pl/200x200/?text=Placeholder&font=lobster"></br>
+          <label for="imgFile">Image upload</label>
+          <input id="munch-image" type="file" name="imgFile" accept=".jpg, .jpeg, .png">
+          </br>
+          <!-- <label for="imgFile">Preview Image:</label></br> -->
+          <!-- Image<input type="text" name="notes" value="http://fakeimg.pl/200x200/?text=Placeholder&font=lobster"></br> -->
           <input type="submit" name="submit" value="Add Munch">
+        </fieldset>
 
         </form>
         <div id="display-munches">

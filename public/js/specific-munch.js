@@ -40,7 +40,7 @@ function displayMunch(munch) {
   }
   let formattedDate = new Date(munch.date).toDateString();
   let userURL = `/peep.html?id=${munch.postedBy || ""} `;
-  const imageURL = munch.image || "http://fakeimg.pl/200x200/?text=Munch&font=lobster";
+  const imageURL = munch.image || "/img/no-image.jpg";
     $('#display-munch').empty().append(`<h2>${munch.title}</h2>
       <a href="/munch.html?id=${munch._id}"><div class="returned-munches">
       <div class="munch-image">

@@ -39,12 +39,12 @@ function displayFriendMunches(friendData) {
       $('#display-peeps').append(
         `<div class="returned-munches">
         <div class="munch-image">
-        <a href="munch.html?id=${munch._id}"><img src="${imageURL}"></a>
+        <img src="${imageURL}">
         </div>
-        <div class="munch-blurb">
-        <p><a href="${userURL}">${munch.username || "Blank for now"}</a></p>
+        <a href="munch.html?id=${munch._id}"><div class="munch-blurb">
+        <p>${munch.username || "Blank for now"}</p>
         <p>${thumb}${formattedDate}</p>
-        <a href="munch.html?id=${munch._id}"><p>${munch.title}</p></a>
+        <p>${munch.title}</p></a>
         <p>${munch.description}</p>
         </div>
         </div>`);

@@ -5,27 +5,36 @@ function parseJwt (token) {
 };
 
 function listenForMunch() {
-  $('#munch-form').submit(event => {
+  $('#munch-form').submit(function(event) {
+    const data = new FormData(this);
     event.preventDefault();
+    let image = $('#munch-image').val();
+    console.log(image);
     let thumb = $('input[name=thumb]:checked', '#munch-form').val();
     let munch = {
       date: $('#munch-date').val(),
       title: $('#munch-title').val(),
       description: $('#munch-description').val(),
-      userThumbsUp: thumb
+      userThumbsUp: thumb,
+      imgFile: $('#munch-image').val()
     };
+    console.log(munch);
     $.ajax({
-      type: 'POST',
+      method: 'POST',
+      enctype: 'multipart/form-data',
       url: '/api/munches',
       headers: {
         Authorization: token
       },
-      data: munch,
+      data: data,
+      processData: false,
+      contentType: false,
       success: result => {
         alert(result.message);
         location.href='/munches.html'
       },
       error: error => {
+        console.log(error);
         alert('Sorry, there was an error, try again...');
         location.href='/munches.html'
       }
@@ -69,12 +78,12 @@ function displayMunches(data) {
         thumb = '';
       }
     let formattedDate = new Date(munch.date).toDateString();
-    const imageURL = munch.image || "http://fakeimg.pl/200x200/?text=Munch&font=lobster";
+    const imageURL = munch.image || "/img/no-image.jpg";
     $('#display-munches').append(
-      `<a href="/munch.html?id=${munch._id}"><div class="returned-munches">
+      `<div class="returned-munches">
       <div class="munch-image">
       <img src="${imageURL}">
-      </div>
+      </div><a href="/munch.html?id=${munch._id}">
       <div class="munch-blurb">
       <p>${thumb}${formattedDate}</p>
       <p>${munch.title}</p>

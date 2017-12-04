@@ -1,5 +1,5 @@
 <!doctype html>
-<html class="no-js" lang="en">
+<html class="no-js" lang="">
     <head>
         <meta charset="utf-8">
         <meta http-equiv="x-ua-compatible" content="ie=edge">
@@ -26,36 +26,20 @@
           </ul>
         </header>
         <main>
-          <!-- The Modal -->
-          <div id="myModal" class="modal">
 
-            <!-- Modal content -->
-            <div class="modal-content">
-              <form id="avatar-form">
-                  <div id="avatar-collection"></div>
-                </form>
-            </div>
-          </div>
-
-        <form id="register" action="register.html" method="post">
-          <h2>Register</h2>
-          Email <input id="register-email" type="email" name="email" value="" required></br>
-          Username <input id="register-username" type="text" name="username" value="" required></br>
-          Password <input id="register-password" type="password" name="password" value="" required></br>
-          Re-enter Password <input id="register-password2" type="password" name="password" value="" required></br>
-          <input type="submit" name="submit" value="Register">
+        <form id="login-help" method="post">
+          <h2>Forgot Username?</h2>
+          <label for="user-email">Email</label>
+          <input id="user-email" type="type" name="user-email" value="">
+          <input type="submit" name="submit" value="Get Help!">
+          <p>No Account? <a href="register.html">Create one!</a></p>
         </form>
-        <p>Already registered? <a href="login.html">Log in!</a></p>
-
-
         </main>
-
         <script src="js/vendor/modernizr-3.5.0.min.js"></script>
         <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
         <script>window.jQuery || document.write('<script src="js/vendor/jquery-3.2.1.min.js"><\/script>')</script>
-        <script src="js/modal.js"></script>
-        <script src="js/register.js"></script>
-        <!-- <script src="js/avatar.js"></script> -->
+        <script src="js/plugins.js"></script>
+        <script src="js/help.js"></script>
 
         <!-- Google Analytics: change UA-XXXXX-Y to be your site's ID. -->
         <script>

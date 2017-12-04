@@ -2,9 +2,6 @@ function getAvatars() {
   $.ajax({
     method: 'GET',
     url: '/api/users/avatar',
-    headers: {
-      Authorization: token
-    },
     success: displayAvatarCollection,
     error: error => {
       console.log(error);
@@ -21,7 +18,7 @@ function displayAvatarCollection(result) {
     `<div class="avatar-window">
       <img src="${avatar.url}" alt="${avatar.name}">
       <div class="avatar-radio"><input value="${avatar._id}" type="radio"
-       name="my-avatar"></div>
+       name="my-avatar" required></div>
     </div>`
     );
   });
@@ -38,8 +35,13 @@ function listenForAvatarSelection() {
       headers: {
         Authorization: token
       },
-      success: () => location.href='/dashboard.html',
-      error: error => {
+      success: () =>
+        {
+          alert('User data changed, please log in.');
+          sessionStorage.removeItem('token');
+          location.href='/login.html';
+        },
+        error: error => {
         console.log(error);
         console.log('Error selecting avatar');
       }

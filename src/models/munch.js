@@ -7,7 +7,6 @@ const munchSchema = mongoose.Schema({
   title: {type: String, required: true},
   description: {type: String, required: true},
   userThumbsUp: {type: String},
-  likes: {type: Number},
   image: {type: String}
 });
 

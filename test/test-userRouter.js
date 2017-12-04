@@ -15,14 +15,16 @@ const {seedMunchMinderDatabase, generateUserData, generateMunchData, createTestU
 chai.use(chaiHttp);
 
 describe('User Router to /api/user', function() {
-  let testUser;
+  let testUser, testUserData;
 
   before(function() {
     return runServer(TEST_DATABASE_URL);
   });
 
   beforeEach(function(done) {
-    createTestUser()
+    testUserData = generateUserData();
+    User.create(testUserData)
+
     .then((user) => {
       testUser = user;
       seedMunchMinderDatabase()
@@ -66,51 +68,67 @@ describe('User Router to /api/user', function() {
       .then(res => {
         res.should.have.status(200);
         res.should.be.json;
-        res.body.should.include.keys('username');
+        res.body.should.include.keys('message');
       });
     });
   });
 
   describe('PUT request to /api/user/:id', function() {
+    let updatedUser;
     it('Should update a specified user based on ID', function() {
+      updatedUser = {
+        userName: faker.internet.userName(),
+        currentPassword: testUserData.password
+      }
       const token = jwt.sign({userId: testUser._id}, JWT_SECRET, { expiresIn: 10000 });
-      return User.findOne()
-      .then(result => {
-        testUser._id = result._id;
-        return chai.request(app)
-        .put(`/api/user/${result._id}`)
-        .set('Authorization', `Bearer ${token}`)
-        .send(testUser)
-      })
+      return chai.request(app)
+      .put(`/api/user/${testUser._id}`)
+      .set('Authorization', `Bearer ${token}`)
+      .send(updatedUser)
+
       .then(res => {
         res.should.have.status(200);
         res.should.be.an('object');
         return User.findById(testUser._id);
       })
       .then(user => {
-        user.userEmail.should.equal(testUser.userEmail);
+        user.userName.should.equal(updatedUser.userName);
       });
     });
   });
 
-  describe('DELETE request to /api/user/:id', function() {
-    it('Should delete a specified user based on ID', function() {
-      let deletedUser;
-      const token = jwt.sign({userId: testUser._id}, JWT_SECRET, { expiresIn: 10000 });
-      return User.findOne()
-      .then(result => {
-        deletedUser = result._id
-        return chai.request(app)
-        .delete(`/api/user/${result._id}`)
-        .set('Authorization', `Bearer ${token}`)
-      })
-      .then(res => {
-        res.should.have.status(204);
-        return User.findById(deletedUser)
-      })
-      .then(user => {
-        should.not.exist(user);
-      });
+describe('DELETE request to /api/user/:id', function() {
+  it('Should delete a specified user based on ID', function() {
+    const token = jwt.sign({userId: testUser._id}, JWT_SECRET, { expiresIn: 10000 });
+    return chai.request(app)
+    .delete(`/api/user/${testUser._id}`)
+    .set('Authorization', `Bearer ${token}`)
+    .then(res => {
+      res.should.have.status(204);
+      return User.findById(testUser._id)
+    })
+    .then(user => {
+      should.not.exist(user);
     });
   });
+});
+
+describe('POST request to /login', function() {
+  it('Should login a user', function() {
+    let loginUser = {
+      username: testUserData.userName,
+      password: testUserData.password
+    }
+    return chai.request(app)
+    .post('/api/login')
+    .send(loginUser)
+    .then(function(res) {
+      res.should.have.status(200);
+      res.should.be.json;
+      res.body.should.include.keys('message', 'success', 'token');
+    });
+  });
+});
+
+
 });
