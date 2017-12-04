@@ -61,7 +61,7 @@ function displayAvatarCollection(result) {
     `<div class="avatar-window">
       <img src="${avatar.url}" alt="${avatar.name}">
       <div class="avatar-radio"><input value="${avatar._id}" type="radio"
-       name="my-avatar"></div>
+       name="my-avatar" required></div>
     </div>`
     );
   });

@@ -10,19 +10,41 @@ function listenForSettingsChanges() {
       return alert('Passwords do not match, please try again')
     }
     else {
-      let updatedUser = {
-        email: $('#change-email').val(),
-        username: $('#change-username').val(),
-        password: $('#change-password').val()
-      };
+      let data = $('#settings').serializeArray().reduce(function(obj, item) {
+        obj[item.name] = item.value;
+        return obj;
+      }, {});
       $('#change-email').val("");
       $('#change-username').val("");
       $('#change-password').val("");
       $('#change-password2').val("");
-      registerNewUser(updatedUser);
+      $('#current-password').val("");
+      updateUserData(data);
     }
   })
 }
+
+function updateUserData(user) {
+  let updatedUser = {
+    method: 'PUT',
+    headers: {
+      Authorization: token
+    },
+    url: '/api/user/' + payloadData.userId,
+    data: user,
+    success: result => {
+      alert(result.message);
+      location.href='/login.html'
+    },
+    error: error => {
+      console.log(error);
+      alert(error.responseJSON.message);
+      location.href='/settings.html'
+    },
+  };
+  $.ajax(updatedUser);
+}
+
 
 $(() => {
   displayChangeAvatar();
