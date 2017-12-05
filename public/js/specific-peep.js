@@ -22,7 +22,7 @@ function getSpecificFriend() {
     success: displayFriendMunches,
     error: error => {
       console.log(error);
-      console.log('Something went wrong');
+      console.log('Unable to get specific friend');
     }
   });
 }
@@ -44,14 +44,14 @@ function displayFriendMunches(result) {
       }
       let formattedDate = new Date(munch.date).toDateString();
       let userURL = `/peep.html?id=${munch.postedBy || ""} `;
-      let imageURL = munch.image || "http://fakeimg.pl/200x200/?text=Munch&font=lobster";
+      // let imageURL = munch.image || "http://fakeimg.pl/200x200/?text=Munch&font=lobster";
       $('#display-friend').append(
         `<div class="returned-munches">
-        <div class="munch-image">
-        <a href="munch.html?id=${munch._id}"><img src="${imageURL}"></a>
+        <div class="specific-munch-image">
+        <a href="munch.html?id=${munch._id}"><img src="${munch.image}"></a>
         </div>
         <div class="munch-blurb">
-        <p><a href="${userURL}">${munch.username || "Blank for now"}</a></p>
+        <p class="username"><a href="${userURL}">${munch.username || "Blank for now"}</a></p>
         <p>${thumb}${formattedDate}</p>
         <a href="munch.html?id=${munch._id}"><p>${munch.title}</p></a>
         <p>${munch.description}</p>

@@ -12,9 +12,6 @@ const {app, runServer, closeServer} = require('../src/server');
 const {TEST_DATABASE_URL, JWT_SECRET} = require('../src/config/main');
 const {seedMunchMinderDatabase, generateUserData, generateMunchData, createTestUser, teardownDatabase} = require('./test-functions');
 
-const testMunchesJSON = require('./testMunches');
-const testUsersJSON = require('./testUsers');
-
 chai.use(chaiHttp);
 
 describe('Munches Router to /api/munches', function() {
@@ -28,8 +25,6 @@ describe('Munches Router to /api/munches', function() {
     createTestUser()
     .then(user => {
       testUser = user;
-      // Munch.insertMany(testMunchesJSON);
-      // User.insertMany(testUsersJSON)
       seedMunchMinderDatabase()
       .then(() => done());
     })

@@ -17,7 +17,10 @@
     </head>
     <body>
         <header>
-          <h1><a href="/">Munchy</a></h1>
+          <div id="munch-minder-logo">
+            <img src="img/fresh-fitness-food-chef.png">
+          </div>
+          <h1><a href="/">Munch Minder</a></h1>
           <ul class="nav-links">
               <li><a href="demo.html">Demo</a></li>
               <li><a href="login.html">Login</a></li>
@@ -36,7 +39,6 @@
                 </form>
             </div>
           </div>
-
         <form id="register" action="register.html" method="post">
           <h2>Register</h2>
           Email <input id="register-email" type="email" name="email" value="" required></br>
@@ -46,22 +48,16 @@
           <input type="submit" name="submit" value="Register">
         </form>
         <p>Already registered? <a href="login.html">Log in!</a></p>
-
-
         </main>
-
+        <footer>
+          <div class="attribution">
+            <img src="/img/freepik.png"><a href="https://www.flaticon.com/packs/avatars-20">Images by Freepik</a>
+          </div>
+        </footer>
         <script src="js/vendor/modernizr-3.5.0.min.js"></script>
         <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
         <script>window.jQuery || document.write('<script src="js/vendor/jquery-3.2.1.min.js"><\/script>')</script>
         <script src="js/modal.js"></script>
         <script src="js/register.js"></script>
-        <!-- <script src="js/avatar.js"></script> -->
-
-        <!-- Google Analytics: change UA-XXXXX-Y to be your site's ID. -->
-        <script>
-            window.ga=function(){ga.q.push(arguments)};ga.q=[];ga.l=+new Date;
-            ga('create','UA-XXXXX-Y','auto');ga('send','pageview')
-        </script>
-        <script src="https://www.google-analytics.com/analytics.js" async defer></script>
     </body>
 </html>

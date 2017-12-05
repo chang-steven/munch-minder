@@ -24,12 +24,12 @@ describe('User Router to /api/user', function() {
   beforeEach(function(done) {
     testUserData = generateUserData();
     User.create(testUserData)
-
-    .then((user) => {
+    .then(user => {
       testUser = user;
       seedMunchMinderDatabase()
       .then(() => done());
     })
+    .catch(err => console.log(err))
   });
 
   afterEach(function() {

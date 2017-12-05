@@ -24,11 +24,12 @@ describe('Peeps Router to /api/peeps or /api/groups', function() {
 
   beforeEach(function(done) {
     createTestUser()
-    .then((user) => {
+    .then(user => {
       testUser = user;
-      return seedMunchMinderDatabase();
-      done();
+      seedMunchMinderDatabase()
+      .then(() => done());
     })
+    .catch(err => console.log(err))
   });
 
   afterEach(function() {

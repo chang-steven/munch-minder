@@ -52,15 +52,25 @@ munchesRouter.post('/',
         }]
     ),
   (req, res) => {
+    console.log(req.files);
+    console.log(req.body);
   Munch
   .create({
     postedBy: req.user._id,
     userName: req.user.userName,
     date: req.body.date,
     title: req.body.title,
-    userThumbsUp: req.body.userThumbsUp,
+    userThumbsUp: req.body.thumb,
     description: req.body.description,
-    image: req.files ? req.files.imgFile[0].location : "/img/no-image.jpg"
+    image: (function() {
+      console.log(req.files);
+      if (req.files == {}) {
+      return req.files.imgFile[0].location
+      }
+      else {
+        return "/img/no-image.jpg"
+      }
+    })()
   })
   .then(result => {
     return User.findByIdAndUpdate(req.user._id, { $push: { munches: result._id } }, { new: true });

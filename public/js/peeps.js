@@ -42,7 +42,7 @@ function displayFriendMunches(friendData) {
         <img src="${imageURL}">
         </div>
         <a href="munch.html?id=${munch._id}"><div class="munch-blurb">
-        <p>${munch.username || "Blank for now"}</p>
+        <p class="username">${munch.userName}</p>
         <p>${thumb}${formattedDate}</p>
         <p>${munch.title}</p></a>
         <p>${munch.description}</p>
@@ -84,7 +84,7 @@ function displayFriendMunches(friendData) {
         <img src="${imageURL}">
         </div>
         <div class="peeps-blurb">
-        <p>${peep.userName}</p>
+        <p class="username">${peep.userName}</p>
         <p>${peep.userEmail}</p>
         <p>Joined: ${formattedDate}</p>
         </div>
@@ -135,7 +135,7 @@ function displaySearchedPeeps(searchResults) {
       <img src="${imageURL}">
       </div>
       <div class="peeps-blurb">
-      <p>${peep.userName}</p>
+      <p class="username">${peep.userName}</p>
       <p>${peep.userEmail}</p>
       <p>Joined: ${formattedDate}</p>
       </div>

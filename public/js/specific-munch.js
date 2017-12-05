@@ -38,16 +38,17 @@ function displayMunch(munch) {
   else {
     thumb = '';
   }
+  console.log(munch);
   let formattedDate = new Date(munch.date).toDateString();
   let userURL = `/peep.html?id=${munch.postedBy || ""} `;
   const imageURL = munch.image || "/img/no-image.jpg";
     $('#display-munch').empty().append(`<h2>${munch.title}</h2>
       <a href="/munch.html?id=${munch._id}"><div class="returned-munches">
-      <div class="munch-image">
+      <div class="specific-munch-image">
         <img src="${imageURL}">
       </div>
     <div class="munch-blurb">
-      <p><a href="${userURL}">${munch.username || "Blank for now"}</a></p>
+      <p><a href="${userURL}">${munch.userName}</a></p>
       <p>${thumb}${formattedDate}</p>
       <p>${munch.title}</p>
       <p>${munch.description}</p>
