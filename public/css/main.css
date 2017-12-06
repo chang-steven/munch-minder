@@ -276,7 +276,7 @@ input {
   margin: 6px 10px;
 }
 
-#display-munches, #display-peeps, #display-friend {
+#display-munches, #display-peeps, #display-friends {
   max-height: 600px;
   white-space: nowrap;
 }
