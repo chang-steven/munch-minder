@@ -282,17 +282,27 @@ input {
 }
 
 .returned-munches, .returned-peeps {
+  vertical-align: top;
   margin: 20px 10px;
   display: inline-block;
+  max-width: 325px;
 }
 .munch-image, .munch-blurb, .peeps-image, .peeps-blurb {
   vertical-align: top;
   margin-right: 10px;
+  max-width: 325px;
 }
 
 .munch-blurb, .peeps-blurb {
-  padding-left: 10px;
+  padding-left: 20px;
+  max-height: 225px;
+  overflow-x: scroll;
 }
+
+  .munch-blurb p, .peeps-blurb p {
+    white-space: normal;
+
+  }
 
   .username {
     font-size: 1.5em;
@@ -302,6 +312,8 @@ input {
 .munch-image img, .peeps-image img, .specific-munch-image img {
   max-width: 300px;
   max-height: 250px;
+  margin: 0 auto;
+  display: block;
 }
 
 #munch-title, #munch-description {
