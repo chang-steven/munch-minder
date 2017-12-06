@@ -100,13 +100,49 @@ textarea {
   box-sizing: border-box;
 }
 
+html, body {
+  height: 100%;
+}
+
 body {
   font-family: 'Roboto', sans-serif;
   background-color: #FFF1AD;
-  max-width: 1000px;
   margin: 0 auto;
   position: static;
 }
+
+main {
+  padding: 16px 16px;
+  min-height: 100%;
+  margin-bottom: -80px;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+main:after {
+    content: "";
+    display: block;
+    height: 80px;
+}
+
+footer {
+  /*position: absolute;*/
+  height: 80px;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  /*padding: 1rem;*/
+  background-color: #efefef;
+  text-align: center;
+}
+
+.attribution {
+  padding-top: 15px;
+}
+
+  .attribution img {
+    width: 50px;
+  }
 
 #munch-minder-logo {
   padding-left: 25px;
@@ -117,14 +153,19 @@ body {
   max-width: 90px;
 }
 
+
 header {
   background-color: #B7FDA8;
+}
+
+.header-container {
   padding: 16px 16px;
-  padding-left: 30px;
+  max-width: 1000px;
+  margin: 0 auto;
 }
 
 
-header h1 {
+.header-container h1 {
   margin-top: 0;
   padding-left: 10px;
   display: inline-block;
@@ -188,11 +229,7 @@ header h1 {
       cursor: pointer;
   }
 
-main {
-padding: 16px 16px;
-/*margin-bottom: 60px;*/
-/*display: none;*/
-}
+
 
 a {
   text-decoration: none;
@@ -316,27 +353,7 @@ input {
   text-align: center;
 }
 
-.attribution img {
-  width: 50px;
-}
 
-/*footer {
-   position: absolute;
-   width: 1000px;
-   height:60px;
-   background: #b3d4fc;
-}*/
-
-footer {
-  position: absolute;
-  /*height: 60px;*/
-  right: 0;
-  bottom: 0;
-  left: 0;
-  padding: 1rem;
-  background-color: #efefef;
-  text-align: center;
-}
 
 #loader {
 	position: fixed;

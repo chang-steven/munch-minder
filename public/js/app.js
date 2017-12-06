@@ -26,7 +26,7 @@ $(function() {
     displayAvatar();
     setTimeout(function () {
       $('#loader').fadeOut();
-    }, 1000);
+    }, 600);
   }
   else {
     alert("Sorry, you're not logged in");

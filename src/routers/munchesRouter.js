@@ -52,8 +52,6 @@ munchesRouter.post('/',
         }]
     ),
   (req, res) => {
-    console.log(req.files);
-    console.log(req.body);
   Munch
   .create({
     postedBy: req.user._id,
@@ -63,9 +61,8 @@ munchesRouter.post('/',
     userThumbsUp: req.body.thumb,
     description: req.body.description,
     image: (function() {
-      console.log(req.files);
-      if (req.files == {}) {
-      return req.files.imgFile[0].location
+      if (req.files && req.files.imgFile) {
+        return req.files.imgFile[0].location
       }
       else {
         return "/img/no-image.jpg"
