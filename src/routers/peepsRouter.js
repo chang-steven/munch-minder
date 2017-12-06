@@ -43,9 +43,12 @@ peepsRouter.get('/peeps/munches', passport.authenticate('jwt', { session: false 
     populate : {path : 'munches'}
   })
   .then(result => {
+    console.log(result);
+
     const allMunches = result.friends.map(a => a.munches)
                              .reduce((a, b) => (a.concat(b)), [])
                              .sort((a, b) => a.date < b.date);
+    console.log(allMunches);
     res.json(allMunches);
   })
   .catch(err => {
