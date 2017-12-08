@@ -378,11 +378,22 @@ label:after {
 
 #munch-thumb {
   display: inline-block;
+  padding-right: 10px;
+}
+
+#munch-thumb span {
+  padding: 0px;
 }
 
 #munch-thumb label {
-  width: 165px;
+  width: fit-content;
 }
+
+.thumbUp, .thumbDown {
+  padding-right: 10px;
+  font-size: 2em;
+}
+
 
 input[type="radio"] {
   margin-top: 20px;
@@ -455,10 +466,6 @@ input, textarea {
   width: 100px;
 }
 
-.thumbUp, .thumbDown {
-  padding-right: 10px;
-  font-size: 2em;
-}
 
 #avatar-form h1 {
   display: inline-block;
