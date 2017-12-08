@@ -125,6 +125,12 @@ main:after {
     height: 80px;
 }
 
+.main-inner {
+  /*text-align: center;
+  padding-left: 100px;*/
+  margin: 0 auto;
+}
+
 footer {
   /*position: absolute;*/
   height: 80px;
@@ -178,8 +184,53 @@ header {
 }
 
 .nav-links li {
-  display: inline-block;
+  display: block;
   margin: 6px 10px;
+}
+
+.message {
+  padding: 0 25px;
+  line-height: 50px;
+  border: 2px solid #fefefe;
+  display: none;
+  /*position: absolute;*/
+  margin: 0 auto;
+  width: fit-content;
+}
+
+.success {
+  display: block;
+  background: #eac55c;
+  right: 350px;
+}
+.error {
+  display: block;
+  background: #ff6e6f;
+}
+
+.big-text {
+  margin-right: 30px;
+  margin-top: 40px;
+}
+
+.big-text, .food-icons-container {
+  display: inline-block;
+  vertical-align: top;
+}
+
+.big-text h2 {
+  font-size: 2.5em;
+  font-weight: 900;
+  color: gray;
+}
+
+.big-text p {
+  font-size: 1.2em;
+}
+
+.food-icons img {
+  width: 130px;
+  padding: 20px 20px;
 }
 
 .dragscroll {
@@ -206,14 +257,25 @@ header {
 }
 
 /* Modal Content */
-.modal-content {
+.modal-content, .error-modal-content, #modal-avatar {
     background-color: #fefefe;
     margin: auto;
     padding: 20px;
     border: 1px solid #888;
-    width: 80%;
+    width: 20%;
 }
 
+.error-modal-content {
+  z-index: 3;
+}
+
+#modal-avatar {
+  width: 80%;
+}
+
+#ok-button {
+  margin-left: 20px;
+}
 /* The Close Button */
   .close {
       color: #aaaaaa;
@@ -241,6 +303,24 @@ a {
   background-color: gray;
 }*/
 
+#login {
+  /*display: inline-block;*/
+  /*margin: 20px;*/
+  margin: 0 auto;
+  width: 90%;
+}
+
+.about-container {
+  /*margin: 0 auto;*/
+  max-width: 600px;
+  padding-left: 40px;
+
+}
+
+.tutorial-container, .about-container {
+    font-size: 1.1em;
+}
+
 #settings {
   display: inline-block;
   margin-left: 100px;
@@ -253,6 +333,46 @@ fieldset {
 
 fieldset legend {
   font-size: 1.5em;
+}
+
+label {
+font-weight: bold;
+display: block;
+float: left;
+}
+
+label:after {
+  content: ":"
+ }
+
+#register {
+  /*padding-left: 30px;*/
+  margin: 0 auto;
+  width: 90%;
+}
+
+/*.main-inner p {
+  padding-left: 30px;
+}*/
+
+#munch-form label {
+  width: 100px;
+}
+
+#settings label {
+  width: 175px;
+}
+
+#register label {
+  width: 140px;
+}
+
+#munch-thumb {
+  display: inline-block;
+}
+
+#munch-thumb label {
+  width: 130px;
 }
 
 #change-avatar-window {
@@ -270,11 +390,11 @@ fieldset legend {
   margin: 6px auto;
 }
 
-#search-peeps-input {
-  width: 500px;
+#search-peeps-input, #munch-date {
+  width: 100px;
 }
 
-input {
+input, textarea {
   margin: 6px 10px;
 }
 
@@ -319,7 +439,7 @@ input {
 }
 
 #munch-title, #munch-description {
-  width: 500px;
+  width: 100px;
 }
 
 .thumbUp, .thumbDown {
@@ -353,6 +473,7 @@ input {
 }
 
 #user-avatar-window {
+  display: none;
   float: right;
   margin-right: 125px;
 }
@@ -470,9 +591,68 @@ input {
    Modify as content requires.
    ========================================================================== */
 
-@media only screen and (min-width: 35em) {
-    /* Style adjustments for viewports that meet the condition */
+@media screen and (min-width: 400px) and (max-width: 640px){
+
+  #search-peeps-input, #munch-title, #munch-description {
+    width: 175px;
+  }
+
+  #munch-date {
+    width: 150px;
+  }
 }
+
+
+ @media screen and (min-width: 640px) and (max-width: 800px){
+
+   #user-avatar-window {
+    float: right;
+    margin-right: 125px;
+  }
+
+  #search-peeps-input, #munch-title, #munch-description {
+    width: 250px;
+  }
+
+  #munch-title, #munch-description {
+    width: 350px;
+  }
+
+  #munch-date {
+    width: 150px;
+  }
+
+  .nav-links li {
+    display: inline-block;
+  }
+
+  #user-avatar-window{
+    display: block;
+  }
+ }
+
+
+ @media only screen and (min-width: 800px) {
+   #search-peeps-input {
+     width: 250px;
+   }
+
+   #munch-title, #munch-description {
+     width: 500px;
+   }
+
+   .nav-links li {
+     display: inline-block;
+   }
+
+   #user-avatar-window{
+     display: block;
+   }
+
+   #munch-date {
+     width: 150px;
+   }
+ }
 
 @media print,
        (-webkit-min-device-pixel-ratio: 1.25),

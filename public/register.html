@@ -31,11 +31,21 @@
         </div>
         </header>
         <main>
+
+          <div class="main-inner">
+            <div class="message">
+
+            </div>
+            <div id="myErrorModal" class="modal">
+              <!-- Modal content -->
+              <div class="error-modal-content">
+              </div>
+              </div>
           <!-- The Modal -->
           <div id="myModal" class="modal">
 
             <!-- Modal content -->
-            <div class="modal-content">
+            <div id="modal-avatar">
               <form id="avatar-form">
                   <div id="avatar-collection"></div>
                 </form>
@@ -43,17 +53,26 @@
           </div>
         <form id="register" action="register.html" method="post">
           <h2>Register</h2>
-          Email <input id="register-email" type="email" name="email" value="" required></br>
-          Username <input id="register-username" type="text" name="username" value="" required></br>
-          Password <input id="register-password" type="password" name="password" value="" required></br>
-          Re-enter Password <input id="register-password2" type="password" name="password" value="" required></br>
+          <label for="email">Email</label>
+          <input id="register-email" type="email" name="email" value="" required></br>
+          <label for="username">Username</label><input id="register-username" type="text" name="username" value="" required></br>
+          <label for="password">Password</label><input id="register-password" type="password" name="password"  required></br>
+          <label for="password2">Re-enter Password</label><input id="register-password2" type="password" name="password2" required></br>
           <input type="submit" name="submit" value="Register">
+          <p>Already registered? <a href="login.html">Log in!</a></p>
+          <div class="food-icons">
+            <img src="img/food-icons/coffee-3.png" alt="coffee">
+            <img src="img/food-icons/kebab-1.png" alt="kebab">
+            <img src="img/food-icons/salad.png" alt="salad">
+          </div>
         </form>
-        <p>Already registered? <a href="login.html">Log in!</a></p>
+
+      </div>
+
         </main>
         <footer>
           <div class="attribution">
-            <img src="/img/freepik.png"><a href="https://www.flaticon.com/packs/avatars-20">Images by Freepik</a>
+            <img src="/img/freepik.png"><a href="https://www.flaticon.com/packs/gastronomy-sets">Images by Freepik</a>
           </div>
         </footer>
         <script src="js/vendor/modernizr-3.5.0.min.js"></script>

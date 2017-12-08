@@ -13,15 +13,38 @@ function listenForLogin() {
       data: user,
       success: result => {
         sessionStorage.setItem('token', result.token);
-        alert(result.message);
         location.href='/dashboard.html'
       },
       error: error => {
-        alert('Sorry, there was an error, try again...');
-        location.href='/login.html'
+        showMessage('Sorry, there was an error, try again...', true);
       },
     })
   })
 }
+
+function showMessage(message, isError) {
+  console.log('showing message');
+  const className = isError ? 'error' : 'success';
+  $('.message').removeClass('error', 'success')
+               .addClass(className)
+               .text(message).slideDown();
+  setTimeout(function () {
+    $('.message').slideUp();
+  }, 2000);
+}
+
+function popupMessage(message, redirect) {
+    var modal = document.getElementById('myModal');
+    modal.style.display = "block";
+    $('.modal-content').append(`
+      <p>${message}</p>
+      <button id="ok-button">Ok</button>`);
+    (function() {
+      $('#ok-button').click(function() {
+        modal.style.display = "none";
+        location.href = redirect;
+      })
+    })()
+  }
 
 $(listenForLogin());

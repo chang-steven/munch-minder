@@ -21,10 +21,6 @@ require('../config/passport')(passport);
 
 munchesRouter.use(bodyParser.urlencoded({extended: false}));
 
-munchesRouter.get('/test', passport.authenticate('jwt', { session: false }), (req, res) => {
-  res.json({message:`It worked!  User ID authenticated.  User id is ${req.user._id}`});
-});
-
 const upload = multer({
     storage: multerS3({
         s3: s3,
@@ -132,8 +128,7 @@ munchesRouter.put('/:id', jsonParser, (req, res) => {
 munchesRouter.delete('/:id', passport.authenticate('jwt', { session: false }), (req, res) => {
   Munch.findByIdAndRemove(req.params.id)
   .then(() => {
-    console.log(`Deleted munch with id: ${req.params.id}`);
-    res.status(204).json({message: 'success'});
+    res.status(204).json({message: 'Successfully Deleted Munch'});
   })
   .catch(err => {
     console.error(err);
