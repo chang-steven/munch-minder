@@ -23,7 +23,6 @@ function listenForLogin() {
 }
 
 function showMessage(message, isError) {
-  console.log('showing message');
   const className = isError ? 'error' : 'success';
   $('.message').removeClass('error', 'success')
                .addClass(className)

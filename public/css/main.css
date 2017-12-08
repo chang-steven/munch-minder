@@ -188,6 +188,25 @@ header {
   margin: 6px 10px;
 }
 
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    padding: 12px 16px;
+    z-index: 1;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
 .message {
   padding: 0 25px;
   line-height: 50px;
@@ -299,19 +318,13 @@ a {
   text-decoration: none;
 }
 
-/*a:hover {
-  background-color: gray;
-}*/
 
 #login {
-  /*display: inline-block;*/
-  /*margin: 20px;*/
   margin: 0 auto;
   width: 90%;
 }
 
 .about-container {
-  /*margin: 0 auto;*/
   max-width: 600px;
   padding-left: 40px;
 
@@ -351,10 +364,6 @@ label:after {
   width: 90%;
 }
 
-/*.main-inner p {
-  padding-left: 30px;
-}*/
-
 #munch-form label {
   width: 100px;
 }
@@ -372,7 +381,11 @@ label:after {
 }
 
 #munch-thumb label {
-  width: 130px;
+  width: 165px;
+}
+
+input[type="radio"] {
+  margin-top: 20px;
 }
 
 #change-avatar-window {
@@ -444,6 +457,7 @@ input, textarea {
 
 .thumbUp, .thumbDown {
   padding-right: 10px;
+  font-size: 2em;
 }
 
 #avatar-form h1 {
@@ -487,8 +501,6 @@ input, textarea {
   display: block;
   text-align: center;
 }
-
-
 
 #loader {
 	position: fixed;
@@ -629,7 +641,7 @@ input, textarea {
   #user-avatar-window{
     display: block;
   }
- }
+}
 
 
  @media only screen and (min-width: 800px) {

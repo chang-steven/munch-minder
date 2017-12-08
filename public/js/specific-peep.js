@@ -21,7 +21,6 @@ function getSpecificFriend() {
     },
     success: displayFriendMunches,
     error: error => {
-      console.log(error);
       console.log('Unable to get specific friend');
     }
   });
@@ -59,22 +58,16 @@ function displayFriendMunches(result) {
     }
   };
 
-  $(function() {
-    token = sessionStorage.getItem('token');
-    if (token) {
-      payloadData = parseJwt(token);
-      displayAvatar();
-      friendId = getQueryVariable('id');
-      getSpecificFriend();
-    }
-    else {
-      alert("Sorry, you're not logged in");
-      location.href='/login.html';
-    }
-  })
-
-
-
 $(function() {
-
+  token = sessionStorage.getItem('token');
+  if (token) {
+    payloadData = parseJwt(token);
+    displayAvatar();
+    friendId = getQueryVariable('id');
+    getSpecificFriend();
+  }
+  else {
+    alert("Sorry, you're not logged in");
+    location.href='/login.html';
+  }
 })

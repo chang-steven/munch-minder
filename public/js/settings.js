@@ -36,7 +36,6 @@ function updateUserData(user) {
       popupMessageMod(result.message, '/login.html');
     },
     error: error => {
-      console.log(error);
       showMessage(error.responseJSON.message);
     },
   };

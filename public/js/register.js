@@ -23,7 +23,6 @@ function listenForNewUserRegistration() {
 }
 
 function showMessage(message, isError) {
-  console.log('showing message');
   const className = isError ? 'error' : 'success';
   $('.message').removeClass('error', 'success')
                .addClass(className)
@@ -42,7 +41,6 @@ function registerNewUser(user) {
       location.href='/login.html'
     },
     error: error => {
-      console.log(error);
       var modal = document.getElementById('myModal');
       modal.style.display = "none";
       popupMessage('Sorry, there was an error, try again...', '/register.html');
@@ -57,7 +55,6 @@ function getAvatars() {
     url: '/api/users/avatar',
     success: displayAvatarCollection,
     error: error => {
-      console.log(error);
       console.log('Unable to get avatar collection');
     }
   });

@@ -520,7 +520,7 @@ Also, please note that this markup requires to add attributes to your
 top `html` tag.
 
 ```html
-<html class="no-js" lang="" itemscope itemtype="http://schema.org/Article">
+<html class="no-js" lang="en" itemscope itemtype="http://schema.org/Article">
     <head>
 
         <link rel="author" href="">

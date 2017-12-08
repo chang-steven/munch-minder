@@ -57,7 +57,7 @@ peepsRouter.get('/peeps/munches', passport.authenticate('jwt', { session: false 
   });
 })
 
-
+//GET a specific friend by ID and display their munches
 peepsRouter.get('/peep/:id', passport.authenticate('jwt', { session: false }), (req, res) => {
   User.findById(req.params.id)
   .populate({
@@ -73,6 +73,7 @@ peepsRouter.get('/peep/:id', passport.authenticate('jwt', { session: false }), (
   });
 })
 
+//GET and find a friend by email
 peepsRouter.get('/peeps/findbyemail', passport.authenticate('jwt', { session: false }), (req, res) => {
   User.find({userEmail: `${req.query.email}`})
   .populate({path: 'avatar'})
@@ -84,6 +85,7 @@ peepsRouter.get('/peeps/findbyemail', passport.authenticate('jwt', { session: fa
   });
 });
 
+//Add friend to logged in user
 peepsRouter.post('/peeps/add-friend', jsonParser, passport.authenticate('jwt', { session: false }), (req, res) => {
   let numFriends;
   if (req.user._id == req.body.friendId){
@@ -123,6 +125,7 @@ peepsRouter.post('/peeps/add-friend', jsonParser, passport.authenticate('jwt', {
     })
   })
 
+//Returns all available groups to join
   peepsRouter.get('/groups', jsonParser, passport.authenticate('jwt', { session: false }), (req, res) => {
     Group.find()
     .then(results => {

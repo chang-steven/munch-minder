@@ -16,7 +16,6 @@ function listenForLoginHelp() {
 }
 
 function showMessage(message, isError) {
-  console.log('showing message');
   const className = isError ? 'error' : 'success';
   $('.message').removeClass('error', 'success')
                .addClass(className)
@@ -25,7 +24,5 @@ function showMessage(message, isError) {
     $('.message').slideUp();
   }, 2000);
 }
-
-
 
 $(listenForLoginHelp())
