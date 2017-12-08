@@ -7,7 +7,6 @@ function getMunches() {
     },
     success: displayMunches,
     error: error => {
-      console.log(error);
       console.log('Unable to get munches');
     }
   });
@@ -59,7 +58,6 @@ function getRecentFriendMunches() {
     },
     success: displayFriendMunches,
     error: error => {
-      console.log(error);
       console.log('Unable to get friends munches');
     }
   });

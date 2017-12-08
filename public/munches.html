@@ -1,90 +1,86 @@
 <!doctype html>
-<html class="no-js" lang="">
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="x-ua-compatible" content="ie=edge">
-        <title></title>
-        <meta name="description" content="">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-
-        <link rel="manifest" href="site.webmanifest">
-        <link rel="apple-touch-icon" href="icon.png">
-        <!-- Place favicon.ico in the root directory -->
-
-        <link rel="stylesheet" href="css/normalize.css">
-        <link rel="stylesheet" href="css/main.css">
-        <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
-    </head>
-    <body>
-        <header>
-          <div id="loader"></div>
-          <div class="header-container">
-          <div id="munch-minder-logo">
-            <img src="img/fresh-fitness-food-chef.png">
-          </div>
-          <h1><a href="/dashboard.html">Munch Minder</a></h1>
-        <div id="user-avatar-window">
-        </div>
-        <ul class="nav-links">
-            <li><a href="dashboard.html">My Dashboard</a></li>
-            <li><a href="munches.html">Munches</a></li>
-            <li><a href="peeps.html">Peeps</a></li>
-            <li><a href="settings.html">Settings</a></li>
-        </ul>
+<html class="no-js" lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <title>Munch Minder</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="css/normalize.css">
+  <link rel="stylesheet" href="css/main.css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+</head>
+<body>
+  <header role="banner">
+    <div id="loader"></div>
+    <div class="header-container">
+      <div id="munch-minder-logo">
+        <img src="img/fresh-fitness-food-chef.png">
       </div>
-        </header>
-        <main>
-          <div class="message"></div>
-        <form id="munch-form" class="post" method="post" enctype="multipart/form-data">
-          <fieldset>
-            <legend>Add Munch</legend>
-
-          <label for="date">Date</label>
-          <input id="munch-date" type="date" name="date" placeholder="dd-mm-yyyy" required>
-          </br>
-          <label for="title">Title</label>
-          <input id="munch-title" type="text" name="title" placeholder="Chinese Takeout from Mama Liu's"required>
-          </br>
-          <label for="description">Description</label>
-          <textarea id="munch-description" rows="3" name="description" placeholder="It was awesome!  Highly recommend the Kungpao Chicken!" required></textarea>
-          </br>
-          <div id="munch-thumb">
-            <input id="munch-userThumbsUp" type="radio" name="thumb" value="1"><label for="munch-userThumbsUp">Thumbs Up <span class="thumbUp">
-                &#x1F44D;
-              </span></label>
-            </div>
-            <div id="munch-thumb">
-
-
-          <input id="munch-userThumbsDown" type="radio" name="thumb" value="2"><label for="munch-userThumbsDown">Thumbs Down <span class="thumbDown">
-              &#x1F44E;
-            </span></label>
+      <h1><a href="/dashboard.html">Munch Minder</a></h1>
+      <div id="user-avatar-window">
+      </div>
+      <ul class="nav-links" role="navigation">
+        <li><a href="dashboard.html">My Dashboard</a></li>
+        <li><a href="munches.html">Munches</a></li>
+        <li><a href="peeps.html">Peeps</a></li>
+        <div class="dropdown">
+          <li>See Also</li>
+          <div class="dropdown-content">
+            <li><a href="tutorialx.html">Tutorial</a></li>
+            <li><a href="aboutx.html">About</a></li>
+            <li><a href="settings.html">Settings</a></li>
           </div>
-
-          </div>
-          </br>
-          <label for="imgFile">Image upload</label>
-          <input id="munch-image" type="file" name="imgFile" accept=".jpg, .jpeg, .png">
-          </br>
-          </br>
-          <input type="submit" name="submit" value="Add Munch">
-        </fieldset>
-
-        </form>
-        <div id="display-munches" class="dragscroll">
-
         </div>
-        </main>
-        <footer>
-          <div class="attribution">
-            <img src="/img/freepik.png"><a href="https://www.flaticon.com/packs/avatars-20">Images by Freepik</a>
-          </div>
-        </footer>
-        <script src="js/vendor/modernizr-3.5.0.min.js"></script>
-        <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
-         <script type="text/javascript" src="https://cdn.rawgit.com/asvd/dragscroll/master/dragscroll.js"></script>
-        <script>window.jQuery || document.write('<script src="js/vendor/jquery-3.2.1.min.js"><\/script>')</script>
-        <script src="js/app.js"></script>
-        <script src="js/munches.js"></script>
-    </body>
+      </ul>
+    </div>
+  </header>
+  <main>
+    <div class="message"></div>
+    <form id="munch-form" class="post" method="post" enctype="multipart/form-data">
+      <fieldset>
+        <legend>Add Munch</legend>
+        <label for="date">Date</label>
+        <input id="munch-date" type="date" name="date" placeholder="dd-mm-yyyy" required>
+      </br>
+      <label for="title">Title</label>
+      <input id="munch-title" type="text" name="title" placeholder="Chinese Takeout from Mama Liu's"required>
+    </br>
+    <label for="description">Description</label>
+    <textarea id="munch-description" rows="3" name="description" placeholder="It was awesome!  Highly recommend the Kungpao Chicken!" required></textarea>
+  </br>
+  <div id="munch-thumb">
+    <input id="munch-userThumbsUp" type="radio" name="thumb" value="1"><label for="munch-userThumbsUp">Thumbs Up <span class="thumbUp">
+      &#x1F44D;
+    </span></label>
+  </div>
+  <div id="munch-thumb">
+    <input id="munch-userThumbsDown" type="radio" name="thumb" value="2"><label for="munch-userThumbsDown">Thumbs Down <span class="thumbDown">
+      &#x1F44E;
+    </span></label>
+  </div>
+</div>
+</br>
+<label for="imgFile">Image upload</label>
+<input id="munch-image" type="file" name="imgFile" accept=".jpg, .jpeg, .png">
+</br>
+</br>
+<input type="submit" name="submit" value="Add Munch">
+</fieldset>
+</form>
+<div id="display-munches" class="dragscroll">
+</div>
+</main>
+<footer role="contentinfo">
+  <div class="attribution">
+    <img src="/img/freepik.png"><a href="https://www.flaticon.com/packs/avatars-20">Images by Freepik</a>
+  </div>
+</footer>
+<script src="js/vendor/modernizr-3.5.0.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="https://cdn.rawgit.com/asvd/dragscroll/master/dragscroll.js"></script>
+<script>window.jQuery || document.write('<script src="js/vendor/jquery-3.2.1.min.js"><\/script>')</script>
+<script src="js/app.js"></script>
+<script src="js/munches.js"></script>
+</body>
 </html>

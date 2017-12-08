@@ -7,7 +7,6 @@ function getRecentFriendMunches() {
     },
     success: displayFriendMunches,
     error: error => {
-      console.log(error);
       console.log('Unable to get friends munches');
     }
   });
@@ -113,7 +112,6 @@ function searchAndGetPeeps(query) {
     },
     success: displaySearchedPeeps,
     error: error => {
-      console.log(error);
       showMessage('Sorry, unable to return a search results', true);
     }
   })

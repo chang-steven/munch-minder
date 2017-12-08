@@ -61,12 +61,10 @@ describe('Munches Router to /api/munches', function() {
       .get('/api/munches')
       .set('Authorization', `Bearer ${token}`)
       .then(function(res) {
-        console.log(res.body);
         res.should.have.status(200);
         res.should.be.json;
         res.body.should.be.an('object');
         res.body.munches.should.be.an('array');
-        // res.body.munches.should.have.length.of.at.least(2);
       });
     });
 

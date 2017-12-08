@@ -9,7 +9,6 @@ function listenForMunch() {
     const data = new FormData(this);
     event.preventDefault();
     let image = $('#munch-image').val();
-    console.log(image);
     let thumb = $('input[name=thumb]:checked', '#munch-form').val();
     let munch = {
       date: $('#munch-date').val(),
@@ -24,7 +23,6 @@ function listenForMunch() {
     $('#munch-image').val("");
     $('#munch-userThumbsUp').prop('checked', false);
     $('#munch-userThumbsDown').prop('checked', false);
-    console.log(munch);
     $.ajax({
       method: 'POST',
       enctype: 'multipart/form-data',
@@ -36,15 +34,11 @@ function listenForMunch() {
       processData: false,
       contentType: false,
       success: result => {
-        // location.href='/munches.html'
-        console.log('now showing some new munch');
-        console.log(result.message);
         showMessage(result.message);
         getMunches();
 
       },
       error: error => {
-        console.log(error);
         alert('Sorry, there was an error, try again...');
         location.href='/munches.html'
       }
@@ -61,8 +55,7 @@ function getMunches() {
     },
     success: displayMunches,
     error: error => {
-      console.log(error);
-      console.log('Unable to get munches');
+    console.log('Unable to get munches');
     }
   });
 }

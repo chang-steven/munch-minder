@@ -21,7 +21,6 @@ function getSpecificMunch() {
     },
     success: displayMunch,
     error: error => {
-      console.log(error);
       console.log('Something went wrong');
     }
   })
@@ -38,7 +37,6 @@ function displayMunch(munch) {
   else {
     thumb = '';
   }
-  console.log(munch);
   let formattedDate = new Date(munch.date).toDateString();
   let userURL = `/peep.html?id=${munch.postedBy || ""} `;
   const imageURL = munch.image || "/img/no-image.jpg";
@@ -55,7 +53,6 @@ function displayMunch(munch) {
     </div>
   </div></a>`);
   if (munch.postedBy == payloadData.userId) {
-    console.log('delete button added');
     $('.munch-blurb').append(`<button id="delete-munch">Delete</button>`);
     listenForMunchDelete(munch._id);
   }
@@ -83,7 +80,6 @@ function listenForMunchDelete(munchId) {
         })()
       },
       error: error => {
-        console.log(error);
         console.log('Something went wrong');
       }
     })
