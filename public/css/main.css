@@ -120,24 +120,20 @@ main {
 }
 
 main:after {
-    content: "";
-    display: block;
-    height: 80px;
+  content: "";
+  display: block;
+  height: 80px;
 }
 
 .main-inner {
-  /*text-align: center;
-  padding-left: 100px;*/
   margin: 0 auto;
 }
 
 footer {
-  /*position: absolute;*/
   height: 80px;
   right: 0;
   bottom: 0;
   left: 0;
-  /*padding: 1rem;*/
   background-color: #efefef;
   text-align: center;
 }
@@ -159,7 +155,6 @@ footer {
   max-width: 90px;
 }
 
-
 header {
   background-color: #B7FDA8;
 }
@@ -170,12 +165,10 @@ header {
   margin: 0 auto;
 }
 
-
 .header-container h1 {
   margin-top: 0;
   padding-left: 10px;
   display: inline-block;
-
 }
 
 .nav-links {
@@ -189,22 +182,22 @@ header {
 }
 
 .dropdown {
-    position: relative;
-    display: inline-block;
+  position: relative;
+  display: inline-block;
 }
 
 .dropdown-content {
-    display: none;
-    position: absolute;
-    background-color: #f9f9f9;
-    min-width: 160px;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-    padding: 12px 16px;
-    z-index: 1;
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  padding: 12px 16px;
+  z-index: 1;
 }
 
 .dropdown:hover .dropdown-content {
-    display: block;
+  display: block;
 }
 
 .message {
@@ -212,7 +205,6 @@ header {
   line-height: 50px;
   border: 2px solid #fefefe;
   display: none;
-  /*position: absolute;*/
   margin: 0 auto;
   width: fit-content;
 }
@@ -248,7 +240,7 @@ header {
 }
 
 .food-icons img {
-  width: 130px;
+  width: 80px;
   padding: 20px 20px;
 }
 
@@ -262,26 +254,26 @@ header {
 
 /* The Modal (background) */
 .modal {
-    display: none; /* Hidden by default */
-    position: fixed; /* Stay in place */
-    z-index: 1; /* Sit on top */
-    padding-top: 100px; /* Location of the box */
-    left: 0;
-    top: 0;
-    width: 100%; /* Full width */
-    height: 100%; /* Full height */
-    overflow: auto; /* Enable scroll if needed */
-    background-color: rgb(0,0,0); /* Fallback color */
-    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  padding-top: 100px; /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
 }
 
 /* Modal Content */
 .modal-content, .error-modal-content, #modal-avatar {
-    background-color: #fefefe;
-    margin: auto;
-    padding: 20px;
-    border: 1px solid #888;
-    width: 20%;
+  background-color: #fefefe;
+  margin: auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 20%;
 }
 
 .error-modal-content {
@@ -297,17 +289,17 @@ header {
 }
 /* The Close Button */
   .close {
-      color: #aaaaaa;
-      float: right;
-      font-size: 28px;
-      font-weight: bold;
+    color: #aaaaaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
   }
 
   .close:hover,
   .close:focus {
-      color: #000;
-      text-decoration: none;
-      cursor: pointer;
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
   }
 
 .demo-images img {
@@ -317,7 +309,6 @@ header {
 a {
   text-decoration: none;
 }
-
 
 #login {
   margin: 0 auto;
@@ -331,7 +322,7 @@ a {
 }
 
 .tutorial-container, .about-container {
-    font-size: 1.1em;
+  font-size: 1.1em;
 }
 
 #settings {
@@ -359,7 +350,6 @@ label:after {
  }
 
 #register {
-  /*padding-left: 30px;*/
   margin: 0 auto;
   width: 90%;
 }
@@ -393,7 +383,6 @@ label:after {
   padding-right: 10px;
   font-size: 2em;
 }
-
 
 input[type="radio"] {
   margin-top: 20px;
@@ -447,7 +436,6 @@ input, textarea {
 
   .munch-blurb p, .peeps-blurb p {
     white-space: normal;
-
   }
 
   .username {
@@ -465,7 +453,6 @@ input, textarea {
 #munch-title, #munch-description {
   width: 100px;
 }
-
 
 #avatar-form h1 {
   display: inline-block;
@@ -622,7 +609,7 @@ input, textarea {
 }
 
 
- @media screen and (min-width: 640px) and (max-width: 800px){
+ @media only screen and (min-width: 640px) and (max-width: 800px){
 
    #user-avatar-window {
     float: right;
@@ -648,8 +635,15 @@ input, textarea {
   #user-avatar-window{
     display: block;
   }
-}
 
+  .food-icons-container {
+    padding-top: 50px;
+  }
+
+  .food-icons img {
+    width: 80px;
+  }
+}
 
  @media only screen and (min-width: 800px) {
    #search-peeps-input {
@@ -670,6 +664,10 @@ input, textarea {
 
    #munch-date {
      width: 150px;
+   }
+
+   .food-icons img {
+     width: 130px;
    }
  }
 

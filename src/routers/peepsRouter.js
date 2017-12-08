@@ -15,7 +15,6 @@ require('../config/passport')(passport);
 mongoose.Promise = global.Promise;
 const {User} = require('../models/user');
 const {Munch} = require('../models/munch');
-const {Group} = require('../models/group')
 
 //GET request for friends of logged in user
 peepsRouter.get('/peeps/', passport.authenticate('jwt', { session: false }), (req, res) => {
@@ -109,33 +108,5 @@ peepsRouter.post('/peeps/add-friend', jsonParser, passport.authenticate('jwt', {
           console.log(err);
         });
     });
-
-
-
-  //Create a new group
-  peepsRouter.post('/groups', jsonParser, passport.authenticate('jwt', { session: false }), (req, res) => {
-    Group.create({groupName: req.body.groupname})
-    .then(() => {
-      const message = `Successfully created group ${req.body.groupname}`;
-      return res.send(message).status(200)
-    })
-    .catch(err => {
-      console.error(err);
-      res.status(500).json({error: 'Something went wrong'});
-    })
-  })
-
-//Returns all available groups to join
-  peepsRouter.get('/groups', jsonParser, passport.authenticate('jwt', { session: false }), (req, res) => {
-    Group.find()
-    .then(results => {
-      res.json(results)
-    })
-    .catch(err => {
-    console.error(err);
-    res.status(500).json({error: 'Something went wrong'});
-    })
-  });
-
 
 module.exports = {peepsRouter};

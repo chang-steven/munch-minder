@@ -43,7 +43,7 @@ function registerNewUser(user) {
     error: error => {
       var modal = document.getElementById('myModal');
       modal.style.display = "none";
-      popupMessage('Sorry, there was an error, try again...', '/register.html');
+      popupMessage('Sorry, there was an error creating account, please try again.', '/register.html');
     },
   };
   $.ajax(newUser);

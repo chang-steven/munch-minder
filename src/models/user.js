@@ -11,7 +11,6 @@ const userSchema = mongoose.Schema({
   friends: [{type: mongoose.Schema.Types.ObjectId, ref: 'User'}],
   //Munches will be an array of objects listing munches
   munches: [{type: mongoose.Schema.Types.ObjectId, ref: 'Munch'}],
-  // groups: [{type: mongoose.Schema.Types.ObjectId, ref: 'Group'}]
 });
 
 //Save the user's hashed password
