@@ -1,5 +1,5 @@
 function getRecentFriendMunches() {
-  $.ajax({
+  return $.ajax({
     type: 'GET',
     url: '/api/peeps/munches',
     headers: {
@@ -53,7 +53,7 @@ function displayFriendMunches(friendData) {
   };
 
   function getMyFriends() {
-    $.ajax({
+    return $.ajax({
       type: 'GET',
       url: '/api/peeps',
       headers: {
@@ -114,14 +114,14 @@ function searchAndGetPeeps(query) {
     success: displaySearchedPeeps,
     error: error => {
       console.log(error);
-      console.log('Sorry, unable to return a search results');
+      showMessage('Sorry, unable to return a search results', true);
     }
   })
 }
 
 function displaySearchedPeeps(searchResults) {
   if (searchResults.length <= 0) {
-    alert('Sorry, unable to return any search results, try again.')
+    showMessage('Sorry, unable to return any search results, try again.', true)
   }
   else {
   $('#display-friends').empty().append(`<h2>Peeps Search Results</h2>`);
@@ -161,19 +161,32 @@ function listenForAddFriend() {
         Authorization: token
       },
       success: (response) => {
-        alert(response.message);
-        location.href='/peeps.html';
+        showMessage(response.message);
+        getMyFriends();
+        getRecentFriendMunches();
       },
       error: error => {
-        console.log(error);
-        console.log('Sorry, unable to add friend');
+        showMessage(error.responseJSON.message, true)
       }
     })
   })
 }
 
 $(function() {
-  getMyFriends();
-  getRecentFriendMunches();
-  listenForSearchClick();
+  token = sessionStorage.getItem('token');
+  if (token) {
+    payloadData = parseJwt(token);
+    displayAvatar();
+    let fetchMyFriends = getMyFriends();
+    let fetchMyFriendsMunches = getRecentFriendMunches();
+    Promise.all([fetchMyFriends, fetchMyFriendsMunches])
+    .then(() => {
+        $('#loader').fadeOut();
+    });
+    listenForSearchClick();
+  }
+  else {
+    alert("Sorry, you're not logged in");
+    location.href='/login.html';
+  }
 })

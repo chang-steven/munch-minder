@@ -18,6 +18,12 @@ function listenForMunch() {
       userThumbsUp: thumb,
       imgFile: $('#munch-image').val()
     };
+    $('#munch-date').val("");
+    $('#munch-title').val("");
+    $('#munch-description').val("");
+    $('#munch-image').val("");
+    $('#munch-userThumbsUp').prop('checked', false);
+    $('#munch-userThumbsDown').prop('checked', false);
     console.log(munch);
     $.ajax({
       method: 'POST',
@@ -30,8 +36,12 @@ function listenForMunch() {
       processData: false,
       contentType: false,
       success: result => {
-        alert(result.message);
-        location.href='/munches.html'
+        // location.href='/munches.html'
+        console.log('now showing some new munch');
+        console.log(result.message);
+        showMessage(result.message);
+        getMunches();
+
       },
       error: error => {
         console.log(error);
@@ -92,9 +102,19 @@ function displayMunches(data) {
       </div></a>`);
     }
   }
+  $('#loader').fadeOut();
 }
 
 $(function() {
-  getMunches();
-  listenForMunch();
+  token = sessionStorage.getItem('token');
+  if (token) {
+    payloadData = parseJwt(token);
+    displayAvatar();
+    getMunches();
+    listenForMunch();
+}
+    else {
+      alert("Sorry, you're not logged in");
+      location.href='/login.html';
+    }
 });

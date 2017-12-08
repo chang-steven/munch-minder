@@ -32,23 +32,52 @@
         </header>
         <main>
 
+            <div class="main-inner">
+              <div class="message">
+
+              </div>
+
+          <!-- <div id="myModal" class="modal">
+            Modal content
+            <div class="modal-content">
+            </div>
+            </div> -->
+            <!-- <div class="food-icons">
+              <img src="img/food-icons/groceries.png" alt="groceries">
+              <img src="img/food-icons/hamburguer-1.png" alt="hamburguer-1">
+              <img src="img/food-icons/noodles.png" alt="noodles">
+            </div> -->
         <form id="login" action="login.html" method="post">
           <h2>Log-in</h2>
-          Username <input id="login-username" type="text" name="username" value="">
-          Password <input id="login-password" type="password" name="password" value="">
+          <div class="login-input">
+            <label for="username">Username</label>
+            <input id="login-username" type="text" name="username">
+          </div>
+          <div class="login-input">
+            <label for="password">Password</label>
+            <input id="login-password" type="password" name="password">
+          </div>
+
           <input type="submit" name="submit" value="Login">
           <p>No Account? <a href="register.html">Create one!</a></p>
           <p>Forgot username or password? <a href="/help.html">Get help!</a></p>
+          <div class="food-icons">
+            <img src="img/food-icons/pizza-4.png" alt="pizza">
+            <img src="img/food-icons/pasta-1.png" alt="pasta">
+            <img src="img/food-icons/taco.png" alt="taco">
+          </div>
         </form>
+        </div>
         </main>
         <footer>
           <div class="attribution">
-            <img src="/img/freepik.png"><a href="https://www.flaticon.com/packs/avatars-20">Images by Freepik</a>
+            <img src="/img/freepik.png"><a href="https://www.flaticon.com/packs/gastronomy-set">Images by Freepik</a>
           </div>
         </footer>
         <script src="js/vendor/modernizr-3.5.0.min.js"></script>
         <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
         <script>window.jQuery || document.write('<script src="js/vendor/jquery-3.2.1.min.js"><\/script>')</script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
         <script src="js/plugins.js"></script>
         <script src="js/login.js"></script>
     </body>

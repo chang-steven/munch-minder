@@ -7,29 +7,36 @@ function parseJwt (token) {
 };
 
 function displayAvatar() {
-  console.log('Now displaying avatar');
-  $('#user-avatar-window').empty().append(`
+  $('#user-avatar-window').prepend(`
     <img src="${payloadData.avatarUrl}">
     <a href="javascript: logOut()">Log Out</a>`);
 }
+
+function showMessage(message, isError) {
+  const className = isError ? 'error' : 'success';
+  $('.message').removeClass('error', 'success')
+               .addClass(className)
+               .text(message).slideDown();
+  setTimeout(function () {
+    $('.message').slideUp();
+  }, 2000);
+}
+
+function popupMessage(response, redirect) {
+    var modal = document.getElementById('myModal');
+    modal.style.display = "block";
+    $('.modal-content').append(`
+      <p>${response.message}</p>
+      <button id="ok-button">Ok</button>`);
+    (function() {
+      $('#ok-button').click(function() {
+        modal.style.display = "none";
+        location.href = redirect;
+      })
+    })()
+  }
 
 function logOut() {
   sessionStorage.removeItem('token');
   location.href='/login.html';
 }
-
-$(function() {
-  token = sessionStorage.getItem('token');
-
-  if (token) {
-    payloadData = parseJwt(token);
-    displayAvatar();
-    setTimeout(function () {
-      $('#loader').fadeOut();
-    }, 600);
-  }
-  else {
-    alert("Sorry, you're not logged in");
-    location.href='/login.html';
-  }
-})

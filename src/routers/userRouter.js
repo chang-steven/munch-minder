@@ -20,7 +20,6 @@ const {Avatar} = require('../models/avatar');
 
 //POST request for new registration of a user to /api/user
 userRouter.post('/user', jsonParser, (req, res) => {
-  console.log('New registration request made');
   const requiredKeys = ["username", "email", "password"];
   requiredKeys.forEach( key => {
     if(!(key in req.body)) {
@@ -99,7 +98,6 @@ userRouter.delete('/user/:id', passport.authenticate('jwt', { session: false }),
   };
   User.findByIdAndRemove(req.params.id)
   .then(() => {
-    console.log(`Deleted user with id: ${req.params.id}`);
     res.status(204).json({message: 'success'});
   })
   .catch(err => {
@@ -158,8 +156,6 @@ userRouter.get('/users/avatar', (req, res) => {
 
 //Updated a users avatar image
 userRouter.patch('/user/:id', jsonParser, passport.authenticate('jwt', { session: false }), (req, res) => {
-  console.log(req.user._id);
-  console.log(req.params.id);
   if (!(req.user._id == req.params.id)) {
     return res.status(400).json({message: "Sorry, you do not have valid permission"})
   };

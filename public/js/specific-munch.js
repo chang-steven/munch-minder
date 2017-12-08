@@ -54,9 +54,52 @@ function displayMunch(munch) {
       <p>${munch.description}</p>
     </div>
   </div></a>`);
+  if (munch.postedBy == payloadData.userId) {
+    console.log('delete button added');
+    $('.munch-blurb').append(`<button id="delete-munch">Delete</button>`);
+    listenForMunchDelete(munch._id);
+  }
+}
+
+function listenForMunchDelete(munchId) {
+  $('#delete-munch').click(event => {
+    $.ajax({
+      method: 'DELETE',
+      url: '/api/munches/' + munchId,
+      headers: {
+        Authorization: token
+      },
+      success: (result) => {
+        var modal = document.getElementById('myModal');
+        modal.style.display = "block";
+        $('.modal-content').append(`
+          <p>Successfully deleted munch</p>
+          <button id="ok-button">Ok</button>`);
+        (function() {
+          $('#ok-button').click(function() {
+            modal.style.display = "none";
+            location.href='/dashboard.html';
+          })
+        })()
+      },
+      error: error => {
+        console.log(error);
+        console.log('Something went wrong');
+      }
+    })
+  })
 }
 
 $(function() {
+  token = sessionStorage.getItem('token');
+  if (token) {
+  payloadData = parseJwt(token);
+  displayAvatar();
   munchId = getQueryVariable('id');
   getSpecificMunch();
+  }
+  else {
+    alert("Sorry, you're not logged in");
+    location.href='/login.html';
+  }
 })

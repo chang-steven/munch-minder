@@ -7,7 +7,7 @@ function listenForSettingsChanges() {
   $('#settings').submit(event => {
     event.preventDefault();
     if (!($('#change-password').val() == $('#change-password2').val())) {
-      return alert('Passwords do not match, please try again')
+      return showMessage('Passwords do not match, please try again', true)
     }
     else {
       let data = $('#settings').serializeArray().reduce(function(obj, item) {
@@ -33,21 +33,41 @@ function updateUserData(user) {
     url: '/api/user/' + payloadData.userId,
     data: user,
     success: result => {
-      alert(result.message);
-      location.href='/login.html'
+      popupMessageMod(result.message, '/login.html');
     },
     error: error => {
       console.log(error);
-      alert(error.responseJSON.message);
-      location.href='/settings.html'
+      showMessage(error.responseJSON.message);
     },
   };
   $.ajax(updatedUser);
 }
 
+function popupMessageMod(message, redirect) {
+    var modal = document.getElementById('myErrorModal');
+    modal.style.display = "block";
+    $('.error-modal-content').append(`
+      <p>${message}</p>
+      <button id="ok-button">Ok</button>`);
+    (function() {
+      $('#ok-button').click(function() {
+        modal.style.display = "none";
+        location.href = redirect;
+      })
+    })()
+  }
 
-$(() => {
-  displayChangeAvatar();
-  listenForSettingsChanges();
-
+$(function() {
+  token = sessionStorage.getItem('token');
+  if (token) {
+    payloadData = parseJwt(token);
+    displayChangeAvatar();
+    displayAvatar();
+    listenForSettingsChanges();
+    $('#loader').fadeOut();
+}
+    else {
+      alert("Sorry, you're not logged in");
+      location.href='/login.html';
+    }
 });

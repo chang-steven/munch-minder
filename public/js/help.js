@@ -6,15 +6,26 @@ function listenForLoginHelp() {
       type: 'GET',
       url: '/api/findbyemail?email=' + email,
       success: result => {
-        alert(result.message);
-        location.href='/login.html'
+        showMessage(result.message);
       },
       error: error => {
-        alert('Sorry, there was an error, try again...');
-        location.href='/help.html'
+        showMessage('Sorry, there was an error, try again...', true);
       },
     })
   })
 }
+
+function showMessage(message, isError) {
+  console.log('showing message');
+  const className = isError ? 'error' : 'success';
+  $('.message').removeClass('error', 'success')
+               .addClass(className)
+               .text(message).slideDown();
+  setTimeout(function () {
+    $('.message').slideUp();
+  }, 2000);
+}
+
+
 
 $(listenForLoginHelp())

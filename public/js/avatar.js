@@ -37,9 +37,10 @@ function listenForAvatarSelection() {
       },
       success: () =>
         {
-          alert('User data changed, please log in.');
           sessionStorage.removeItem('token');
-          location.href='/login.html';
+          var modal = document.getElementById('myModal');
+          modal.style.display = "none";
+          popupMessageMod('User data changed, please log in.', '/login.html');
         },
         error: error => {
         console.log(error);

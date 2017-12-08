@@ -33,7 +33,6 @@ peepsRouter.get('/peeps/', passport.authenticate('jwt', { session: false }), (re
   });
 })
 
-
 //GET request for 15 most recent updates from friends
 peepsRouter.get('/peeps/munches', passport.authenticate('jwt', { session: false }), (req, res) => {
   User.findById(req.user._id)
@@ -43,12 +42,13 @@ peepsRouter.get('/peeps/munches', passport.authenticate('jwt', { session: false 
     populate : {path : 'munches'}
   })
   .then(result => {
-    console.log(result);
-
     const allMunches = result.friends.map(a => a.munches)
                              .reduce((a, b) => (a.concat(b)), [])
-                             .sort((a, b) => a.date < b.date);
-    console.log(allMunches);
+                             .sort((a, b) => {
+                               let c = new Date(a.date);
+                               let d = new Date(b.date);
+                               return c > d ? -1 : c < d ? 1 : 0;
+                             });
     res.json(allMunches);
   })
   .catch(err => {
@@ -86,10 +86,12 @@ peepsRouter.get('/peeps/findbyemail', passport.authenticate('jwt', { session: fa
 
 peepsRouter.post('/peeps/add-friend', jsonParser, passport.authenticate('jwt', { session: false }), (req, res) => {
   let numFriends;
+  if (req.user._id == req.body.friendId){
+    return res.status(500).json({message: "Unable to add self."});
+  }
       User.findById(req.user._id)
       .then(userData => {
         numFriends = userData.friends.length;
-        console.log(numFriends);
         return User.findByIdAndUpdate(req.user._id, { $addToSet: { friends: req.body.friendId } }, { new: true })
       })
         .then((updated) => {

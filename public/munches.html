@@ -34,6 +34,7 @@
       </div>
         </header>
         <main>
+          <div class="message"></div>
         <form id="munch-form" class="post" method="post" enctype="multipart/form-data">
           <fieldset>
             <legend>Add Munch</legend>
@@ -45,22 +46,27 @@
           <input id="munch-title" type="text" name="title" placeholder="Chinese Takeout from Mama Liu's"required>
           </br>
           <label for="description">Description</label>
-          <textarea id="munch-description" rows="3" name="description" placeholder="It was awesome!  Excellent Ghetto Broccoli Beef!" required></textarea>
+          <textarea id="munch-description" rows="3" name="description" placeholder="It was awesome!  Highly recommend the Kungpao Chicken!" required></textarea>
           </br>
-          <div class="munch-thumb">
+          <div id="munch-thumb">
             <input id="munch-userThumbsUp" type="radio" name="thumb" value="1"><label for="munch-userThumbsUp">Thumbs Up <span class="thumbUp">
                 &#x1F44D;
               </span></label>
-          <input id="munch-userThumbsDown" type="radio" name="thumb" value="2"><label for="munch-userThumbsDown">Thumbs DOWN <span class="thumbDown">
+            </div>
+            <div id="munch-thumb">
+
+
+          <input id="munch-userThumbsDown" type="radio" name="thumb" value="2"><label for="munch-userThumbsDown">Thumbs Down <span class="thumbDown">
               &#x1F44E;
             </span></label>
+          </div>
+
           </div>
           </br>
           <label for="imgFile">Image upload</label>
           <input id="munch-image" type="file" name="imgFile" accept=".jpg, .jpeg, .png">
           </br>
-          <!-- <label for="imgFile">Preview Image:</label></br> -->
-          <!-- Image<input type="text" name="notes" value="http://fakeimg.pl/200x200/?text=Placeholder&font=lobster"></br> -->
+          </br>
           <input type="submit" name="submit" value="Add Munch">
         </fieldset>
 
