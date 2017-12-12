@@ -32,18 +32,4 @@ function showMessage(message, isError) {
   }, 2000);
 }
 
-function popupMessage(message, redirect) {
-    var modal = document.getElementById('myModal');
-    modal.style.display = "block";
-    $('.modal-content').append(`
-      <p>${message}</p>
-      <button id="ok-button">Ok</button>`);
-    (function() {
-      $('#ok-button').click(function() {
-        modal.style.display = "none";
-        location.href = redirect;
-      })
-    })()
-  }
-
 $(listenForLogin());

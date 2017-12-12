@@ -80,7 +80,7 @@ function displayMunches(data) {
       else {
         thumb = '';
       }
-    let formattedDate = new Date(munch.date).toDateString();
+    let formattedDate = Date(munch.date).slice(0, -24);
     const imageURL = munch.image || "/img/no-image.jpg";
     $('#display-munches').append(
       `<div class="returned-munches">

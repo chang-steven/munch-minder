@@ -51,7 +51,6 @@ munchesRouter.post('/',
   Munch
   .create({
     postedBy: req.user._id,
-    userName: req.user.userName,
     date: req.body.date,
     title: req.body.title,
     userThumbsUp: req.body.thumb,
@@ -97,6 +96,10 @@ munchesRouter.get('/', passport.authenticate('jwt', { session: false }), (req, r
 //GET request for specific munch by munch ID
 munchesRouter.get('/:id', (req, res) => {
     Munch.findById(req.params.id)
+    .populate({
+      path:'postedBy',
+      select: 'userName'
+    })
     .then(result => {
       res.json(result)
     })

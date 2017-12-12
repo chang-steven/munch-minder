@@ -37,8 +37,9 @@ peepsRouter.get('/peeps/munches', passport.authenticate('jwt', { session: false 
   User.findById(req.user._id)
   .populate({
     path : 'friends',
-    select : 'userName',
-    populate : {path : 'munches'}
+    populate : {path : 'munches',
+                populate : {path: 'postedBy',
+                            select: "_id userName"}}
   })
   .then(result => {
     const allMunches = result.friends.map(a => a.munches)
@@ -61,7 +62,9 @@ peepsRouter.get('/peep/:id', passport.authenticate('jwt', { session: false }), (
   User.findById(req.params.id)
   .populate({
     path : 'munches',
-    options: {sort: { 'date': -1}}
+    options: {sort: { 'date': -1}},
+    populate: {path: 'postedBy',
+               select: '_id userName'}
   })
   .then(result => {
     res.json(result)

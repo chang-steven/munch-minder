@@ -23,17 +23,14 @@ function showMessage(message, isError) {
 }
 
 function popupMessage(response, redirect) {
-    var modal = document.getElementById('myModal');
-    modal.style.display = "block";
+  $('#myModal').show();
     $('.modal-content').append(`
       <p>${response.message}</p>
       <button id="ok-button">Ok</button>`);
-    (function() {
       $('#ok-button').click(function() {
-        modal.style.display = "none";
-        location.href = redirect;
+      $('#myModal').hide();
+      location.href = redirect;
       })
-    })()
   }
 
 function logOut() {

@@ -51,7 +51,7 @@ function createTestUserAndPostMunches(i) {
       console.log(`Generating munch ${j+1} for user: ${username}`)
       let newMunch = generateMunchData();
       newMunch.postedBy = userId;
-      newMunch.userName = username;
+      // newMunch.userName = username;
       munchPromises.push(Munch.create(newMunch));
       j++;
     }

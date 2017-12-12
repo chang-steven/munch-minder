@@ -1,10 +1,8 @@
-let friendId;
-
 function getQueryVariable(variable) {
-  var query = window.location.search.substring(1);
-  var vars = query.split("&");
-  for (var i = 0; i < vars.length; i++) {
-    var pair = vars[i].split("=");
+  let query = window.location.search.substring(1);
+  let vars = query.split("&");
+  for (let i = 0; i < vars.length; i++) {
+    let pair = vars[i].split("=");
     if (pair[0] == variable) {
       return pair[1];
     }
@@ -12,7 +10,7 @@ function getQueryVariable(variable) {
   return (false);
 }
 
-function getSpecificFriend() {
+function getSpecificFriend(friendId) {
   $.ajax({
     type: 'GET',
     url: '/api/peep/' + friendId,
@@ -41,15 +39,15 @@ function displayFriendMunches(result) {
       else {
         thumb = '';
       }
-      let formattedDate = new Date(munch.date).toDateString();
-      let userURL = `/peep.html?id=${munch.postedBy || ""} `;
+      let formattedDate = Date(munch.date).slice(0, -24);
+      let userURL = `/peep.html?id=${munch.postedBy._id || ""} `;
       $('#display-friend').append(
         `<div class="returned-munches">
         <div class="specific-munch-image">
         <a href="munch.html?id=${munch._id}"><img src="${munch.image}"></a>
         </div>
         <div class="munch-blurb">
-        <p class="username"><a href="${userURL}">${munch.userName || "Blank for now"}</a></p>
+        <p class="username"><a href="${userURL}">${munch.postedBy.userName || "Blank for now"}</a></p>
         <p>${thumb}${formattedDate}</p>
         <a href="munch.html?id=${munch._id}"><p>${munch.title}</p></a>
         <p>${munch.description}</p>
@@ -63,8 +61,7 @@ $(function() {
   if (token) {
     payloadData = parseJwt(token);
     displayAvatar();
-    friendId = getQueryVariable('id');
-    getSpecificFriend();
+    getSpecificFriend(getQueryVariable('id'));
   }
   else {
     alert("Sorry, you're not logged in");

@@ -225,7 +225,6 @@ header {
 }
 
 .big-text, .food-icons-container {
-  display: inline-block;
   vertical-align: top;
 }
 
@@ -237,6 +236,10 @@ header {
 
 .big-text p {
   font-size: 1.2em;
+}
+
+.food-icons {
+  text-align: center;
 }
 
 .food-icons img {
@@ -430,7 +433,7 @@ input, textarea {
 
 .munch-blurb, .peeps-blurb {
   padding-left: 20px;
-  max-height: 225px;
+  max-height: 275px;
   overflow-x: scroll;
 }
 
@@ -606,6 +609,10 @@ input, textarea {
   #munch-date {
     width: 150px;
   }
+
+  .nav-links li {
+    display: inline-block;
+  }
 }
 
 
@@ -636,13 +643,18 @@ input, textarea {
     display: block;
   }
 
-  .food-icons-container {
-    padding-top: 50px;
+  .food-icons {
+    text-align: left;
   }
 
   .food-icons img {
-    width: 80px;
+    width: 130px;
   }
+
+  .big-text, .food-icons-container {
+    display: inline-block;
+  }
+
 }
 
  @media only screen and (min-width: 800px) {
@@ -666,8 +678,16 @@ input, textarea {
      width: 150px;
    }
 
+   .food-icons {
+     text-align: left;
+   }
+
    .food-icons img {
      width: 130px;
+   }
+
+   .big-text, .food-icons-container {
+     display: inline-block;
    }
  }
 

@@ -32,7 +32,7 @@ function displayMunches(data) {
       else {
         thumb = '';
       }
-    let formattedDate = new Date(munch.date).toDateString();
+      let formattedDate = Date(munch.date).slice(0, -24);
     const imageURL = munch.image || "/img/no-image.jpg";
     $('#display-munches').append(
       `<div class="returned-munches">
@@ -83,8 +83,8 @@ function displayFriendMunches(friendData) {
       else {
         thumb = '';
       }
-      let formattedDate = new Date(munch.date).toDateString();
-      let userURL = `/peep.html?id=${munch.postedBy || ""} `;
+      let formattedDate = Date(munch.date).slice(0, -24);
+      let userURL = `/peep.html?id=${munch.postedBy._id || ""} `;
       let imageURL = munch.image || "http://fakeimg.pl/200x200/?text=Munch&font=lobster";
       $('#display-peeps').append(
         `<div class="returned-munches">
@@ -92,7 +92,7 @@ function displayFriendMunches(friendData) {
         <img src="${imageURL}">
         </div>
         <a href="munch.html?id=${munch._id}"><div class="munch-blurb">
-        <p class="username">${munch.userName}</p>
+        <p class="username">${munch.postedBy.userName}</p>
         <p>${thumb}${formattedDate}</p>
         <p>${munch.title}</p></a>
         <p>${munch.description}</p>

@@ -1,10 +1,8 @@
-let munchId;
-
 function getQueryVariable(variable) {
-  var query = window.location.search.substring(1);
-  var vars = query.split("&");
-  for (var i = 0; i < vars.length; i++) {
-    var pair = vars[i].split("=");
+  let query = window.location.search.substring(1);
+  let vars = query.split("&");
+  for (let i = 0; i < vars.length; i++) {
+    let pair = vars[i].split("=");
     if (pair[0] == variable) {
       return pair[1];
     }
@@ -12,7 +10,7 @@ function getQueryVariable(variable) {
   return (false);
 }
 
-function getSpecificMunch() {
+function getSpecificMunch(munchId) {
   $.ajax({
     type: 'GET',
     url: '/api/munches/' + munchId,
@@ -37,8 +35,8 @@ function displayMunch(munch) {
   else {
     thumb = '';
   }
-  let formattedDate = new Date(munch.date).toDateString();
-  let userURL = `/peep.html?id=${munch.postedBy || ""} `;
+  let formattedDate = Date(munch.date).slice(0, -24);
+  let userURL = `/peep.html?id=${munch.postedBy._id || ""} `;
   const imageURL = munch.image || "/img/no-image.jpg";
     $('#display-munch').empty().append(`<h2>${munch.title}</h2>
       <a href="/munch.html?id=${munch._id}"><div class="returned-munches">
@@ -46,13 +44,13 @@ function displayMunch(munch) {
         <img src="${imageURL}">
       </div>
     <div class="munch-blurb">
-      <p><a href="${userURL}">${munch.userName}</a></p>
+      <p><a href="${userURL}">${munch.postedBy.userName}</a></p>
       <p>${thumb}${formattedDate}</p>
       <p>${munch.title}</p>
       <p>${munch.description}</p>
     </div>
   </div></a>`);
-  if (munch.postedBy == payloadData.userId) {
+  if (munch.postedBy._id == payloadData.userId) {
     $('.munch-blurb').append(`<button id="delete-munch">Delete</button>`);
     listenForMunchDelete(munch._id);
   }
@@ -67,17 +65,14 @@ function listenForMunchDelete(munchId) {
         Authorization: token
       },
       success: (result) => {
-        var modal = document.getElementById('myModal');
-        modal.style.display = "block";
+        $('#myModal').show();
         $('.modal-content').append(`
           <p>Successfully deleted munch</p>
           <button id="ok-button">Ok</button>`);
-        (function() {
           $('#ok-button').click(function() {
-            modal.style.display = "none";
+            $('#myModal').hide();
             location.href='/dashboard.html';
-          })
-        })()
+          });
       },
       error: error => {
         console.log('Something went wrong');
@@ -91,8 +86,7 @@ $(function() {
   if (token) {
   payloadData = parseJwt(token);
   displayAvatar();
-  munchId = getQueryVariable('id');
-  getSpecificMunch();
+  getSpecificMunch(getQueryVariable('id'));
   }
   else {
     alert("Sorry, you're not logged in");

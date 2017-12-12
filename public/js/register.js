@@ -16,8 +16,7 @@ function listenForNewUserRegistration() {
       $('#register-username').val("");
       $('#register-password').val("");
       $('#register-password2').val("");
-      var modal = document.getElementById('myModal');
-      modal.style.display = "block";
+      $('#myModal').show();
     }
   })
 }
@@ -41,8 +40,7 @@ function registerNewUser(user) {
       location.href='/login.html'
     },
     error: error => {
-      var modal = document.getElementById('myModal');
-      modal.style.display = "none";
+      $('#myModal').hide();
       popupMessage('Sorry, there was an error creating account, please try again.', '/register.html');
     },
   };
@@ -84,17 +82,14 @@ function listenForAvatarSelection() {
 }
 
 function popupMessage(message, redirect) {
-    var modal = document.getElementById('myErrorModal');
-    modal.style.display = "block";
+    $('#myErrorModal').show();
     $('.error-modal-content').append(`
       <p>${message}</p>
       <button id="ok-button">Ok</button>`);
-    (function() {
       $('#ok-button').click(function() {
-        modal.style.display = "none";
+        $('#myErrorModal').hide();
         location.href = redirect;
       })
-    })()
   }
 
 $(() => {
