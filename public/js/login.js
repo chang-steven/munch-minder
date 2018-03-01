@@ -22,6 +22,28 @@ function listenForLogin() {
   })
 }
 
+function listenForDemoLogin() {
+  $('#demo-login').click(event => {
+    event.preventDefault();
+    const demoUser = {
+      username: 'sam_i_am',
+      password: 'test1234'
+    };
+    $.ajax({
+      type: 'POST',
+      url: '/api/login',
+      data: demoUser,
+      success: result => {
+        sessionStorage.setItem('token', result.token);
+        location.href='/dashboard.html'
+      },
+      error: error => {
+        showMessage('Sorry, there was an error, try again...', true);
+      },
+    })
+  })
+}
+
 function showMessage(message, isError) {
   const className = isError ? 'error' : 'success';
   $('.message').removeClass('error', 'success')
@@ -32,4 +54,7 @@ function showMessage(message, isError) {
   }, 2000);
 }
 
-$(listenForLogin());
+$(function() {
+  listenForLogin();
+  listenForDemoLogin();
+});
