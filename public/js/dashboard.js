@@ -32,8 +32,8 @@ function displayMunches(data) {
       else {
         thumb = '';
       }
-      let formattedDate = Date(munch.date).slice(0, -24);
-    const imageURL = munch.image || "/img/no-image.jpg";
+      let formattedDate = new Date(munch.date).toDateString();
+      const imageURL = munch.image || "/img/no-image.jpg";
     $('#display-munches').append(
       `<div class="returned-munches">
       <div class="munch-image">
@@ -83,7 +83,7 @@ function displayFriendMunches(friendData) {
       else {
         thumb = '';
       }
-      let formattedDate = Date(munch.date).slice(0, -24);
+      let formattedDate = new Date(munch.date).toDateString();
       let userURL = `/peep.html?id=${munch.postedBy._id || ""} `;
       let imageURL = munch.image || "http://fakeimg.pl/200x200/?text=Munch&font=lobster";
       $('#display-peeps').append(

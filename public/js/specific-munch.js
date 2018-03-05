@@ -35,8 +35,7 @@ function displayMunch(munch) {
   else {
     thumb = '';
   }
-  let formattedDate = Date(munch.date).slice(0, -24);
-  let userURL = `/peep.html?id=${munch.postedBy._id || ""} `;
+  let formattedDate = new Date(munch.date).toDateString();  let userURL = `/peep.html?id=${munch.postedBy._id || ""} `;
   const imageURL = munch.image || "/img/no-image.jpg";
     $('#display-munch').empty().append(`<h2>${munch.title}</h2>
       <a href="/munch.html?id=${munch._id}"><div class="returned-munches">

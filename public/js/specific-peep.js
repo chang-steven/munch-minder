@@ -39,8 +39,7 @@ function displayFriendMunches(result) {
       else {
         thumb = '';
       }
-      let formattedDate = Date(munch.date).slice(0, -24);
-      let userURL = `/peep.html?id=${munch.postedBy._id || ""} `;
+    let formattedDate = new Date(munch.date).toDateString();      let userURL = `/peep.html?id=${munch.postedBy._id || ""} `;
       $('#display-friend').append(
         `<div class="returned-munches">
         <div class="specific-munch-image">

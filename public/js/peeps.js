@@ -76,7 +76,7 @@ function displayFriendMunches(friendData) {
     for (i in myFriends) {
       let peep = myFriends[i];
       let imageURL = (peep.avatar ? peep.avatar.url : "http://fakeimg.pl/200x200/?text=peep&font=lobster");
-        let formattedDate = Date(peep.joinDate).slice(0, -24);
+        let formattedDate = new Date(peep.joinDate).toDateString();
         $('#display-friends').append(
         `<a href="/peep.html?id=${peep._id}"><div class="returned-peeps">
         <div class="peeps-image">
@@ -126,8 +126,7 @@ function displaySearchedPeeps(searchResults) {
   for (i in searchResults) {
     let peep = searchResults[i];
     let imageURL = (peep.avatar ? peep.avatar.url : "http://fakeimg.pl/200x200/?text=peep&font=lobster");
-    let formattedDate = Date(peep.joinDate).slice(0, -24);
-    $('#display-friends').append(
+    let formattedDate = new Date(munch.date).toDateString();    $('#display-friends').append(
       `<div class="returned-peeps">
       <div class="peeps-image">
       <img src="${imageURL}">

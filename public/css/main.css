@@ -105,7 +105,12 @@ html, body {
 }
 
 body {
-  font-family: 'Pompiere', cursive;
+  /* font-family: 'Shadows Into Light', cursive; */
+  /* font-family: 'Abel', sans-serif; */
+  /* font-family: 'News Cycle', sans-serif; */
+  font-family: 'Roboto', sans-serif;
+
+  /* font-family: 'Pompiere', cursive; */
   background-color: #adffe6b0;
   margin: 0 auto;
   position: static;
@@ -170,12 +175,15 @@ footer {
   padding-left: 10px;
   display: inline-block;
   font-size: 2.8em;
+  font-weight: 900;
 }
 
 .nav-links {
   margin-top: 4px;
   margin-bottom: 12px;
   background-color: #49deb1;
+  min-height: 40px;
+  padding-left: 0;
 }
 
 .nav-links li {
@@ -321,6 +329,7 @@ footer {
 
 a {
   text-decoration: none;
+  color: #551a8b;
 }
 
 #login {
@@ -427,6 +436,10 @@ input, textarea {
   margin: 6px 10px;
 }
 
+button, input {
+  /* font-family: 'Josefin Slab', serif; */
+}
+
 #display-munches, #display-peeps, #display-friend, #display-friends {
   max-height: 600px;
   white-space: nowrap;
@@ -500,7 +513,7 @@ input, textarea {
   display: none;
   float: right;
   margin-top: 13px;
-  margin-right: 125px;
+  margin-left: 70px;
 }
 
 #user-avatar-window img {
@@ -630,6 +643,12 @@ input, textarea {
 
   .nav-links li {
     display: inline-block;
+    vertical-align: middle;
+    font-size: .9em;
+  }
+
+  .dropdown-content li {
+    display: block;
   }
 
   .header-container h1 {
@@ -649,11 +668,6 @@ input, textarea {
 
  @media only screen and (min-width: 640px) and (max-width: 800px){
 
-   #user-avatar-window {
-    float: right;
-    margin-right: 125px;
-  }
-
   #search-peeps-input, #munch-title, #munch-description {
     width: 250px;
   }
@@ -670,9 +684,19 @@ input, textarea {
     display: inline-block;
   }
 
-  #user-avatar-window{
+  .dropdown-content li {
     display: block;
   }
+
+  #user-avatar-window{
+    display: inline-block;
+    position: absolute;
+    margin-left: 6%;
+
+
+
+  }
+
 
   .food-icons img {
     width: 130px;
@@ -705,7 +729,12 @@ input, textarea {
    }
 
    #user-avatar-window{
-     display: block;
+     display: inline-block;
+     position: absolute;
+     margin-left: 10%;
+
+
+
    }
 
    #munch-date {
